@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import { getTranslations, LANG } from '../../i18n/index.js'
+import { getCollectionProducts, getCategories } from '../../lib/shopify.js'
+import { slugify } from '../../lib/utils.js'
+
+const t = getTranslations(LANG)
+
+export async function getStaticPaths() {
+  const { getCollectionProducts, getCategories } = await import('../../lib/shopify.js')
+  const { slugify } = await import('../../lib/utils.js')
+  const products = await getCollectionProducts()
+  const categories = await getCategories(products)
+
+  return categories.map(cat => ({
+    params: { category: slugify(cat) },
+    props: { categoryName: cat },
+  }))
+}
+
+const { categoryName } = Astro.props
+const allProducts = await getCollectionProducts()
+const products = allProducts.filter(p => p.category === categoryName)
+---
+
+<Base title={categoryName} description={`${categoryName} - ${t.site_name}`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <nav class="text-sm text-gray-500 mb-4">
+      <a href="/parts/" class="hover:text-green-600">{t.all_parts}</a> / {categoryName}
+    </nav>
+
+    <h1 class="text-3xl font-bold mb-2">{categoryName}</h1>
+    <p class="text-gray-500 mb-8">{t.products_count.replace('{count}', String(products.length))}</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {products.map(product => (
+        <ProductCard product={product} />
+      ))}
+    </div>
+  </div>
+</Base>

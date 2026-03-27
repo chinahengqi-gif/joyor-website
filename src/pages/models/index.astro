@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro'
+import { getTranslations, LANG } from '../../i18n/index.js'
+import { getCollectionProducts, getModels } from '../../lib/shopify.js'
+import { slugify } from '../../lib/utils.js'
+
+const t = getTranslations(LANG)
+const products = await getCollectionProducts()
+const models = await getModels(products)
+
+const modelData = models.map(model => ({
+  name: model,
+  slug: slugify(model),
+  count: products.filter(p => p.compatible.includes(model)).length,
+}))
+---
+
+<Base title={t.models_title} description={t.models_subtitle}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold mb-2">{t.models_title}</h1>
+    <p class="text-gray-500 mb-8">{t.models_subtitle}</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {modelData.map(model => (
+        <a href={`/models/${model.slug}/`}
+           class="block bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-green-300 transition-all text-center">
+          <h2 class="text-xl font-bold mb-1">Joyor {model.name}</h2>
+          <p class="text-gray-500 text-sm">{t.products_count.replace('{count}', String(model.count))}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>

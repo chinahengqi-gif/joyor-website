@@ -1,0 +1,77 @@
+---
+interface Props {
+  product: {
+    handle: string
+    title: string
+    category: string
+    compatible: string[]
+    price: { amount: number, currency: string }
+    images: { url: string, alt: string }[]
+    buyUrl: string
+  }
+}
+
+const { product } = Astro.props
+const image = product.images[0]
+// Note: Shopify minVariantPrice.amount often comes as cents in some contexts, 
+// but based on lib/shopify.js it's already divided or handled.
+const priceDisplay = product.price.amount.toFixed(2)
+---
+
+<article class="bg-white group relative h-full flex flex-col transition-all duration-300 rounded-lg overflow-hidden border border-transparent">
+  <!-- Image Container (Full Width) -->
+  <div class="aspect-square overflow-hidden bg-[#f7f7f7] relative">
+    {image ? (
+      <img
+        src={image.url}
+        alt={image.alt || product.title}
+        class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full bg-gray-50 flex items-center justify-center text-gray-200 uppercase text-[10px] tracking-widest font-bold">No Image</div>
+    )}
+  </div>
+
+  <!-- Content Section -->
+  <div class="p-5 flex-1 flex flex-col">
+    <!-- Category/Tags -->
+    <div class="flex flex-wrap gap-1 mb-3 min-h-[16px]">
+      {product.compatible.slice(0, 2).map(model => (
+        <span class="text-[9px] uppercase tracking-wider bg-gray-100 text-gray-500 px-2 py-0.5 font-bold rounded-sm">{model}</span>
+      ))}
+      {product.compatible.length > 2 && (
+        <span class="text-[9px] uppercase tracking-wider bg-gray-50 text-gray-400 px-2 py-0.5 font-bold rounded-sm">+{product.compatible.length - 2}</span>
+      )}
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-sm font-medium leading-relaxed text-gray-900 mb-4 line-clamp-2 min-h-[44px]">
+      {product.title}
+    </h3>
+
+    <!-- Price Section -->
+    <div class="mb-5">
+      <span class="text-base font-semibold text-gray-900">
+        €{priceDisplay}
+      </span>
+    </div>
+
+    <!-- Action Section (Full Width Button) -->
+    <div class="mt-auto">
+      <button 
+        class="add-to-cart-btn w-full flex items-center justify-center bg-black text-white text-[11px] font-bold uppercase tracking-widest px-4 py-3 rounded-lg hover:bg-gray-800 transition-all active:scale-[0.98]"
+        data-handle={product.handle}
+        data-title={product.title}
+        data-price={product.price.amount}
+        data-image={image?.url}
+      >
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </div>
+</article>
+
+<script>
+  // Handled by the page script for better performance (event delegation)
+</script>

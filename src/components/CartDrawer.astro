@@ -1,0 +1,127 @@
+---
+import { getTranslations, LANG } from '../i18n/index.js'
+const t = getTranslations(LANG)
+---
+
+<div id="cart-drawer-root" class="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
+  <!-- Backdrop -->
+  <div 
+    id="cart-overlay" 
+    class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200 ease-in-out cursor-pointer"
+  ></div>
+
+  <!-- Drawer Panel -->
+  <div 
+    id="cart-panel" 
+    class="absolute right-0 top-0 h-full w-full max-w-[420px] bg-white shadow-2xl translate-x-full transition-transform duration-200 ease-in-out flex flex-col overflow-hidden"
+  >
+    <!-- Header -->
+    <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <h2 class="text-xl font-medium tracking-tight">Your Cart</h2>
+        <span id="cart-count-badge" class="bg-gray-100 text-gray-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">0 Items</span>
+      </div>
+      <button id="cart-close-btn" class="p-2 hover:bg-gray-50 rounded-full transition-colors group" aria-label="Close cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-90 transition-transform duration-300"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Body (Content) -->
+    <div class="flex-1 overflow-y-auto px-6 py-8 flex flex-col items-center justify-center text-center">
+      <!-- Empty State -->
+      <div id="cart-empty-state" class="space-y-6">
+        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.56-7.43H5.12"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-gray-900">Your cart is empty</h3>
+          <p class="mt-2 text-sm text-gray-400 max-w-[240px] mx-auto">Looks like you haven't added anything to your cart yet.</p>
+        </div>
+        <button id="cart-continue-shopping" class="inline-flex items-center justify-center px-8 py-3 bg-black text-white text-sm font-medium tracking-wide rounded-full hover:bg-gray-800 transition-colors duration-300 group">
+          Explore E-Scooters
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 group-hover:translate-x-1 transition-transform"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- Item List (Hidden for now) -->
+      <div id="cart-items-list" class="hidden w-full space-y-6">
+        <!-- Cart items would be injected here -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-8 bg-gray-50/50 border-t border-gray-100">
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-gray-500 font-medium">Subtotal</span>
+        <span id="cart-subtotal" class="text-xl font-semibold">€0.00</span>
+      </div>
+      <button class="w-full py-4 bg-black text-white rounded-full font-medium tracking-wide hover:bg-gray-800 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none" disabled>
+        Checkout
+      </button>
+      <p class="mt-4 text-[11px] text-gray-400 text-center tracking-tight uppercase">Taxes and shipping calculated at checkout</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initCartDrawer() {
+    const root = document.getElementById('cart-drawer-root');
+    const overlay = document.getElementById('cart-overlay');
+    const panel = document.getElementById('cart-panel');
+    const closeBtn = document.getElementById('cart-close-btn');
+    const continueBtn = document.getElementById('cart-continue-shopping');
+
+    const openCart = () => {
+      root?.classList.remove('pointer-events-none');
+      overlay?.classList.remove('opacity-0');
+      overlay?.classList.add('opacity-100');
+      panel?.classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeCart = () => {
+      overlay?.classList.remove('opacity-100');
+      overlay?.classList.add('opacity-0');
+      panel?.classList.add('translate-x-full');
+      setTimeout(() => {
+        root?.classList.add('pointer-events-none');
+        document.body.style.overflow = '';
+      }, 200);
+    };
+
+    // Listen for custom trigger (globally)
+    window.addEventListener('cart:open', openCart);
+    window.addEventListener('cart:close', closeCart);
+
+    overlay?.addEventListener('click', closeCart);
+    closeBtn?.addEventListener('click', closeCart);
+    continueBtn?.addEventListener('click', closeCart);
+
+    // Escape key support
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel?.classList.contains('translate-x-full')) {
+        closeCart();
+      }
+    });
+  }
+
+  // Initialize
+  initCartDrawer();
+
+  // Re-init on View Transitions
+  document.addEventListener('astro:after-swap', initCartDrawer);
+</script>
+
+<style>
+  /* Optional: Custom scrollbar for the drawer */
+  #cart-panel div::-webkit-scrollbar {
+    width: 4px;
+  }
+  #cart-panel div::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #cart-panel div::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+  }
+</style>

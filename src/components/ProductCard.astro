@@ -1,0 +1,54 @@
+---
+import { getTranslations, LANG } from '../i18n/index.js'
+const t = getTranslations(LANG)
+
+interface Props {
+  product: {
+    handle: string
+    title: string
+    category: string
+    compatible: string[]
+    price: { amount: number, currency: string }
+    images: { url: string, alt: string }[]
+    buyUrl: string
+  }
+}
+
+const { product } = Astro.props
+const image = product.images[0]
+const priceDisplay = product.price.amount.toFixed(2)
+---
+
+<div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+  {image && (
+    <a href={product.buyUrl} target="_blank" rel="noopener">
+      <img
+        src={image.url}
+        alt={image.alt || product.title}
+        class="w-full h-48 object-contain bg-gray-50 p-2"
+        loading="lazy"
+      />
+    </a>
+  )}
+  <div class="p-4">
+    <h3 class="font-medium text-sm leading-tight mb-2 line-clamp-2">
+      <a href={product.buyUrl} target="_blank" rel="noopener" class="hover:text-green-600">
+        {product.title}
+      </a>
+    </h3>
+    <div class="flex items-center justify-between mt-3">
+      <span class="text-lg font-bold text-green-600">€{priceDisplay}</span>
+      <a href={product.buyUrl} target="_blank" rel="noopener"
+         class="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg transition-colors">
+        {t.cta_shop}
+      </a>
+    </div>
+    {product.compatible.length > 0 && (
+      <div class="mt-2 flex flex-wrap gap-1">
+        {product.compatible.map(model => (
+          <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{model}</span>
+        ))}
+      </div>
+    )}
+  </div>
+</div>

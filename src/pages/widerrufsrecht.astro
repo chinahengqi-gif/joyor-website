@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro'
+import { getTranslations, LANG } from '../i18n/index.js'
+
+const t = getTranslations(LANG)
+---
+
+<Base title={t.widerrufsrecht_title} description={t.widerrufsrecht_title}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 prose">
+    <h1>{t.widerrufsrecht_title}</h1>
+    <p>Inhalt wird noch ergänzt / Content to be added.</p>
+  </div>
+</Base>

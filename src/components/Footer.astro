@@ -1,0 +1,45 @@
+---
+import { getTranslations, LANG } from '../i18n/index.js'
+const t = getTranslations(LANG)
+const year = new Date().getFullYear()
+---
+
+<footer class="bg-gray-950 text-gray-400">
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+      <div>
+        <img src="/logo_white.png" alt="Joyor" class="h-6 mb-6 opacity-80" />
+        <p class="text-sm leading-relaxed text-gray-500">
+          Premium electric scooters<br />for modern urban mobility.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.15em] text-gray-500 mb-4">Products</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/e-scooters/" class="hover:text-white transition-colors">E-Scooters</a></li>
+          <li><a href="/parts/" class="hover:text-white transition-colors">{t.footer_parts}</a></li>
+          <li><a href="https://joyorprime.com" target="_blank" rel="noopener" class="hover:text-white transition-colors">Online Store</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.15em] text-gray-500 mb-4">Company</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/about/" class="hover:text-white transition-colors">{t.footer_about}</a></li>
+          <li><a href="/service/" class="hover:text-white transition-colors">Service</a></li>
+          <li><a href="/blog/" class="hover:text-white transition-colors">{t.nav_blog}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.15em] text-gray-500 mb-4">Legal</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/impressum/" class="hover:text-white transition-colors">{t.footer_legal}</a></li>
+          <li><a href="/datenschutz/" class="hover:text-white transition-colors">{t.footer_privacy}</a></li>
+          <li><a href="/widerrufsrecht/" class="hover:text-white transition-colors">{t.footer_returns}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 mt-12 pt-8 text-xs text-gray-600 text-center">
+      {t.footer_copyright.replace('{year}', String(year))}
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,265 @@
+---
+import { getTranslations, LANG } from '../i18n/index.js'
+const t = getTranslations(LANG)
+
+interface Props {
+  transparent?: boolean
+}
+
+const { transparent = false } = Astro.props
+
+const sites = [
+  { lang: 'en', label: 'US', url: 'https://joyorscooter.us' },
+  { lang: 'de', label: 'DE', url: 'https://joyorscooter.de' },
+  { lang: 'fr', label: 'FR', url: 'https://joyorscooter.fr' },
+  { lang: 'it', label: 'IT', url: 'https://joyor.it' },
+]
+const currentSite = sites.find(s => s.lang === LANG) || sites[0]
+---
+
+<header
+  id="site-header"
+  class:list={[
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    transparent ? 'header-transparent' : 'header-solid',
+  ]}
+>
+  <nav class="max-w-[1440px] mx-auto px-6 lg:px-10">
+    <div class="flex items-center justify-between h-12 lg:h-14">
+
+      <!-- Logo -->
+      <a href="/" class="flex-shrink-0">
+        <img
+          src={transparent ? '/logo_white.png' : '/logo_black.png'}
+          alt="Joyor"
+          class="h-3 lg:h-3.5 header-logo"
+          id="header-logo"
+        />
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center gap-10">
+        <a href="/e-scooters/" class="nav-link text-base tracking-wide font-medium">E-Scooters</a>
+        <a href="/parts/" class="nav-link text-base tracking-wide font-medium">{t.nav_parts}</a>
+        <a href="/service/" class="nav-link text-base tracking-wide font-medium">Service</a>
+        <a href="/about/" class="nav-link text-base tracking-wide font-medium">{t.nav_about}</a>
+      </div>
+
+      <!-- Desktop & Mobile Right Actions -->
+      <div class="flex items-center gap-4 lg:gap-8">
+        <!-- Desktop Only -->
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="https://joyorprime.com" target="_blank" rel="noopener"
+             class="nav-cta text-sm tracking-wide font-medium px-5 py-1.5 rounded-full border transition-colors">
+            Online Store
+          </a>
+
+          <!-- Site Switcher -->
+          <div class="relative" id="site-switcher">
+            <button class="nav-link flex items-center gap-1.5 text-sm" id="site-switcher-btn" aria-label="Switch region">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              {currentSite.label}
+            </button>
+            <div id="site-switcher-dropdown" class="hidden absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[120px]">
+              {sites.map(site => (
+                <a href={site.url} class:list={[
+                  'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50',
+                  site.lang === LANG && 'font-medium'
+                ]}>
+                  {site.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Trigger (Visible Everywhere) -->
+        <button id="cart-drawer-trigger" class="nav-link relative group p-1" aria-label="Open cart">
+          <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24"><path fill="currentColor" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1m-9-1a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1M18 6H4.27l2.55 6H15c.33 0 .62-.16.8-.4l3-4c.13-.17.2-.38.2-.6a1 1 0 0 0-1-1m-3 7H6.87l-.77 1.56L6 15a1 1 0 0 0 1 1h11v1H7a2 2 0 0 1-2-2a2 2 0 0 1 .25-.97l.72-1.47L2.34 4H1V3h2l.85 2H18a2 2 0 0 1 2 2c0 .5-.17.92-.45 1.26l-2.91 3.89c-.36.51-.96.85-1.64.85" stroke-width="0.5" stroke="currentColor"/></svg>
+          <span class="absolute -top-1 -right-1.5 w-4 h-4 bg-black text-white text-[9px] font-bold rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">0</span>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden nav-link p-1" aria-label="Menu">
+          <svg class="w-6 h-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+          </svg>
+          <svg class="w-6 h-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Panel -->
+  <div id="mobile-menu" class="hidden lg:hidden bg-white text-gray-900 border-t border-gray-100">
+    <div class="px-6 py-6 space-y-1">
+      <a href="/e-scooters/" class="block py-3 text-base tracking-wide text-gray-800">E-Scooters</a>
+      <a href="/parts/" class="block py-3 text-base tracking-wide text-gray-800">{t.nav_parts}</a>
+      <a href="/service/" class="block py-3 text-base tracking-wide text-gray-800">Service</a>
+      <a href="/about/" class="block py-3 text-base tracking-wide text-gray-800">{t.nav_about}</a>
+
+      <div class="grid grid-cols-2 gap-3 pt-6 mt-6 border-t border-gray-100">
+        <a href="https://joyorprime.com" target="_blank" rel="noopener"
+           class="flex items-center justify-center py-2.5 rounded-full border border-gray-900 text-xs font-medium tracking-wide">
+          Online Store
+        </a>
+        
+        <div class="relative">
+          <button id="mobile-site-switcher-btn" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-full border border-gray-200 text-xs font-medium tracking-wide">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+            Region: {currentSite.label}
+          </button>
+          
+          <div id="mobile-site-switcher-dropdown" class="hidden absolute left-0 bottom-full mb-2 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+            {sites.map(site => (
+              <a href={site.url} class:list={[
+                'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50',
+                site.lang === LANG && 'font-medium bg-gray-50'
+              ]}>
+                {site.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header-transparent {
+    background: transparent;
+  }
+  .header-transparent .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .header-transparent .nav-link:hover {
+    color: #fff;
+  }
+  .header-transparent .nav-cta {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  .header-transparent .nav-cta:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .header-solid {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .header-solid .nav-link {
+    color: rgba(0, 0, 0, 0.7);
+  }
+  .header-solid .nav-link:hover {
+    color: #000;
+  }
+  .header-solid .nav-cta {
+    color: #000;
+    border-color: rgba(0, 0, 0, 0.3);
+  }
+  .header-solid .nav-cta:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .header-scrolled {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .header-scrolled .nav-link {
+    color: rgba(0, 0, 0, 0.7) !important;
+  }
+  .header-scrolled .nav-link:hover {
+    color: #000 !important;
+  }
+  .header-scrolled .nav-cta {
+    color: #000 !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+  }
+  .header-scrolled .nav-cta:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.5) !important;
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header')
+  const logo = document.getElementById('header-logo') as HTMLImageElement | null
+  const isTransparent = header?.classList.contains('header-transparent')
+
+  // Scroll: transparent → solid on scroll
+  if (isTransparent) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        header?.classList.add('header-scrolled')
+        if (logo) logo.src = '/logo_black.png'
+      } else {
+        header?.classList.remove('header-scrolled')
+        if (logo) logo.src = '/logo_white.png'
+      }
+    })
+  }
+
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById('mobile-menu-btn')
+  const mobileMenu = document.getElementById('mobile-menu')
+  const iconOpen = document.getElementById('menu-icon-open')
+  const iconClose = document.getElementById('menu-icon-close')
+
+  mobileBtn?.addEventListener('click', () => {
+    const isOpen = !mobileMenu?.classList.contains('hidden')
+    mobileMenu?.classList.toggle('hidden')
+    iconOpen?.classList.toggle('hidden')
+    iconClose?.classList.toggle('hidden')
+
+    if (!isOpen) {
+      // Opening: force solid header
+      header?.classList.add('header-scrolled')
+      if (logo) logo.src = '/logo_black.png'
+    } else if (isTransparent && window.scrollY <= 60) {
+      header?.classList.remove('header-scrolled')
+      if (logo) logo.src = '/logo_white.png'
+    }
+  })
+
+  // Site switcher dropdown (Desktop)
+  const switcherBtn = document.getElementById('site-switcher-btn')
+  const switcherDropdown = document.getElementById('site-switcher-dropdown')
+
+  switcherBtn?.addEventListener('click', (e) => {
+    e.stopPropagation()
+    switcherDropdown?.classList.toggle('hidden')
+  })
+
+  // Mobile menu region switcher
+  const mobileSwitcherBtn = document.getElementById('mobile-site-switcher-btn')
+  const mobileSwitcherDropdown = document.getElementById('mobile-site-switcher-dropdown')
+
+  mobileSwitcherBtn?.addEventListener('click', (e) => {
+    e.stopPropagation()
+    mobileSwitcherDropdown?.classList.toggle('hidden')
+  })
+
+  document.addEventListener('click', () => {
+    switcherDropdown?.classList.add('hidden')
+    mobileSwitcherDropdown?.classList.add('hidden')
+  })
+
+  // Handle Cart Drawer
+  const cartTrigger = document.getElementById('cart-drawer-trigger');
+  cartTrigger?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('cart:open'));
+  });
+</script>
