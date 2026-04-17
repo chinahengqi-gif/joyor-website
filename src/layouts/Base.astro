@@ -1,5 +1,6 @@
 ---
 import { getTranslations, LANG, SITE_URL } from '../i18n/index.js'
+import { getLocalizedPathname } from '../lib/legal'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import CartDrawer from '../components/CartDrawer.astro'
@@ -8,42 +9,57 @@ import '../styles/global.css'
 const t = getTranslations(LANG)
 
 interface Props {
-  title: string
+  title?: string
   description?: string
+  fullTitle?: string
   transparentHeader?: boolean
   bgColor?: string
 }
 
-const { title, description = '', transparentHeader = false, bgColor = '#ffffff' } = Astro.props
+const { title = '', description = '', fullTitle = '', transparentHeader = false, bgColor = '#ffffff' } = Astro.props
 const currentPath = Astro.url.pathname
+const dePath = getLocalizedPathname(currentPath, 'de')
+const frPath = getLocalizedPathname(currentPath, 'fr')
+const itPath = getLocalizedPathname(currentPath, 'it')
 ---
 
 <html lang={LANG}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} | {t.site_name}</title>
+  <title>{fullTitle || `${title} | ${t.site_name}`}</title>
   <meta name="description" content={description} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <!-- IBM Plex Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&family=Zen+Dots&display=swap" rel="stylesheet" />
 
   <!-- hreflang -->
-  <link rel="alternate" hreflang="en" href={`https://joyorscooter.us${currentPath}`} />
-  <link rel="alternate" hreflang="de" href={`https://joyorscooter.de${currentPath}`} />
-  <link rel="alternate" hreflang="fr" href={`https://joyorscooter.fr${currentPath}`} />
-  <link rel="alternate" hreflang="it" href={`https://joyor.it${currentPath}`} />
-  <link rel="alternate" hreflang="x-default" href={`https://joyorscooter.us${currentPath}`} />
+  <link rel="alternate" hreflang="de" href={`https://joyorscooter.de${dePath}`} />
+  <link rel="alternate" hreflang="fr" href={`https://joyorscooter.fr${frPath}`} />
+  <link rel="alternate" hreflang="it" href={`https://joyor.it${itPath}`} />
+  <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${currentPath}`} />
 </head>
-<body class="min-h-screen flex flex-col text-gray-900 font-['IBM_Plex_Sans',sans-serif] font-normal antialiased" style={`background-color: ${bgColor}`}>
+<body class="min-h-screen flex flex-col text-[#1a1a1a] font-['IBM_Plex_Sans',sans-serif] font-normal antialiased text-base" style={`background-color: ${bgColor}`}>
   <Header transparent={transparentHeader} />
   <main class="flex-1">
     <slot />
   </main>
   <Footer />
   <CartDrawer />
+
+  <!-- Tawk.to Live Chat -->
+  <script is:inline>
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/69cf3534b8aa781c3b30f849/1jl8mflfa';
+      s1.charset='UTF-8';
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
 </body>
 </html>

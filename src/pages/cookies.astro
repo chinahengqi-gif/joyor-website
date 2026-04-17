@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro'
+import { getTranslations, LANG } from '../i18n/index.js'
+
+const t = getTranslations(LANG)
+const shopifyLink = `<a href="https://www.shopify.com/legal/cookies" target="_blank" rel="noopener" class="underline hover:text-black transition-colors">${t.cookies_shopify_policy}</a>`
+const thirdPartyText = t.cookies_third_party_text.replace('{link}', shopifyLink)
+const cookiesContactText = t.cookies_contact_text.replace(
+  '{email}',
+  '<a href="mailto:support@joyorprime.com" class="underline hover:text-black transition-colors">support@joyorprime.com</a>',
+)
+---
+
+<Base title={t.cookies_title} description={t.cookies_meta_desc}>
+  <div class="max-w-3xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+    <h1 class="text-3xl lg:text-4xl font-medium tracking-tight mb-4">{t.cookies_title}</h1>
+    <p class="text-sm text-black/50 mb-12">{t.common_last_updated}</p>
+
+    <div class="space-y-10 text-[15px] leading-relaxed text-black">
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.cookies_what_are}</h2>
+        <p>{t.cookies_what_are_text}</p>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.cookies_we_use}</h2>
+        <p set:html={t.cookies_we_use_text} />
+
+        <div class="border border-black/10 rounded-lg overflow-hidden mt-4">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-[#f5f5f5]">
+                <th class="text-left px-5 py-3 font-medium text-black">{t.cookies_table_cookie}</th>
+                <th class="text-left px-5 py-3 font-medium text-black">{t.cookies_table_purpose}</th>
+                <th class="text-left px-5 py-3 font-medium text-black">{t.cookies_table_duration}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-black/10">
+              <tr>
+                <td class="px-5 py-3 font-mono text-xs">__cf_bm</td>
+                <td class="px-5 py-3">{t.cookies_cf_bm_purpose}</td>
+                <td class="px-5 py-3">30 min</td>
+              </tr>
+              <tr>
+                <td class="px-5 py-3 font-mono text-xs">cf_clearance</td>
+                <td class="px-5 py-3">{t.cookies_cf_clearance_purpose}</td>
+                <td class="px-5 py-3">30 min</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.cookies_third_party}</h2>
+        <p set:html={thirdPartyText} />
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.cookies_managing}</h2>
+        <p>{t.cookies_managing_text}</p>
+        <ul class="list-disc pl-5 mt-2 space-y-1">
+          <li>{t.cookies_manage_1}</li>
+          <li>{t.cookies_manage_2}</li>
+          <li>{t.cookies_manage_3}</li>
+          <li>{t.cookies_manage_4}</li>
+          <li>{t.cookies_manage_5}</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.cookies_legal_basis}</h2>
+        <p>{t.cookies_legal_basis_text}</p>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.common_contact_us}</h2>
+        <p set:html={cookiesContactText} />
+      </section>
+    </div>
+  </div>
+</Base>

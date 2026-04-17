@@ -1,13 +1,14 @@
 ---
-import Base from '../layouts/Base.astro'
 import { getTranslations, LANG } from '../i18n/index.js'
+import LegalDocument from '../components/LegalDocument.astro'
+import { legalContent } from '../lib/legal-content'
 
 const t = getTranslations(LANG)
+const content = legalContent.impressum[LANG] || legalContent.impressum.en
 ---
 
-<Base title={t.impressum_title} description={t.impressum_title}>
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 prose">
-    <h1>{t.impressum_title}</h1>
-    <p>Inhalt wird noch ergänzt / Content to be added.</p>
-  </div>
-</Base>
+<LegalDocument
+  title={t.impressum_title}
+  description={content.description}
+  sections={content.sections}
+/>

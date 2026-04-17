@@ -1,0 +1,86 @@
+{
+  "model": "JOYOR F5",
+  "title": "JOYOR F5 City Commuter Electric Scooter",
+  "handle": "joyor-f5-electric-scooter",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/imgi_18_joyor-f5-electric-scooter-front_400x_2x_9a5e3331-dc2f-495a-956b-730823b5e105.webp?v=1771991719&width=600",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/imgi_18_joyor-f5-electric-scooter-front_400x_2x_9a5e3331-dc2f-495a-956b-730823b5e105.webp?v=1771991719&width=600",
+    "https://joyorprime.com/cdn/shop/files/12_40dcd9d6-720e-4408-bcca-b8a93c868a86.jpg?v=1771991719&width=600",
+    "https://joyorprime.com/cdn/shop/files/15_045d8bc1-3e49-4459-a681-1051b4d08a80.jpg?v=1771991719&width=600",
+    "https://joyorprime.com/cdn/shop/files/3_369d9bab-4a5d-4632-88a8-74246ffa1ea7.jpg?v=1771991719&width=600",
+    "https://joyorprime.com/cdn/shop/files/7_d7d5969d-5f0a-43c8-9bf9-96c0e1f1ea0f.jpg?v=1771991719&width=600",
+    "https://joyorprime.com/cdn/shop/files/2_f5bd89e4-45eb-4f30-95a8-48194f8fff21.jpg?v=1771991719&width=600",
+    "https://joyorprime.com/cdn/shop/files/11_5afee6c5-238d-4ba0-85f2-dd2b497aa34e.jpg?v=1771991719&width=600"
+  ],
+  "videoId": "",
+  "extraVideos": [],
+  "sellingPoints": [],
+  "lifestyleImages": [
+    "https://joyorprime.com/cdn/shop/files/1_71321afe-6aef-4aa1-8fdb-0213f8754864.png?v=1771999668&width=1500"
+  ],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__13.jpg?v=1771999360&width=1500",
+      "title": "Vibrant Display, Total Control",
+      "content": "The electric scooter features a high-definition, colorful display that keeps you informed in real-time. It shows live speed, battery level, and riding mode, allowing you to easily monitor your ride and stay in control throughout your journey."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__04.jpg?v=1771998843&width=1500",
+      "title": "Powerful Urban Ride",
+      "content": "The 500W rear drum brake motor offers strong performance, making it easy to tackle urban hills with a 15° climbing angle."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/1_32864ed3-79e1-4ef5-972f-862bb57f7665.png?v=1771999256&width=1500",
+      "title": "Ride Farther, Explore More",
+      "content": "The 48V 10.4Ah battery offers reliable power and a range of up to 38 km, perfect for city commuting and longer rides."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/9c615196a0822baa399a8d6f2c8cad91_8cd0b256-8854-4401-afca-d16549fc009a.png?v=1771998284&width=1500",
+      "title": "High-response disc brake system",
+      "content": "Urban commuting is smoother with built-in spring shock absorption, efficiently filtering bumps. The front shock system enhances stability, ensuring a safe, reliable ride."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__12.jpg?v=1771992165&width=1500",
+      "title": "Foldable and portable",
+      "content": "The JOYOR F5 e-scooter has an unfolded size of 985*540*1170mm and a folded size of 945*540*330mm. It weighs 14.25kg and is easy to transport and store. It is an ideal choice for commuting to work, school, or short trips."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__09.jpg?v=1771999923&width=710",
+      "title": "",
+      "content": "8 inch front pneumatic tires and rear solid tires.All-terrain tire tread, with stronger grip"
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__11.jpg?v=1772000128&width=710",
+      "caption": "Omnidirectional Lighting System，\nevery aspect is well taken care of"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__08.jpg?v=1772000269&width=710",
+      "caption": "Reliable braking response, durable performance and consistent safety in all road scenarios"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/F5-PC__02.jpg?v=1772000367&width=710",
+      "caption": "Sensitive soundemission, ringsinstantly with a press"
+    }
+  ],
+  "specs": {
+    "Motor": "500w",
+    "Speed": "20 km/h",
+    "Battery": "48V 13Ah",
+    "Charging": "About 7 hours, supports fast charging",
+    "Range": "30-45km",
+    "Net Weight": "22.7kg",
+    "Load": "150kg",
+    "Tire": "10 inch air tire",
+    "Brake": "Front＆Rear disc brake",
+    "Front Shock Absorber": "Yes",
+    "Rear Shock Absorber": "Yes",
+    "Frame Meterial": "Aluminum alloy",
+    "Pack size": "1215*610*1230mm",
+    "Unfold size": "1215*610*1230mm",
+    "Fold size": "1120*610*525mm"
+  },
+  "price": 325,
+  "shopifyTitle": "JOYOR F5 City Commuter Electric Scooter"
+}

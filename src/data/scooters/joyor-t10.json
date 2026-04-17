@@ -1,0 +1,82 @@
+{
+  "model": "JOYOR T10",
+  "title": "JOYOR T10 Dual-motor Electric Scooter",
+  "handle": "joyor-t10-1000w-dual-motors-75km-endurance",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/2_8589e8b1-b755-4fa0-aa1c-1c0be6a5ba24.jpg?v=1769413629&width=600",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/2_8589e8b1-b755-4fa0-aa1c-1c0be6a5ba24.jpg?v=1769413629&width=600",
+    "https://joyorprime.com/cdn/shop/files/6_12c2708c-01bc-41d3-a714-18400651907b.jpg?v=1769413629&width=600",
+    "https://joyorprime.com/cdn/shop/files/T10_qs_01.png?v=1769413629&width=600",
+    "https://joyorprime.com/cdn/shop/files/WX20250930-1052182x_665d59c4-7d95-4dfd-97bd-e2c22f88d6e8.png?v=1769413629&width=600",
+    "https://joyorprime.com/cdn/shop/files/JoyorT10.png?v=1769413629&width=600",
+    "https://joyorprime.com/cdn/shop/files/4_1a6d2b14-648c-4a8d-9d90-e0a4feae1def.jpg?v=1769413629&width=600",
+    "https://joyorprime.com/cdn/shop/files/8_3b2d8591-8a89-486e-a8fa-61f943ecfdb7.jpg?v=1769413629&width=600"
+  ],
+  "videoId": "l_ZI8N_YEDc",
+  "extraVideos": [],
+  "sellingPoints": [
+    "Dual 1000W motors for 35° climbing",
+    "Ultra-long battery life, up to 75 km",
+    "New T Series delivers greater stability and comfort"
+  ],
+  "lifestyleImages": [],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/Group_370_1.jpg?v=1763710506&width=1950",
+      "title": "Engineered for Thrills, Built for Real Life",
+      "content": "Joyor T Series: Precision that powers your ride.Whether weaving through the city on the T6 or powering up hills on the T10—every model transforms riding into an experience."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/Group_369.jpg?v=1763691224&width=1950",
+      "title": "Built for the Urban Jungle — and Every Hill Beyond",
+      "content": "Dual 1000W motors for instant power, smooth handling, and unbeatable hill performance—turning every ride into a premium experience."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/5_293c029d-58a4-4ec8-8eb8-01ef357c8d95.png?v=1763715290&width=1950",
+      "title": "A Battery That Keeps Up—Not Holds Back",
+      "content": "Equipped with a powerful 60V 18Ah high-capacity battery, the T10 delivers unwavering energy for demanding rides—day after day, charge after charge."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/6_e4b25de9-bea4-41d4-852d-749ebc1c297d.jpg?v=1763629644&width=1950",
+      "title": "Front & Rear Suspension—Engineered for Smoothness",
+      "content": "Say goodbye to bumpy rides. The T10 features front and rear hydraulic spring suspension for unmatched smoothness—so every journey feels comfortable, controlled, and truly enjoyable."
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/3_61ac160d-9292-4a09-84b3-75cf31a0117b.jpg?v=1763630123&width=1950",
+      "caption": "The T10 is equipped with 10 - inch ultra - wide tires, designed for a smooth ride andcapable of providing top - tier traction whetheron urban roads or rough terrain.."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_217_t-series-electric-scooter-brake-2_1.jpg?v=1763718103&width=1950",
+      "caption": "Whether you’re weaving through city traffic or descending steep hills, the T10’s front and rear mechanical disc brakes deliver consistent, responsive stopping power—ensuring total control, rock-solid stability, and confidence on every ride."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_219_t-series-electric-scooter-folding.jpg?v=1763964207&width=1950",
+      "caption": "Thanks to its unique patented mechanism and precision-engineered structure, the T10 folds smoothly in seconds — no force, no fumbling. Effortless for daily commutes, compact for storage, and built to last."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/1_5461ddd6-cc58-4397-bd24-6611573ba5e6.jpg?v=1763630027&width=1950",
+      "caption": "The LCD display and control panel give you full command – from speed and lighting to indicators and horn – all in one place."
+    }
+  ],
+  "specs": {
+    "Motor": "1000W*2",
+    "Speed": "60km/h",
+    "Battery": "60V 18Ah",
+    "Charging": "≤10h",
+    "Range": "≤75km",
+    "Net Weight": "29.6kg",
+    "Load": "120kg",
+    "Tire": "10-inch pneumatic off-road tire",
+    "Brake": "Front and rear hydraulic brakes",
+    "Front Shock Absorber": "Yes",
+    "Rear Shock Absorber": "Yes",
+    "Frame Meterial": "Aluminum Alloy",
+    "Pack size": "1190*245*500mm",
+    "Unfold size": "1230*630*1305mm",
+    "Fold size": "1170*630*540mm"
+  },
+  "price": 699,
+  "shopifyTitle": "JOYOR T10 Dual-motor Electric Scooter"
+}

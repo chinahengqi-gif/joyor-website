@@ -1,5 +1,7 @@
 ---
 import { getTranslations, LANG } from '../i18n/index.js'
+import { getScooters, getCollectionProducts, getCategories, getModels } from '../lib/shopify.js'
+import { slugify } from '../lib/utils.js'
 const t = getTranslations(LANG)
 
 interface Props {
@@ -8,11 +10,57 @@ interface Props {
 
 const { transparent = false } = Astro.props
 
+// Mega menu data: hot models + series
+const allScooters = await getScooters()
+const hotHandles = [
+  'joyor-s10s-z',
+  'joyor-t10-1000w-dual-motors-75km-endurance',
+  'joyor-s5-abe',
+  'joyor-t6e',
+  'joyor-y8s-abe-electric-scooter',
+  's8-s-z-with-turn-signal',
+  'joyor-s5-abe-pro-electric-scooter',
+  'joyor-y6s',
+  'joyor-c10',
+  'joyor-f5-electric-scooter',
+]
+const hotScooters = hotHandles
+  .map(h => allScooters.find((s: any) => s.handle === h))
+  .filter(Boolean)
+  .map((s: any) => ({
+    handle: s.handle,
+    title: s.title.replace(/\s+(Electric\s+Scooter|Scooter|E-Motorcycle).*$/i, '').replace(/^JOYOR\s+/i, '').trim(),
+    image: s.scooterpng || s.images?.[0]?.url || '',
+  }))
+
+function getSeries(title: string) {
+  const m = title.match(/JOYOR\s+([A-Z])\d/i)
+  return m ? m[1].toUpperCase() : 'Other'
+}
+const seriesOrder = ['T', 'S', 'Y', 'C', 'F']
+const seriesList = seriesOrder
+  .filter((letter) => allScooters.some((s: any) => getSeries(s.title) === letter))
+  .map((letter) => ({ letter, label: `${letter} ${t.series_suffix}`, href: `/e-scooters/collection/${letter.toLowerCase()}-series/` }))
+
+// Parts mega menu data
+const allParts = await getCollectionProducts()
+const partCategories = await getCategories(allParts)
+const partModels = await getModels(allParts)
+const partsCategoriesList = partCategories.map((c: string) => ({
+  name: c,
+  slug: slugify(c),
+  count: allParts.filter((p: any) => p.category === c).length,
+}))
+const partsModelsList = partModels.map((m: string) => ({
+  name: m,
+  slug: slugify(m),
+}))
+
 const sites = [
-  { lang: 'en', label: 'US', url: 'https://joyorscooter.us' },
-  { lang: 'de', label: 'DE', url: 'https://joyorscooter.de' },
-  { lang: 'fr', label: 'FR', url: 'https://joyorscooter.fr' },
-  { lang: 'it', label: 'IT', url: 'https://joyor.it' },
+  { lang: 'en', label: 'US', fullLabel: 'United States', flag: '/images/flag/US.png', url: 'https://joyorscooter.us' },
+  { lang: 'de', label: 'DE', fullLabel: 'Deutschland', flag: '/images/flag/DE.png', url: 'https://joyorscooter.de' },
+  { lang: 'fr', label: 'FR', fullLabel: 'France', flag: '/images/flag/FR.png', url: 'https://joyorscooter.fr' },
+  { lang: 'it', label: 'IT', fullLabel: 'Italia', flag: '/images/flag/IT.png', url: 'https://joyor.it' },
 ]
 const currentSite = sites.find(s => s.lang === LANG) || sites[0]
 ---
@@ -20,7 +68,7 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
 <header
   id="site-header"
   class:list={[
-    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    'fixed top-0 left-0 right-0 z-[60] transition-[background-color,backdrop-filter] duration-300',
     transparent ? 'header-transparent' : 'header-solid',
   ]}
 >
@@ -38,10 +86,14 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
       </a>
 
       <!-- Desktop Nav -->
-      <div class="hidden lg:flex items-center gap-10">
-        <a href="/e-scooters/" class="nav-link text-base tracking-wide font-medium">E-Scooters</a>
-        <a href="/parts/" class="nav-link text-base tracking-wide font-medium">{t.nav_parts}</a>
-        <a href="/service/" class="nav-link text-base tracking-wide font-medium">Service</a>
+      <div class="hidden lg:flex items-center gap-10" id="desktop-nav">
+        <div class="mega-menu-trigger" data-menu="scooters">
+          <a href="/e-scooters/" class="nav-link text-base tracking-wide font-medium flex items-center h-12 lg:h-14">{t.nav_scooters}</a>
+        </div>
+        <div class="mega-menu-trigger" data-menu="parts">
+          <a href="/parts/" class="nav-link text-base tracking-wide font-medium flex items-center h-12 lg:h-14">{t.nav_parts}</a>
+        </div>
+        <a href="/service/" class="nav-link text-base tracking-wide font-medium">{t.nav_service}</a>
         <a href="/about/" class="nav-link text-base tracking-wide font-medium">{t.nav_about}</a>
       </div>
 
@@ -51,35 +103,20 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
         <div class="hidden lg:flex items-center gap-8">
           <a href="https://joyorprime.com" target="_blank" rel="noopener"
              class="nav-cta text-sm tracking-wide font-medium px-5 py-1.5 rounded-full border transition-colors">
-            Online Store
+            {t.nav_store}
           </a>
 
           <!-- Site Switcher -->
-          <div class="relative" id="site-switcher">
-            <button class="nav-link flex items-center gap-1.5 text-sm" id="site-switcher-btn" aria-label="Switch region">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-              {currentSite.label}
-            </button>
-            <div id="site-switcher-dropdown" class="hidden absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[120px]">
-              {sites.map(site => (
-                <a href={site.url} class:list={[
-                  'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50',
-                  site.lang === LANG && 'font-medium'
-                ]}>
-                  {site.label}
-                </a>
-              ))}
-            </div>
-          </div>
+          <button class="region-trigger nav-link flex items-center gap-1.5 text-sm" aria-label={t.region_switch}>
+            <img src={currentSite.flag} alt={currentSite.label} class="h-3.5 w-auto" />
+            {currentSite.label}
+          </button>
         </div>
 
         <!-- Cart Trigger (Visible Everywhere) -->
         <button id="cart-drawer-trigger" class="nav-link relative group p-1" aria-label="Open cart">
-          <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24"><path fill="currentColor" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1m-9-1a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1a1 1 0 0 0-1-1M18 6H4.27l2.55 6H15c.33 0 .62-.16.8-.4l3-4c.13-.17.2-.38.2-.6a1 1 0 0 0-1-1m-3 7H6.87l-.77 1.56L6 15a1 1 0 0 0 1 1h11v1H7a2 2 0 0 1-2-2a2 2 0 0 1 .25-.97l.72-1.47L2.34 4H1V3h2l.85 2H18a2 2 0 0 1 2 2c0 .5-.17.92-.45 1.26l-2.91 3.89c-.36.51-.96.85-1.64.85" stroke-width="0.5" stroke="currentColor"/></svg>
-          <span class="absolute -top-1 -right-1.5 w-4 h-4 bg-black text-white text-[9px] font-bold rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">0</span>
+          <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 512 512" fill="currentColor" stroke="currentColor" stroke-width="13"><path d="M160 96.039v32h304v63.345l-35.5 112.655H149.932L109.932 16H16v32h66.068l40 288.039h329.9L496 196.306V96.039zm16.984 272.305a64.073 64.073 0 0 0-64 64a64 64 0 0 0 128 0a64.07 64.07 0 0 0-64-64m0 96a32 32 0 1 1 32-32a32.04 32.04 0 0 1-32 32m224-96a64.073 64.073 0 0 0-64 64a64 64 0 0 0 128 0a64.07 64.07 0 0 0-64-64m0 96a32 32 0 1 1 32-32a32.04 32.04 0 0 1-32 32"/></svg>
+          <span id="header-cart-count" class="absolute -top-1 -right-1.5 w-4 h-4 bg-black text-white text-[9px] font-bold rounded-full items-center justify-center" style="display:none">0</span>
         </button>
 
         <!-- Mobile Menu Button -->
@@ -95,38 +132,260 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
     </div>
   </nav>
 
-  <!-- Mobile Menu Panel -->
-  <div id="mobile-menu" class="hidden lg:hidden bg-white text-gray-900 border-t border-gray-100">
-    <div class="px-6 py-6 space-y-1">
-      <a href="/e-scooters/" class="block py-3 text-base tracking-wide text-gray-800">E-Scooters</a>
-      <a href="/parts/" class="block py-3 text-base tracking-wide text-gray-800">{t.nav_parts}</a>
-      <a href="/service/" class="block py-3 text-base tracking-wide text-gray-800">Service</a>
-      <a href="/about/" class="block py-3 text-base tracking-wide text-gray-800">{t.nav_about}</a>
+  <!-- Mega Menu: Scooters (desktop only) -->
+  <div id="mega-menu-scooters" class="mega-menu hidden lg:block absolute left-0 right-0 top-full bg-white opacity-0 pointer-events-none">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-10">
+      <div class="grid grid-cols-12 gap-10">
+        <!-- Left: tabs + content -->
+        <div class="col-span-8">
+          <!-- Tabs -->
+          <div class="flex items-center gap-8 border-b border-black/10 mb-8">
+            <button class="mega-tab relative pb-3 text-base font-medium text-black active" data-tab="hot">
+              {t.nav_hot_sale}
+              <span class="tab-underline absolute left-0 right-0 -bottom-px h-0.5 bg-black"></span>
+            </button>
+            <button class="mega-tab relative pb-3 text-base font-medium text-black/50 hover:text-black transition-colors" data-tab="series">
+              {t.nav_shop_by_series}
+              <span class="tab-underline absolute left-0 right-0 -bottom-px h-0.5 bg-black hidden"></span>
+            </button>
+          </div>
 
-      <div class="grid grid-cols-2 gap-3 pt-6 mt-6 border-t border-gray-100">
-        <a href="https://joyorprime.com" target="_blank" rel="noopener"
-           class="flex items-center justify-center py-2.5 rounded-full border border-gray-900 text-xs font-medium tracking-wide">
-          Online Store
-        </a>
-        
-        <div class="relative">
-          <button id="mobile-site-switcher-btn" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-full border border-gray-200 text-xs font-medium tracking-wide">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-            </svg>
-            Region: {currentSite.label}
-          </button>
-          
-          <div id="mobile-site-switcher-dropdown" class="hidden absolute left-0 bottom-full mb-2 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
-            {sites.map(site => (
-              <a href={site.url} class:list={[
-                'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50',
-                site.lang === LANG && 'font-medium bg-gray-50'
-              ]}>
-                {site.label}
+          <!-- Hot tab content -->
+          <div class="mega-tab-content grid grid-cols-5 gap-4" data-content="hot">
+            {hotScooters.map((s: any) => (
+              <a href={`/e-scooters/${s.handle}/`} class="group block">
+                <div class="aspect-square bg-[#f5f5f7] rounded-2xl overflow-hidden flex items-center justify-center p-3 transition-transform group-hover:scale-[1.02]">
+                  <img src={s.image} alt={s.title} class="max-w-full max-h-full object-contain" />
+                </div>
+                <p class="mt-3 text-sm font-medium text-black text-center group-hover:underline">{s.title}</p>
               </a>
             ))}
+          </div>
+
+          <!-- Series tab content -->
+          <div class="mega-tab-content hidden grid-cols-5 gap-4" data-content="series">
+            {seriesList.map((s) => (
+              <a href={s.href} class="group flex flex-col items-center justify-center aspect-square bg-[#f5f5f7] rounded-2xl transition-all hover:bg-black hover:text-white">
+                <span class="text-4xl font-semibold tracking-tight">{s.letter}</span>
+                <span class="text-xs uppercase tracking-widest mt-1 opacity-60">{t.series_suffix}</span>
+              </a>
+            ))}
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-black/10 flex items-center gap-6 text-sm">
+            <a href="/e-scooters/" class="text-black hover:underline">{t.nav_all_scooters}</a>
+            <a href="/parts/" class="text-black/60 hover:text-black transition-colors">{t.nav_parts_accessories}</a>
+            <a href="/service/" class="text-black/60 hover:text-black transition-colors">{t.nav_service}</a>
+          </div>
+        </div>
+
+        <!-- Right: promo -->
+        <div class="col-span-4">
+          <div class="relative aspect-[4/5] rounded-2xl overflow-hidden">
+            <img src="/images/Sseries.jpg" alt="Joyor" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <h3 class="text-2xl font-semibold leading-tight mb-1">{t.header_promo_scooter_line1}</h3>
+              <p class="text-2xl font-semibold leading-tight mb-4">{t.header_promo_scooter_line2}</p>
+              <div class="flex flex-wrap gap-2">
+                <a href="/e-scooters/" class="inline-block bg-white text-black text-sm font-medium px-5 py-2 rounded-full hover:bg-black/90 hover:text-white transition-colors">{t.nav_all_scooters}</a>
+                <a href="/e-scooters/#compare" class="inline-block border border-white text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-white hover:text-black transition-colors">{t.nav_compare}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega Menu: Parts (desktop only) -->
+  <div id="mega-menu-parts" class="mega-menu hidden lg:block absolute left-0 right-0 top-full bg-white opacity-0 pointer-events-none">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-10">
+      <div class="grid grid-cols-12 gap-10">
+        <!-- Left: tabs + content -->
+        <div class="col-span-8">
+          <div class="flex items-center gap-8 border-b border-black/10 mb-8">
+            <button class="mega-tab relative pb-3 text-base font-medium text-black active" data-tab="categories">
+              {t.parts_shop_by_category}
+              <span class="tab-underline absolute left-0 right-0 -bottom-px h-0.5 bg-black"></span>
+            </button>
+            <button class="mega-tab relative pb-3 text-base font-medium text-black/50 hover:text-black transition-colors" data-tab="models">
+              {t.parts_shop_by_model}
+              <span class="tab-underline absolute left-0 right-0 -bottom-px h-0.5 bg-black hidden"></span>
+            </button>
+          </div>
+
+          <!-- Categories tab -->
+          <div class="mega-tab-content grid grid-cols-3 gap-2" data-content="categories">
+            {partsCategoriesList.map((c: any) => (
+              <a href={`/parts/${c.slug}/`} class="group flex items-center justify-between px-4 py-3 rounded-xl hover:bg-[#f5f5f7] transition-colors">
+                <span class="text-sm font-medium text-black">{c.name}</span>
+                <span class="text-xs text-black/40 group-hover:text-black/60">{c.count}</span>
+              </a>
+            ))}
+          </div>
+
+          <!-- Models tab -->
+          <div class="mega-tab-content hidden grid-cols-4 gap-2" data-content="models">
+            {partsModelsList.map((m: any) => (
+              <a href={`/parts/model/${m.slug}/`} class="group flex items-center justify-center px-3 py-3 rounded-xl bg-[#f5f5f7] hover:bg-black hover:text-white transition-colors">
+                <span class="text-xs font-semibold uppercase tracking-wide">{m.name}</span>
+              </a>
+            ))}
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-black/10 flex items-center gap-6 text-sm">
+            <a href="/parts/" class="text-black hover:underline">{t.parts_accessories_all}</a>
+            <a href="/e-scooters/" class="text-black/60 hover:text-black transition-colors">{t.nav_scooters}</a>
+            <a href="/service/" class="text-black/60 hover:text-black transition-colors">{t.nav_service}</a>
+          </div>
+        </div>
+
+        <!-- Right: promo -->
+        <div class="col-span-4">
+          <div class="relative aspect-[4/5] rounded-2xl overflow-hidden">
+            <img src="/images/Cseries.jpg" alt="Joyor Parts" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <h3 class="text-2xl font-semibold leading-tight mb-1">{t.header_promo_parts_line1}</h3>
+              <p class="text-2xl font-semibold leading-tight mb-4">{t.header_promo_parts_line2}</p>
+              <div class="flex flex-wrap gap-2">
+                <a href="/parts/" class="inline-block bg-white text-black text-sm font-medium px-5 py-2 rounded-full hover:bg-black/90 hover:text-white transition-colors">{t.parts_all}</a>
+                <a href="/service/" class="inline-block border border-white text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-white hover:text-black transition-colors">{t.nav_service}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Panel (fullscreen) -->
+  <div id="mobile-menu" class="lg:hidden fixed inset-0 top-12 bg-white overflow-hidden">
+    <!-- Main view -->
+    <div id="mobile-menu-main" class="mobile-pane absolute inset-0 overflow-y-auto px-6 py-6">
+      <div class="space-y-1 mb-8">
+        <button id="mobile-scooters-btn" class="w-full flex items-center justify-between py-3 text-2xl font-medium tracking-tight text-black">
+          {t.nav_scooters}
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+        </button>
+        <button id="mobile-parts-btn" class="w-full flex items-center justify-between py-3 text-2xl font-medium tracking-tight text-black">
+          {t.nav_parts}
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+        </button>
+        <a href="/service/" class="block py-3 text-2xl font-medium tracking-tight text-black">{t.nav_service}</a>
+        <a href="/about/" class="block py-3 text-2xl font-medium tracking-tight text-black">{t.nav_about}</a>
+      </div>
+
+      <!-- Bottom actions -->
+      <div class="grid grid-cols-2 gap-3 pt-6 border-t border-black/10">
+        <a href="https://joyorprime.com" target="_blank" rel="noopener"
+           class="flex items-center justify-center py-2.5 rounded-full bg-[#f6f6f6] text-xs font-medium tracking-wide text-black">
+          {t.nav_store}
+        </a>
+        <button class="region-trigger w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-[#f6f6f6] text-xs font-medium tracking-wide text-black">
+          <img src={currentSite.flag} alt={currentSite.label} class="h-3 w-auto" />
+          {currentSite.label}
+        </button>
+      </div>
+    </div>
+
+    <!-- Scooters sub-view -->
+    <div id="mobile-menu-scooters" class="mobile-pane absolute inset-0 overflow-y-auto px-6 py-6">
+      <button id="mobile-scooters-back" class="flex items-center gap-2 py-3 mb-4 text-sm font-medium text-black/60">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"/></svg>
+        {t.nav_back}
+      </button>
+
+      <a href="/e-scooters/" class="block py-3 text-2xl font-medium tracking-tight text-black mb-4">{t.nav_all_scooters}</a>
+
+      <!-- Hot Models -->
+      <div class="mb-8">
+        <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-black/40 mb-4">{t.nav_hot_sale}</p>
+        <div class="grid grid-cols-3 gap-3">
+          {hotScooters.map((s: any) => (
+            <a href={`/e-scooters/${s.handle}/`} class="block">
+              <div class="aspect-square bg-[#f5f5f7] rounded-xl overflow-hidden flex items-center justify-center p-2">
+                <img src={s.image} alt={s.title} class="max-w-full max-h-full object-contain" />
+              </div>
+              <p class="mt-2 text-[11px] font-medium text-black text-center truncate">{s.title}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Series -->
+      <div class="mb-8">
+        <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-black/40 mb-4">{t.nav_shop_by_series}</p>
+        <div class="grid grid-cols-5 gap-2">
+          {seriesList.map((s) => (
+            <a href={s.href} class="flex flex-col items-center justify-center aspect-square bg-[#f5f5f7] rounded-xl">
+              <span class="text-2xl font-semibold text-black">{s.letter}</span>
+              <span class="text-[9px] uppercase tracking-widest text-black/50 mt-0.5">{t.series_suffix}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Promo -->
+      <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6">
+        <img src="/images/Sseries.jpg" alt="Joyor" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+        <div class="absolute bottom-5 left-5 right-5 text-white">
+          <h3 class="text-xl font-semibold leading-tight mb-1">{t.header_promo_scooter_line1}</h3>
+          <p class="text-xl font-semibold leading-tight mb-3">{t.header_promo_scooter_line2}</p>
+          <div class="flex flex-wrap gap-2">
+            <a href="/e-scooters/" class="inline-block bg-white text-black text-xs font-medium px-4 py-2 rounded-full">{t.nav_all_scooters}</a>
+            <a href="/e-scooters/#compare" class="inline-block border border-white text-white text-xs font-medium px-4 py-2 rounded-full">{t.nav_compare}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parts sub-view -->
+    <div id="mobile-menu-parts" class="mobile-pane absolute inset-0 overflow-y-auto px-6 py-6">
+      <button id="mobile-parts-back" class="flex items-center gap-2 py-3 mb-4 text-sm font-medium text-black/60">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"/></svg>
+        {t.nav_back}
+      </button>
+
+      <a href="/parts/" class="block py-3 text-2xl font-medium tracking-tight text-black mb-4">{t.parts_all}</a>
+
+      <!-- Categories -->
+      <div class="mb-8">
+        <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-black/40 mb-4">{t.parts_shop_by_category}</p>
+        <div class="grid grid-cols-2 gap-2">
+          {partsCategoriesList.map((c: any) => (
+            <a href={`/parts/${c.slug}/`} class="flex items-center justify-between px-4 py-3 bg-[#f5f5f7] rounded-xl">
+              <span class="text-sm font-medium text-black">{c.name}</span>
+              <span class="text-xs text-black/40">{c.count}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Models -->
+      <div class="mb-8">
+        <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-black/40 mb-4">{t.parts_shop_by_model}</p>
+        <div class="grid grid-cols-3 gap-2">
+          {partsModelsList.map((m: any) => (
+            <a href={`/parts/model/${m.slug}/`} class="flex items-center justify-center px-2 py-3 bg-[#f5f5f7] rounded-xl">
+              <span class="text-[11px] font-semibold uppercase tracking-wide text-black">{m.name}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Promo -->
+      <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6">
+        <img src="/images/Cseries.jpg" alt="Joyor Parts" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+        <div class="absolute bottom-5 left-5 right-5 text-white">
+          <h3 class="text-xl font-semibold leading-tight mb-1">{t.header_promo_parts_line1}</h3>
+          <p class="text-xl font-semibold leading-tight mb-3">{t.header_promo_parts_line2}</p>
+          <div class="flex flex-wrap gap-2">
+            <a href="/parts/" class="inline-block bg-white text-black text-xs font-medium px-4 py-2 rounded-full">{t.parts_all}</a>
+            <a href="/service/" class="inline-block border border-white text-white text-xs font-medium px-4 py-2 rounded-full">{t.nav_service}</a>
           </div>
         </div>
       </div>
@@ -134,9 +393,12 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
   </div>
 </header>
 
+<div id="mega-backdrop"></div>
+
 <style>
   .header-transparent {
     background: transparent;
+    border-bottom: 1px solid transparent;
   }
   .header-transparent .nav-link {
     color: rgba(255, 255, 255, 0.9);
@@ -192,6 +454,85 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
     background: rgba(0, 0, 0, 0.05) !important;
     border-color: rgba(0, 0, 0, 0.5) !important;
   }
+
+  /* Force opaque white header when mega menu open */
+  #site-header.mega-open,
+  #site-header.mega-open.header-scrolled,
+  #site-header.mega-open.header-solid,
+  #site-header.mega-open.header-transparent {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    border-bottom-color: rgba(0,0,0,0.06) !important;
+  }
+
+  /* Mega menu: slide reveal flush with header */
+  .mega-menu {
+    transform-origin: top center;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 600ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 300ms ease;
+    box-shadow: 0 30px 50px -20px rgba(0,0,0,0.22);
+  }
+  .mega-menu.open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    clip-path: inset(0 0 0 0);
+  }
+  .mega-menu .mega-tab-content,
+  .mega-menu .col-span-4 > div {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 500ms ease 180ms, transform 650ms cubic-bezier(0.22, 0.61, 0.36, 1) 180ms;
+  }
+  .mega-menu.open .mega-tab-content:not(.hidden),
+  .mega-menu.open .col-span-4 > div {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mobile fullscreen menu animation */
+  #mobile-menu {
+    z-index: 55;
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    pointer-events: none;
+    transition: clip-path 600ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 300ms ease;
+  }
+  #mobile-menu.open {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #mobile-menu .mobile-pane {
+    transition: transform 500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  #mobile-menu-main { transform: translateX(0); }
+  #mobile-menu-scooters { transform: translateX(100%); }
+  #mobile-menu-parts { transform: translateX(100%); }
+  #mobile-menu.show-scooters #mobile-menu-main { transform: translateX(-100%); }
+  #mobile-menu.show-scooters #mobile-menu-scooters { transform: translateX(0); }
+  #mobile-menu.show-parts #mobile-menu-main { transform: translateX(-100%); }
+  #mobile-menu.show-parts #mobile-menu-parts { transform: translateX(0); }
+
+  /* Backdrop behind mega menu (starts below header) */
+  #mega-backdrop {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 48px;
+    background: rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 350ms ease;
+    z-index: 55;
+  }
+  @media (min-width: 1024px) {
+    #mega-backdrop { top: 56px; }
+  }
+  #mega-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 </style>
 
 <script>
@@ -199,10 +540,17 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
   const logo = document.getElementById('header-logo') as HTMLImageElement | null
   const isTransparent = header?.classList.contains('header-transparent')
 
-  // Scroll: transparent → solid on scroll
+  // Scroll: transparent → solid after passing dark sections
   if (isTransparent) {
+    const threshold = () => {
+      const darkZone = document.querySelector('[data-dark-header-end]')
+      return darkZone ? darkZone.getBoundingClientRect().top + window.scrollY : window.innerHeight * 2
+    }
+    let cachedThreshold = threshold()
+    window.addEventListener('resize', () => { cachedThreshold = threshold() })
+
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 60) {
+      if (window.scrollY > cachedThreshold) {
         header?.classList.add('header-scrolled')
         if (logo) logo.src = '/logo_black.png'
       } else {
@@ -218,43 +566,48 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
   const iconOpen = document.getElementById('menu-icon-open')
   const iconClose = document.getElementById('menu-icon-close')
 
+  // Mobile menu sub-pane
+  const mobileScootersBtn = document.getElementById('mobile-scooters-btn')
+  const mobileScootersBack = document.getElementById('mobile-scooters-back')
+  mobileScootersBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.add('show-scooters')
+  })
+  mobileScootersBack?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('show-scooters')
+  })
+
+  const mobilePartsBtn = document.getElementById('mobile-parts-btn')
+  const mobilePartsBack = document.getElementById('mobile-parts-back')
+  mobilePartsBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.add('show-parts')
+  })
+  mobilePartsBack?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('show-parts')
+  })
+
   mobileBtn?.addEventListener('click', () => {
-    const isOpen = !mobileMenu?.classList.contains('hidden')
-    mobileMenu?.classList.toggle('hidden')
-    iconOpen?.classList.toggle('hidden')
-    iconClose?.classList.toggle('hidden')
-
-    if (!isOpen) {
-      // Opening: force solid header
+    const isOpen = mobileMenu?.classList.contains('open')
+    if (isOpen) {
+      mobileMenu?.classList.remove('open')
+      mobileMenu?.classList.remove('show-scooters')
+      mobileMenu?.classList.remove('show-parts')
+      iconOpen?.classList.remove('hidden')
+      iconClose?.classList.add('hidden')
+      header?.classList.remove('mega-open')
+      document.body.style.overflow = ''
+      if (isTransparent && window.scrollY <= 60) {
+        header?.classList.remove('header-scrolled')
+        if (logo) logo.src = '/logo_white.png'
+      }
+    } else {
+      mobileMenu?.classList.add('open')
+      iconOpen?.classList.add('hidden')
+      iconClose?.classList.remove('hidden')
+      header?.classList.add('mega-open')
       header?.classList.add('header-scrolled')
+      document.body.style.overflow = 'hidden'
       if (logo) logo.src = '/logo_black.png'
-    } else if (isTransparent && window.scrollY <= 60) {
-      header?.classList.remove('header-scrolled')
-      if (logo) logo.src = '/logo_white.png'
     }
-  })
-
-  // Site switcher dropdown (Desktop)
-  const switcherBtn = document.getElementById('site-switcher-btn')
-  const switcherDropdown = document.getElementById('site-switcher-dropdown')
-
-  switcherBtn?.addEventListener('click', (e) => {
-    e.stopPropagation()
-    switcherDropdown?.classList.toggle('hidden')
-  })
-
-  // Mobile menu region switcher
-  const mobileSwitcherBtn = document.getElementById('mobile-site-switcher-btn')
-  const mobileSwitcherDropdown = document.getElementById('mobile-site-switcher-dropdown')
-
-  mobileSwitcherBtn?.addEventListener('click', (e) => {
-    e.stopPropagation()
-    mobileSwitcherDropdown?.classList.toggle('hidden')
-  })
-
-  document.addEventListener('click', () => {
-    switcherDropdown?.classList.add('hidden')
-    mobileSwitcherDropdown?.classList.add('hidden')
   })
 
   // Handle Cart Drawer
@@ -262,4 +615,71 @@ const currentSite = sites.find(s => s.lang === LANG) || sites[0]
   cartTrigger?.addEventListener('click', () => {
     window.dispatchEvent(new CustomEvent('cart:open'));
   });
+
+  // Mega Menu (desktop hover)
+  const megaTriggers = document.querySelectorAll('.mega-menu-trigger')
+  const megaMenus = document.querySelectorAll('.mega-menu')
+  let megaCloseTimer: number | null = null
+
+  const megaBackdrop = document.getElementById('mega-backdrop')
+
+  const openMega = (name: string) => {
+    if (megaCloseTimer) { clearTimeout(megaCloseTimer); megaCloseTimer = null }
+    megaMenus.forEach(m => m.classList.remove('open'))
+    const target = document.getElementById(`mega-menu-${name}`)
+    target?.classList.add('open')
+    megaBackdrop?.classList.add('open')
+    header?.classList.add('mega-open')
+    header?.classList.add('header-scrolled')
+    if (logo) logo.src = '/logo_black.png'
+  }
+  const closeMega = () => {
+    megaCloseTimer = window.setTimeout(() => {
+      megaMenus.forEach(m => m.classList.remove('open'))
+      megaBackdrop?.classList.remove('open')
+      header?.classList.remove('mega-open')
+      if (isTransparent && window.scrollY <= 60) {
+        header?.classList.remove('header-scrolled')
+        if (logo) logo.src = '/logo_white.png'
+      }
+    }, 150)
+  }
+
+  megaTriggers.forEach(trigger => {
+    const name = (trigger as HTMLElement).dataset.menu
+    if (!name) return
+    trigger.addEventListener('mouseenter', () => openMega(name))
+    trigger.addEventListener('mouseleave', closeMega)
+  })
+  megaMenus.forEach(menu => {
+    menu.addEventListener('mouseenter', () => {
+      if (megaCloseTimer) { clearTimeout(megaCloseTimer); megaCloseTimer = null }
+    })
+    menu.addEventListener('mouseleave', closeMega)
+  })
+  megaBackdrop?.addEventListener('mouseenter', closeMega)
+  megaBackdrop?.addEventListener('click', closeMega)
+
+  // Mega menu tab switching
+  document.querySelectorAll('.mega-menu').forEach(menu => {
+    const tabs = menu.querySelectorAll('.mega-tab')
+    const contents = menu.querySelectorAll('.mega-tab-content')
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = (tab as HTMLElement).dataset.tab
+        tabs.forEach(t => {
+          const isActive = (t as HTMLElement).dataset.tab === target
+          t.classList.toggle('text-black', isActive)
+          t.classList.toggle('text-black/50', !isActive)
+          const ul = t.querySelector('.tab-underline')
+          ul?.classList.toggle('hidden', !isActive)
+        })
+        contents.forEach(c => {
+          const isActive = (c as HTMLElement).dataset.content === target
+          c.classList.toggle('hidden', !isActive)
+          c.classList.toggle('grid', isActive)
+        })
+      })
+    })
+  })
 </script>

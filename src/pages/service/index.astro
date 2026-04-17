@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/Base.astro'
+import { getTranslations, LANG } from '../../i18n/index.js'
+import { getLegalLinks } from '../../lib/legal'
+
+const t = getTranslations(LANG)
+const legalLinks = getLegalLinks(LANG)
+
+const serviceLinks = [
+  {
+    title: t.service_warranty,
+    description: t.service_link_warranty_desc,
+    href: '/service/warranty/',
+    icon: 'shield',
+  },
+  {
+    title: t.footer_versand,
+    description: t.service_link_shipping_desc,
+    href: legalLinks.shipping,
+    icon: 'truck',
+  },
+  {
+    title: t.footer_returns,
+    description: t.service_link_returns_desc,
+    href: legalLinks.returns,
+    icon: 'return',
+  },
+  {
+    title: t.service_order_tracking,
+    description: t.service_link_tracking_desc,
+    href: 'https://account.joyorprime.com/',
+    icon: 'tracking',
+    external: true,
+  },
+  {
+    title: t.common_contact_us,
+    description: t.service_link_contact_desc,
+    href: '/service/contact/',
+    icon: 'contact',
+  },
+  {
+    title: t.service_parts_repairs,
+    description: t.service_link_parts_desc,
+    href: '/parts/',
+    icon: 'tool',
+  },
+]
+---
+
+<Base title={t.service_meta_title} description={t.service_meta_description} bgColor="#eeeff2">
+  <div class="pt-28 pb-20">
+
+    <!-- Header -->
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-16 lg:mb-20">
+      <p class="text-xs uppercase tracking-[0.25em] text-black/50 mb-4">{t.common_support}</p>
+      <h1 class="text-4xl md:text-6xl font-medium tracking-tight text-black font-['IBM_Plex_Sans',sans-serif]">{t.nav_service}</h1>
+      <p class="mt-4 max-w-2xl text-base lg:text-lg text-black">{t.service_intro}</p>
+    </section>
+
+    <!-- Service Grid -->
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {serviceLinks.map(item => (
+          <a
+            href={item.href}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener' : undefined}
+            class="group block p-8 bg-white rounded-3xl"
+          >
+            <div class="w-12 h-12 bg-[#f5f5f7] rounded-2xl flex items-center justify-center mb-6 group-hover:bg-black group-hover:text-white transition-colors text-black/60">
+              {item.icon === 'shield' && (
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+              )}
+              {item.icon === 'truck' && (
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
+              )}
+              {item.icon === 'return' && (
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"/></svg>
+              )}
+              {item.icon === 'tracking' && (
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+              )}
+              {item.icon === 'contact' && (
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+              )}
+              {item.icon === 'tool' && (
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085"/></svg>
+              )}
+            </div>
+            <h2 class="text-xl font-medium text-black mb-2 tracking-tight">{item.title}</h2>
+            <p class="text-sm text-black leading-relaxed">{item.description}</p>
+            <div class="mt-6 flex items-center gap-1 text-sm text-black/50 group-hover:text-black transition-colors">
+              <span>{item.external ? t.common_open : t.learn_more}</span>
+              {item.external ? (
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              ) : (
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Contact Banner -->
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10">
+      <div class="bg-black text-white rounded-3xl py-16 lg:py-20 px-8 lg:px-16 text-center">
+        <h2 class="text-3xl lg:text-5xl font-medium tracking-tight mb-4">{t.common_still_need_help}</h2>
+        <p class="text-white/70 mb-8 max-w-xl mx-auto">{t.service_still_need_help_text}</p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="mailto:support@joyorprime.com" class="px-6 py-3 bg-white text-black rounded-full text-sm font-medium hover:bg-white/90 transition-colors">
+            {t.common_email_us}
+          </a>
+          <a href="https://wa.me/12029299733" target="_blank" rel="noopener" class="px-6 py-3 border border-white/40 text-white rounded-full text-sm font-medium hover:bg-white/10 transition-colors">
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Base>

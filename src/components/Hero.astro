@@ -1,4 +1,6 @@
 ---
+import { getTranslations, LANG } from '../i18n/index.js'
+
 interface Props {
   title?: string
   subtitle?: string
@@ -16,6 +18,7 @@ const {
   imageSrc = '/banner.webp',
   overlayOpacity = 0.4,
 } = Astro.props
+const t = getTranslations(LANG)
 ---
 
 <section class="relative w-full h-screen overflow-hidden">
@@ -58,12 +61,12 @@ const {
     <div class="mt-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
       <div class="flex items-center gap-8 text-white">
         <div>
-          <p class="text-[11px] uppercase tracking-[0.15em] text-white/50">Top Speed</p>
+          <p class="text-[11px] uppercase tracking-[0.15em] text-white/50">{t.top_speed}</p>
           <p class="text-2xl lg:text-3xl mt-0.5">75 km/h</p>
         </div>
         <div class="w-px h-10 bg-white/20"></div>
         <div>
-          <p class="text-[11px] uppercase tracking-[0.15em] text-white/50">Max Range</p>
+          <p class="text-[11px] uppercase tracking-[0.15em] text-white/50">{t.max_range}</p>
           <p class="text-2xl lg:text-3xl mt-0.5">120 km</p>
         </div>
       </div>
@@ -71,11 +74,11 @@ const {
       <div class="flex items-center gap-3">
         <a href="/e-scooters/"
            class="px-7 py-3 bg-white text-gray-900 text-sm tracking-wide rounded-full hover:bg-gray-100 transition-colors">
-          Explore Models
+          {t.home_explore_all_models}
         </a>
         <a href="https://joyorprime.com" target="_blank" rel="noopener"
            class="px-7 py-3 border border-white/40 text-white text-sm tracking-wide rounded-full hover:bg-white/10 transition-colors">
-          Online Store
+          {t.nav_store}
         </a>
       </div>
     </div>

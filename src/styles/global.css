@@ -1,1 +1,28 @@
 @import 'tailwindcss';
+
+/* Global typography */
+html {
+  font-size: 16px;
+  color: #1a1a1a;
+}
+
+/* All interactive elements: pointer cursor + mobile tap highlight */
+button,
+a,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+select,
+summary {
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(135, 206, 235, 0.45);
+}
+
+/* Active state feedback for mobile */
+button:active,
+a:active,
+[role="button"]:active {
+  opacity: 0.85;
+  transition: opacity 0.1s ease;
+}

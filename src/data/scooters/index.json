@@ -1,0 +1,82 @@
+[
+  {
+    "file": "joyor-c10.json",
+    "handle": "joyor-c10",
+    "model": "JOYOR C10"
+  },
+  {
+    "file": "joyor-c10e-abe.json",
+    "handle": "joyor-c10e",
+    "model": "JOYOR C10E(ABE)"
+  },
+  {
+    "file": "joyor-f5.json",
+    "handle": "joyor-f5-electric-scooter",
+    "model": "JOYOR F5"
+  },
+  {
+    "file": "joyor-joyor-s8-s-z.json",
+    "handle": "s8-s-z-with-turn-signal",
+    "model": "JOYOR JOYOR S8-S-Z"
+  },
+  {
+    "file": "joyor-s10-s-z.json",
+    "handle": "joyor-s10s-z",
+    "model": "JOYOR S10-S-Z"
+  },
+  {
+    "file": "joyor-s5-abe-pro.json",
+    "handle": "joyor-s5-abe-pro-electric-scooter",
+    "model": "JOYOR S5-ABE-PRO"
+  },
+  {
+    "file": "joyor-s5-abe.json",
+    "handle": "joyor-s5-abe",
+    "model": "JOYOR S5-ABE"
+  },
+  {
+    "file": "joyor-s5-z.json",
+    "handle": "joyor-s5-z-electric-scooter",
+    "model": "JOYOR S5-Z"
+  },
+  {
+    "file": "joyor-s8-z.json",
+    "handle": "joyor-s8-z-electric-scooter",
+    "model": "JOYOR S8-Z"
+  },
+  {
+    "file": "joyor-s8e.json",
+    "handle": "joyor-s8e",
+    "model": "JOYOR S8E"
+  },
+  {
+    "file": "joyor-t10.json",
+    "handle": "joyor-t10-1000w-dual-motors-75km-endurance",
+    "model": "JOYOR T10"
+  },
+  {
+    "file": "joyor-t6.json",
+    "handle": "joyor-t6",
+    "model": "JOYOR T6"
+  },
+  {
+    "file": "joyor-t6e-abe-pro.json",
+    "handle": "joyor-t6e-pro",
+    "model": "JOYOR T6E(ABE) PRO"
+  },
+  {
+    "file": "joyor-t6e-abe.json",
+    "handle": "joyor-t6e",
+    "model": "JOYOR T6E(ABE)"
+  },
+  {
+    "file": "joyor-y6-s.json",
+    "handle": "joyor-y6s",
+    "model": "JOYOR Y6-S"
+  },
+  {
+    "file": "joyor-y8s-abe.json",
+    "handle": "joyor-y8s-abe-electric-scooter",
+    "model": "JOYOR Y8S-ABE"
+  }
+]

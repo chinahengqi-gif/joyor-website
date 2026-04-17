@@ -1,0 +1,485 @@
+---
+import Base from '../../layouts/Base.astro'
+import { getTranslations, LANG } from '../../i18n/index.js'
+
+const t = getTranslations(LANG)
+
+const warrantyContent = {
+  en: {
+    updatedLabel: 'Last updated: April 2026',
+    introTitle: 'Your purchase includes the following warranty:',
+    introItems: [
+      'Warranty is automatically registered when the initial purchaser orders from the online store.',
+      'Warranty is only applicable to the initial purchaser.',
+      'Warranty starts when the initial owner receives the product.',
+      'Order number is required when applying for after-sales service.',
+      'JOYOR provides <strong>up to 2 years warranty</strong> — refer to the table below for details.',
+    ],
+    introNotice: 'Modified scooters and batteries are not covered by the warranty.',
+    tableTitle: 'Warranty Details',
+    tableIntro:
+      'All JOYOR scooters come with a full warranty against all manufacturing defects. The original owner can enjoy this full warranty.',
+    tableHeaders: ['Warranty Period', 'Service Content'],
+    tableRows: [
+      ['Within 15 days', 'Return without reason <span class="text-black/50">(buyer pays return shipping: €25-35)</span>'],
+      ['Within 30 days', 'Return due to product failure'],
+      ['Within 2 months', 'Exchange due to product failure'],
+      ['Within 6 months', 'Free return to overseas warehouse for repair'],
+      ['Within 1 year', 'Free after-sales accessories <span class="text-black/50">(battery: 6 months; other: 1 year)</span>'],
+      ['1-2 years', 'Free accessories; customer bears shipping costs'],
+      ['Over 2 years', 'All after-sales costs paid by customer'],
+    ],
+    sections: [
+      {
+        title: '1. Claims',
+        paragraphs: [
+          'All claims must be made through JOYOR and submitted via email. Any warranty request requires <strong>proof of purchase</strong> and <strong>photos or videos</strong> of the damaged product.',
+          'Before making a warranty claim, we recommend contacting us via email as your issue may be easily resolved. Valid warranty claims will be processed within 2 years of initial purchase.',
+        ],
+        note:
+          '<strong>Note:</strong> JOYOR will not replace any parts without viewing photos or videos of the damaged product first. Customers need to provide evidence via email.',
+      },
+      {
+        title: '2. Shipping Damage Claims',
+        paragraphs: [
+          'In rare instances, items may be damaged during transportation. If shipping damage occurs, please contact us via email and provide photo or video proof.',
+        ],
+        note:
+          '<strong>Note:</strong> The specific warranty for JOYOR scooters purchased from a JOYOR retailer is governed by the laws of the state or country of purchase and applies only to scooters purchased from an authorized JOYOR retailer or directly from a JOYOR dealer.',
+      },
+      {
+        title: '3. Limited Warranty Terms',
+        paragraphs: [
+          'This Limited Warranty does not imply that the scooter will not break or will last forever. It means the scooter is subject to the terms stated herein.',
+          '<strong>This warranty is void if</strong> the scooter has been subjected to abuse, neglect, improper repair, improper maintenance, alteration, modification, accident, or other abnormal, excessive, or improper use.',
+          '<strong>Not covered:</strong> damage caused by normal wear and tear, including fatigue damage (a symptom of the frame wearing out during normal use). It is the owner\'s responsibility to inspect their scooter regularly. Damage caused by improper assembly, maintenance, or installation of incompatible parts and accessories is also not covered.',
+          '<strong>Labor and shipping:</strong> All labor costs for warranty service are the responsibility of the scooter owner. If shipping is required to process a warranty claim, shipping costs are the responsibility of the owner. During the warranty period, JOYOR will repair or replace any defective frame or component with the same or closest available model at the time.',
+        ],
+      },
+      {
+        title: '4. Electric Scooter Specific Warranty Terms',
+        paragraphs: [
+          'This warranty applies to any basic electric scooter component found to be defective, provided that corrosion of electrical components is not covered under warranty.',
+          'You should wipe the contacts on the battery and other electrical components dry to prevent corrosion and oxidation. If needed, use an electrical contact cleaner to keep the connections clean. In extreme weather (e.g., salted roads in winter), you can apply battery terminal grease as a preventative measure.',
+        ],
+      },
+      {
+        title: '5. How to Make a Warranty Claim',
+        paragraphs: [
+          'If you believe there is a warranty issue with your JOYOR, your first point of contact should be the JOYOR online store where you purchased the scooter.',
+          'If you purchased directly from the JOYOR online store, please contact our customer service team:',
+        ],
+        contactNote: 'Please provide the order number and the serial number of the scooter as after-sales information.',
+      },
+    ],
+    legalNoticeTitle: 'Legal notice',
+    legalNotices: [
+      'THIS IS THE SOLE AND EXCLUSIVE REMEDY UNDER THIS WARRANTY. ANY OTHER POSSIBLE REMEDY AND DAMAGES ARE EXCLUDED, INCLUDING BUT NOT LIMITED TO INCIDENTAL OR CONSEQUENTIAL OR PUNITIVE DAMAGES.',
+      'THIS LIMITED WARRANTY GIVES CONSUMERS SPECIFIC LEGAL RIGHTS. CONSUMERS MAY ALSO HAVE OTHER LEGAL RIGHTS THAT VARY FROM STATE TO STATE OR COUNTRY TO COUNTRY. SOME STATES AND COUNTRIES DO NOT ALLOW THE EXCLUSION OR LIMITATION OF INCIDENTAL OR CONSEQUENTIAL DAMAGES OR WARRANTIES, SO THE ABOVE LIMITATION OR EXCLUSION MAY NOT APPLY TO YOU.',
+    ],
+    faqTitle: '6. FAQ about our warranty',
+    faqs: [
+      {
+        question: 'I am not the original owner and bought a used JOYOR scooter. Is my scooter covered under warranty?',
+        answer: 'Yes, you can enjoy the warranty only if the following two conditions are met:',
+        list: [
+          'The two-year warranty period has not expired since the original owner received the scooter.',
+          "You have the original owner's name and the original order number.",
+        ],
+      },
+      {
+        question: 'My scooter was in a collision and damaged. Can I enjoy the warranty?',
+        answer:
+          'Sorry, collisions or accidents are not covered by the warranty policy. The warranty only covers manufacturing defects and does not cover damage caused by collisions.',
+      },
+    ],
+  },
+  de: {
+    updatedLabel: 'Letzte Aktualisierung: April 2026',
+    introTitle: 'Ihr Kauf umfasst die folgende Garantie:',
+    introItems: [
+      'Die Garantie wird automatisch registriert, wenn der Erstkäufer im Onlineshop bestellt.',
+      'Die Garantie gilt nur für den Erstkäufer.',
+      'Die Garantie beginnt, sobald der Erstbesitzer das Produkt erhält.',
+      'Für den Antrag auf After-Sales-Service ist die Bestellnummer erforderlich.',
+      'JOYOR bietet <strong>bis zu 2 Jahre Garantie</strong> — Details finden Sie in der folgenden Tabelle.',
+    ],
+    introNotice: 'Modifizierte Scooter und Batterien sind von der Garantie ausgeschlossen.',
+    tableTitle: 'Garantiedetails',
+    tableIntro:
+      'Alle JOYOR Scooter verfügen über eine volle Garantie gegen Herstellungsfehler. Der Erstbesitzer kann diese Garantie in Anspruch nehmen.',
+    tableHeaders: ['Garantiezeitraum', 'Leistungsumfang'],
+    tableRows: [
+      ['Innerhalb von 15 Tagen', 'Rückgabe ohne Angabe von Gründen <span class="text-black/50">(Rücksendekosten: 25-35 EUR)</span>'],
+      ['Innerhalb von 30 Tagen', 'Rückgabe wegen Produktfehlers'],
+      ['Innerhalb von 2 Monaten', 'Austausch wegen Produktfehlers'],
+      ['Innerhalb von 6 Monaten', 'Kostenlose Rücksendung an das Auslandsreparaturlager'],
+      ['Innerhalb von 1 Jahr', 'Kostenlose After-Sales-Ersatzteile <span class="text-black/50">(Akku: 6 Monate; andere Teile: 1 Jahr)</span>'],
+      ['1-2 Jahre', 'Kostenlose Ersatzteile; Versandkosten trägt der Kunde'],
+      ['Nach mehr als 2 Jahren', 'Alle After-Sales-Kosten trägt der Kunde'],
+    ],
+    sections: [
+      {
+        title: '1. Garantieansprüche',
+        paragraphs: [
+          'Alle Ansprüche müssen über JOYOR geltend gemacht und per E-Mail eingereicht werden. Für jeden Garantieantrag sind <strong>Kaufnachweis</strong> sowie <strong>Fotos oder Videos</strong> des beschädigten Produkts erforderlich.',
+          'Bevor Sie einen Garantieanspruch einreichen, empfehlen wir, uns zunächst per E-Mail zu kontaktieren, da sich viele Probleme schnell lösen lassen. Gültige Ansprüche werden innerhalb von 2 Jahren ab dem ursprünglichen Kauf bearbeitet.',
+        ],
+        note:
+          '<strong>Hinweis:</strong> JOYOR ersetzt keine Teile, bevor Fotos oder Videos des Schadens vorliegen. Kunden müssen entsprechende Nachweise per E-Mail senden.',
+      },
+      {
+        title: '2. Transportschäden',
+        paragraphs: [
+          'In seltenen Fällen können Artikel während des Transports beschädigt werden. Wenn ein Transportschaden vorliegt, kontaktieren Sie uns bitte per E-Mail und senden Sie Foto- oder Videonachweise.',
+        ],
+        note:
+          '<strong>Hinweis:</strong> Die konkrete Garantie für JOYOR Scooter, die bei einem JOYOR-Händler gekauft wurden, richtet sich nach den Gesetzen des Kaufstaats bzw. Kauflands und gilt nur für Scooter, die bei einem autorisierten JOYOR-Händler oder direkt bei einem JOYOR-Vertriebspartner erworben wurden.',
+      },
+      {
+        title: '3. Bedingungen der beschränkten Garantie',
+        paragraphs: [
+          'Diese beschränkte Garantie bedeutet nicht, dass der Scooter niemals kaputtgeht oder unbegrenzt hält. Sie bedeutet, dass der Scooter den hier beschriebenen Bedingungen unterliegt.',
+          '<strong>Diese Garantie erlischt, wenn</strong> der Scooter missbräuchlich genutzt, vernachlässigt, unsachgemäß repariert oder gewartet, verändert, umgebaut, beschädigt oder anderweitig abnormal, übermäßig oder unsachgemäß verwendet wurde.',
+          '<strong>Nicht abgedeckt:</strong> Schäden durch normale Abnutzung, einschließlich Ermüdungsschäden als Zeichen des normalen Verschleißes des Rahmens. Der Besitzer ist dafür verantwortlich, den Scooter regelmäßig zu prüfen. Ebenfalls nicht abgedeckt sind Schäden durch unsachgemäße Montage, Wartung oder den Einbau inkompatibler Teile und Zubehörteile.',
+          '<strong>Arbeits- und Versandkosten:</strong> Alle Arbeitskosten für Garantieleistungen trägt der Eigentümer des Scooters. Wenn zur Bearbeitung eines Garantieanspruchs ein Versand erforderlich ist, trägt der Eigentümer die Versandkosten. Während der Garantiezeit repariert oder ersetzt JOYOR defekte Rahmen oder Komponenten durch das gleiche oder das zum jeweiligen Zeitpunkt nächstverfügbare Modell.',
+        ],
+      },
+      {
+        title: '4. Besondere Garantiebedingungen für E-Scooter',
+        paragraphs: [
+          'Diese Garantie gilt für grundlegende Komponenten des E-Scooters, sofern ein Defekt vorliegt. Korrosion an elektrischen Bauteilen ist jedoch nicht von der Garantie umfasst.',
+          'Wischen Sie die Kontakte an Akku und anderen elektrischen Komponenten trocken, um Korrosion und Oxidation zu vermeiden. Falls nötig, verwenden Sie einen elektrischen Kontaktreiniger. Bei extremen Wetterbedingungen, etwa gesalzenen Winterstraßen, kann als Vorsorgemaßnahme Batteriepolfett verwendet werden.',
+        ],
+      },
+      {
+        title: '5. So reichen Sie einen Garantieanspruch ein',
+        paragraphs: [
+          'Wenn Sie der Meinung sind, dass bei Ihrem JOYOR ein Garantiefall vorliegt, wenden Sie sich bitte zuerst an den JOYOR Onlineshop, bei dem Sie den Scooter gekauft haben.',
+          'Wenn Sie direkt im JOYOR Onlineshop gekauft haben, kontaktieren Sie bitte unser Kundenservice-Team:',
+        ],
+        contactNote: 'Bitte geben Sie als After-Sales-Information die Bestellnummer und die Seriennummer des Scooters an.',
+      },
+    ],
+    legalNoticeTitle: 'Rechtlicher Hinweis',
+    legalNotices: [
+      'DIES IST DER EINZIGE UND AUSSCHLIESSLICHE RECHTSBEHELF IM RAHMEN DIESER GARANTIE. ALLE WEITEREN MÖGLICHEN RECHTSBEHELFE UND SCHÄDEN SIND AUSGESCHLOSSEN, EINSCHLIESSLICH, ABER NICHT BESCHRÄNKT AUF NEBEN-, FOLGE- ODER STRAFSCHADENERSATZ.',
+      'DIESE BESCHRÄNKTE GARANTIE GEWÄHRT VERBRAUCHERN BESTIMMTE GESETZLICHE RECHTE. JE NACH BUNDESLAND ODER LAND KÖNNEN WEITERE RECHTE BESTEHEN. EINIGE STAATEN ODER LÄNDER ERLAUBEN DEN AUSSCHLUSS ODER DIE BESCHRÄNKUNG VON NEBEN- ODER FOLGESCHÄDEN ODER GARANTIEN NICHT, SODASS DIE OBIGE EINSCHRÄNKUNG ODER DER AUSSCHLUSS FÜR SIE MÖGLICHERWEISE NICHT GILT.',
+    ],
+    faqTitle: '6. Häufige Fragen zu unserer Garantie',
+    faqs: [
+      {
+        question: 'Ich bin nicht der Erstbesitzer und habe einen gebrauchten JOYOR Scooter gekauft. Ist mein Scooter durch die Garantie abgedeckt?',
+        answer: 'Ja, die Garantie kann genutzt werden, wenn die folgenden zwei Bedingungen erfüllt sind:',
+        list: [
+          'Die zweijährige Garantiefrist ist seit Erhalt des Scooters durch den Erstbesitzer noch nicht abgelaufen.',
+          'Sie verfügen über den Namen des Erstbesitzers und die ursprüngliche Bestellnummer.',
+        ],
+      },
+      {
+        question: 'Mein Scooter hatte einen Unfall oder Zusammenstoß und wurde beschädigt. Gilt dafür die Garantie?',
+        answer:
+          'Nein. Unfälle oder Kollisionen sind nicht von der Garantie abgedeckt. Die Garantie gilt ausschließlich für Herstellungsfehler und nicht für Schäden infolge von Zusammenstößen.',
+      },
+    ],
+  },
+  fr: {
+    updatedLabel: 'Dernière mise à jour : avril 2026',
+    introTitle: 'Votre achat comprend la garantie suivante :',
+    introItems: [
+      "La garantie est enregistrée automatiquement lorsque l'acheteur initial commande sur la boutique en ligne.",
+      "La garantie s'applique uniquement à l'acheteur initial.",
+      'La garantie commence lorsque le premier propriétaire reçoit le produit.',
+      "Le numéro de commande est requis pour toute demande de service après-vente.",
+      'JOYOR offre <strong>jusqu\'à 2 ans de garantie</strong> — voir le tableau ci-dessous pour le détail.',
+    ],
+    introNotice: 'Les scooters et batteries modifiés ne sont pas couverts par la garantie.',
+    tableTitle: 'Détails de la garantie',
+    tableIntro:
+      'Tous les scooters JOYOR bénéficient d\'une garantie complète contre les défauts de fabrication. Le propriétaire initial peut en bénéficier.',
+    tableHeaders: ['Période de garantie', 'Contenu du service'],
+    tableRows: [
+      ['Dans les 15 jours', 'Retour sans motif <span class="text-black/50">(frais de retour à la charge de l’acheteur : 25-35 EUR)</span>'],
+      ['Dans les 30 jours', 'Retour en cas de défaut produit'],
+      ['Dans les 2 mois', 'Échange en cas de défaut produit'],
+      ['Dans les 6 mois', 'Retour gratuit à l’entrepôt à l’étranger pour réparation'],
+      ['Dans l’année', 'Accessoires après-vente gratuits <span class="text-black/50">(batterie : 6 mois ; autres : 1 an)</span>'],
+      ['1-2 ans', 'Accessoires gratuits ; frais de livraison à la charge du client'],
+      ['Au-delà de 2 ans', 'Tous les frais après-vente sont à la charge du client'],
+    ],
+    sections: [
+      {
+        title: '1. Réclamations',
+        paragraphs: [
+          'Toute réclamation doit être adressée à JOYOR et envoyée par e-mail. Toute demande de garantie nécessite une <strong>preuve d’achat</strong> ainsi que des <strong>photos ou vidéos</strong> du produit endommagé.',
+          'Avant de déposer une demande de garantie, nous vous recommandons de nous contacter par e-mail, car votre problème peut être résolu rapidement. Les demandes valides sont traitées dans les 2 ans suivant l’achat initial.',
+        ],
+        note:
+          '<strong>Remarque :</strong> JOYOR ne remplace aucune pièce sans avoir d’abord consulté des photos ou vidéos du produit endommagé. Les clients doivent fournir ces preuves par e-mail.',
+      },
+      {
+        title: '2. Dommages liés au transport',
+        paragraphs: [
+          'Dans de rares cas, les articles peuvent être endommagés pendant le transport. Si cela se produit, contactez-nous par e-mail et fournissez des preuves photo ou vidéo.',
+        ],
+        note:
+          '<strong>Remarque :</strong> La garantie spécifique applicable aux scooters JOYOR achetés auprès d’un revendeur JOYOR est régie par les lois de l’État ou du pays d’achat et s’applique uniquement aux scooters achetés auprès d’un revendeur JOYOR agréé ou directement auprès d’un distributeur JOYOR.',
+      },
+      {
+        title: '3. Conditions de la garantie limitée',
+        paragraphs: [
+          'Cette garantie limitée ne signifie pas que le scooter ne tombera jamais en panne ou durera indéfiniment. Elle signifie simplement que le scooter est soumis aux conditions indiquées ici.',
+          '<strong>Cette garantie est annulée si</strong> le scooter a subi un usage abusif, une négligence, une réparation inappropriée, un entretien inadéquat, une altération, une modification, un accident ou toute autre utilisation anormale, excessive ou inappropriée.',
+          '<strong>Non couvert :</strong> les dommages causés par l’usure normale, y compris les dommages de fatigue (symptôme d’un cadre qui s’use pendant une utilisation normale). Il incombe au propriétaire d’inspecter régulièrement son scooter. Les dommages dus à un montage inapproprié, à un entretien inadéquat ou à l’installation de pièces et accessoires incompatibles ne sont pas couverts non plus.',
+          '<strong>Main-d’œuvre et expédition :</strong> Tous les coûts de main-d’œuvre liés au service sous garantie sont à la charge du propriétaire du scooter. Si une expédition est nécessaire pour traiter une demande, les frais d’expédition sont à la charge du propriétaire. Pendant la période de garantie, JOYOR réparera ou remplacera tout cadre ou composant défectueux par le même modèle ou le modèle disponible le plus proche.',
+        ],
+      },
+      {
+        title: '4. Conditions spécifiques aux scooters électriques',
+        paragraphs: [
+          'Cette garantie s’applique à tout composant de base du scooter électrique présentant un défaut, à condition que la corrosion des composants électriques ne soit pas couverte.',
+          'Essuyez les contacts de la batterie et des autres composants électriques pour éviter la corrosion et l’oxydation. Si nécessaire, utilisez un nettoyant pour contacts électriques afin de garder les connexions propres. En cas de conditions climatiques extrêmes, par exemple sur des routes salées en hiver, vous pouvez appliquer une graisse pour bornes de batterie à titre préventif.',
+        ],
+      },
+      {
+        title: '5. Comment faire une demande de garantie',
+        paragraphs: [
+          'Si vous pensez que votre JOYOR présente un problème couvert par la garantie, votre premier point de contact doit être la boutique en ligne JOYOR auprès de laquelle vous avez acheté le scooter.',
+          'Si vous avez acheté directement sur la boutique en ligne JOYOR, veuillez contacter notre service client :',
+        ],
+        contactNote: 'Veuillez fournir le numéro de commande et le numéro de série du scooter dans votre demande après-vente.',
+      },
+    ],
+    legalNoticeTitle: 'Notice légale',
+    legalNotices: [
+      'IL S’AGIT DU SEUL ET UNIQUE RECOURS PRÉVU PAR CETTE GARANTIE. TOUT AUTRE RECOURS ET TOUT DOMMAGE ÉVENTUEL SONT EXCLUS, Y COMPRIS, SANS S’Y LIMITER, LES DOMMAGES ACCESSOIRES, INDIRECTS OU PUNITIFS.',
+      'CETTE GARANTIE LIMITÉE ACCORDE AUX CONSOMMATEURS DES DROITS LÉGAUX SPÉCIFIQUES. LES CONSOMMATEURS PEUVENT ÉGALEMENT DISPOSER D’AUTRES DROITS LÉGAUX SELON LEUR ÉTAT OU LEUR PAYS. CERTAINS ÉTATS OU PAYS N’AUTORISENT PAS L’EXCLUSION OU LA LIMITATION DES DOMMAGES ACCESSOIRES OU INDIRECTS NI DE CERTAINES GARANTIES ; LA LIMITATION OU L’EXCLUSION CI-DESSUS PEUT DONC NE PAS S’APPLIQUER À VOUS.',
+    ],
+    faqTitle: '6. Questions fréquentes sur notre garantie',
+    faqs: [
+      {
+        question: 'Je ne suis pas le propriétaire initial et j’ai acheté un scooter JOYOR d’occasion. Mon scooter est-il couvert par la garantie ?',
+        answer: 'Oui, vous pouvez bénéficier de la garantie uniquement si les deux conditions suivantes sont remplies :',
+        list: [
+          'La période de garantie de deux ans n’a pas expiré depuis la réception du scooter par le propriétaire initial.',
+          'Vous disposez du nom du propriétaire initial et du numéro de commande d’origine.',
+        ],
+      },
+      {
+        question: 'Mon scooter a eu une collision et a été endommagé. Puis-je bénéficier de la garantie ?',
+        answer:
+          'Non. Les collisions ou accidents ne sont pas couverts par la garantie. La garantie couvre uniquement les défauts de fabrication, pas les dommages causés par une collision.',
+      },
+    ],
+  },
+  it: {
+    updatedLabel: 'Ultimo aggiornamento: aprile 2026',
+    introTitle: 'L’acquisto include la seguente garanzia:',
+    introItems: [
+      'La garanzia viene registrata automaticamente quando il primo acquirente ordina dallo store online.',
+      'La garanzia è applicabile solo al primo acquirente.',
+      'La garanzia decorre dal momento in cui il primo proprietario riceve il prodotto.',
+      'Per richiedere assistenza post-vendita è necessario il numero d’ordine.',
+      'JOYOR offre <strong>fino a 2 anni di garanzia</strong> — consulta la tabella seguente per i dettagli.',
+    ],
+    introNotice: 'Monopattini e batterie modificati non sono coperti da garanzia.',
+    tableTitle: 'Dettagli della garanzia',
+    tableIntro:
+      'Tutti i monopattini JOYOR includono una garanzia completa contro i difetti di fabbricazione. Il proprietario originale può usufruirne.',
+    tableHeaders: ['Periodo di garanzia', 'Contenuto del servizio'],
+    tableRows: [
+      ['Entro 15 giorni', 'Reso senza motivo <span class="text-black/50">(spedizione di reso a carico dell’acquirente: 25-35 EUR)</span>'],
+      ['Entro 30 giorni', 'Reso per guasto del prodotto'],
+      ['Entro 2 mesi', 'Sostituzione per guasto del prodotto'],
+      ['Entro 6 mesi', 'Reso gratuito al magazzino estero per la riparazione'],
+      ['Entro 1 anno', 'Accessori post-vendita gratuiti <span class="text-black/50">(batteria: 6 mesi; altri: 1 anno)</span>'],
+      ['1-2 anni', 'Accessori gratuiti; spese di spedizione a carico del cliente'],
+      ['Oltre 2 anni', 'Tutti i costi post-vendita a carico del cliente'],
+    ],
+    sections: [
+      {
+        title: '1. Reclami',
+        paragraphs: [
+          'Tutti i reclami devono essere presentati tramite JOYOR e inviati via e-mail. Qualsiasi richiesta di garanzia richiede una <strong>prova d’acquisto</strong> e <strong>foto o video</strong> del prodotto danneggiato.',
+          'Prima di aprire una richiesta di garanzia, consigliamo di contattarci via e-mail perché il problema potrebbe essere risolto facilmente. Le richieste valide vengono gestite entro 2 anni dall’acquisto iniziale.',
+        ],
+        note:
+          '<strong>Nota:</strong> JOYOR non sostituirà alcun componente senza aver prima visionato foto o video del prodotto danneggiato. I clienti devono fornire le prove via e-mail.',
+      },
+      {
+        title: '2. Danni da trasporto',
+        paragraphs: [
+          'In rari casi gli articoli possono subire danni durante il trasporto. Se si verificano danni da spedizione, contattaci via e-mail e fornisci prove fotografiche o video.',
+        ],
+        note:
+          '<strong>Nota:</strong> La garanzia specifica per i monopattini JOYOR acquistati presso un rivenditore JOYOR è regolata dalle leggi dello stato o del paese di acquisto e si applica solo ai monopattini acquistati presso un rivenditore JOYOR autorizzato o direttamente da un distributore JOYOR.',
+      },
+      {
+        title: '3. Termini della garanzia limitata',
+        paragraphs: [
+          'Questa garanzia limitata non implica che il monopattino non si romperà mai o durerà per sempre. Significa semplicemente che il prodotto è soggetto ai termini qui indicati.',
+          '<strong>La garanzia decade se</strong> il monopattino è stato sottoposto a abuso, negligenza, riparazioni improprie, manutenzione inadeguata, alterazioni, modifiche, incidenti o altri usi anomali, eccessivi o impropri.',
+          '<strong>Non coperto:</strong> danni causati da normale usura, inclusi danni da fatica strutturale (segno del normale deterioramento del telaio durante l’uso). È responsabilità del proprietario ispezionare regolarmente il monopattino. Non sono coperti nemmeno i danni derivanti da montaggio improprio, manutenzione errata o installazione di componenti e accessori incompatibili.',
+          '<strong>Manodopera e spedizione:</strong> Tutti i costi di manodopera relativi al servizio in garanzia sono a carico del proprietario del monopattino. Se è necessaria una spedizione per gestire una richiesta di garanzia, i costi di spedizione sono a carico del proprietario. Durante il periodo di garanzia, JOYOR riparerà o sostituirà qualsiasi telaio o componente difettoso con lo stesso modello o con il modello disponibile più simile.',
+        ],
+      },
+      {
+        title: '4. Termini specifici per i monopattini elettrici',
+        paragraphs: [
+          'Questa garanzia si applica a qualsiasi componente base del monopattino elettrico che risulti difettoso, fermo restando che la corrosione dei componenti elettrici non è coperta.',
+          'È consigliabile asciugare i contatti della batteria e degli altri componenti elettrici per prevenire corrosione e ossidazione. Se necessario, utilizzare un detergente per contatti elettrici per mantenere pulite le connessioni. In condizioni climatiche estreme, ad esempio su strade salate in inverno, è possibile applicare grasso per terminali della batteria come misura preventiva.',
+        ],
+      },
+      {
+        title: '5. Come presentare una richiesta di garanzia',
+        paragraphs: [
+          'Se ritieni che il tuo JOYOR presenti un problema coperto da garanzia, il primo punto di contatto dovrebbe essere il negozio online JOYOR presso cui hai acquistato il monopattino.',
+          'Se hai acquistato direttamente dallo store online JOYOR, contatta il nostro team di assistenza clienti:',
+        ],
+        contactNote: 'Fornisci il numero d’ordine e il numero di serie del monopattino come informazioni post-vendita.',
+      },
+    ],
+    legalNoticeTitle: 'Avviso legale',
+    legalNotices: [
+      'QUESTO È L’UNICO ED ESCLUSIVO RIMEDIO PREVISTO DA QUESTA GARANZIA. QUALSIASI ALTRO EVENTUALE RIMEDIO E DANNO È ESCLUSO, COMPRESI, A TITOLO ESEMPLIFICATIVO, I DANNI INCIDENTALI, CONSEQUENZIALI O PUNITIVI.',
+      'QUESTA GARANZIA LIMITATA CONFERISCE AI CONSUMATORI SPECIFICI DIRITTI LEGALI. I CONSUMATORI POSSONO AVERE ANCHE ALTRI DIRITTI CHE VARIANO DA STATO A STATO O DA PAESE A PAESE. ALCUNI STATI O PAESI NON CONSENTONO L’ESCLUSIONE O LA LIMITAZIONE DEI DANNI INCIDENTALI O CONSEQUENZIALI O DI ALCUNE GARANZIE; PERTANTO, LA LIMITAZIONE O ESCLUSIONE SOPRA INDICATA POTREBBE NON APPLICARSI A TE.',
+    ],
+    faqTitle: '6. FAQ sulla nostra garanzia',
+    faqs: [
+      {
+        question: 'Non sono il proprietario originale e ho acquistato un JOYOR usato. Il mio monopattino è coperto da garanzia?',
+        answer: 'Sì, puoi usufruire della garanzia solo se sono soddisfatte le due condizioni seguenti:',
+        list: [
+          'Il periodo di garanzia di due anni non è scaduto dal momento in cui il proprietario originale ha ricevuto il monopattino.',
+          'Hai il nome del proprietario originale e il numero d’ordine originale.',
+        ],
+      },
+      {
+        question: 'Il mio monopattino ha subito una collisione ed è stato danneggiato. Posso usufruire della garanzia?',
+        answer:
+          'No. Collisioni o incidenti non sono coperti dalla garanzia. La garanzia copre solo i difetti di fabbricazione e non i danni causati da urti o collisioni.',
+      },
+    ],
+  },
+}
+
+const content = warrantyContent[LANG] ?? warrantyContent.en
+---
+
+<Base title={t.service_warranty} description={t.service_link_warranty_desc}>
+  <article class="pt-28 pb-20">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 mb-6">
+      <nav class="text-xs uppercase tracking-widest text-black/40">
+        <a href="/service/" class="hover:text-black transition-colors">{t.nav_service}</a>
+        <span class="mx-2">/</span>
+        <span class="text-black">{t.service_warranty}</span>
+      </nav>
+    </div>
+
+    <header class="max-w-3xl mx-auto px-6 lg:px-8 mb-12">
+      <h1 class="text-3xl lg:text-4xl font-medium tracking-tight mb-4 font-['IBM_Plex_Sans',sans-serif]">{t.service_warranty_page_title}</h1>
+      <p class="text-sm text-black/50">{content.updatedLabel}</p>
+    </header>
+
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 space-y-10 text-[15px] leading-relaxed text-black">
+      <section>
+        <p>{content.introTitle}</p>
+        <ul class="mt-4 space-y-2">
+          {content.introItems.map((item) => (
+            <li class="flex gap-3">
+              <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-black mt-2"></span>
+              <span set:html={item} />
+            </li>
+          ))}
+        </ul>
+        <div class="mt-6 p-5 bg-[#fef3cd] rounded-2xl">
+          <p class="text-sm font-medium text-[#856404]">{content.introNotice}</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-6">{content.tableTitle}</h2>
+        <p class="mb-4">{content.tableIntro}</p>
+        <div class="border border-black/10 rounded-2xl overflow-hidden">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-[#f5f5f7]">
+                <th class="text-left px-5 py-3 font-medium text-black">{content.tableHeaders[0]}</th>
+                <th class="text-left px-5 py-3 font-medium text-black">{content.tableHeaders[1]}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-black/5">
+              {content.tableRows.map(([period, service]) => (
+                <tr>
+                  <td class="px-5 py-3 font-medium">{period}</td>
+                  <td class="px-5 py-3" set:html={service} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {content.sections.map((section) => (
+        <section>
+          <h2 class="text-lg font-medium text-black mb-3">{section.title}</h2>
+          {section.paragraphs.map((paragraph, index) => (
+            <p class={index === 0 ? '' : 'mt-3'} set:html={paragraph} />
+          ))}
+          {section.note && (
+            <div class="mt-4 p-5 bg-[#f5f5f7] rounded-2xl">
+              <p class="text-sm text-black" set:html={section.note} />
+            </div>
+          )}
+          {section.contactNote && (
+            <>
+              <div class="mt-4 p-5 bg-[#f5f5f7] rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <a href="mailto:support@joyorprime.com" class="flex items-center gap-2 text-sm font-medium text-black hover:underline">
+                  <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  support@joyorprime.com
+                </a>
+              </div>
+              <p class="mt-4 text-sm text-black/50">{section.contactNote}</p>
+            </>
+          )}
+        </section>
+      ))}
+
+      <section>
+        <div class="p-6 bg-[#f5f5f7] rounded-2xl text-xs text-black/70 leading-relaxed space-y-3">
+          <p class="uppercase font-medium text-black/50">{content.legalNoticeTitle}</p>
+          {content.legalNotices.map((notice) => (
+            <p>{notice}</p>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-medium text-black mb-6">{content.faqTitle}</h2>
+        <div class="space-y-6">
+          {content.faqs.map((faq) => (
+            <div class="p-6 bg-white border border-black/10 rounded-2xl">
+              <h3 class="font-medium text-black mb-3">{faq.question}</h3>
+              <p>{faq.answer}</p>
+              {faq.list && (
+                <ol class="mt-2 space-y-1 list-decimal pl-5">
+                  {faq.list.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 mt-16 pt-12 border-t border-black/10 text-center">
+      <p class="text-sm text-black/50 mb-4">{t.service_claim_cta}</p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="mailto:support@joyorprime.com" class="px-6 py-3 bg-black text-white rounded-full text-sm font-medium hover:bg-black/80 transition-colors">{t.service_email_support}</a>
+        <a href="/service/" class="px-6 py-3 border border-black/20 text-black rounded-full text-sm font-medium hover:bg-black/5 transition-colors">{t.service_all_options}</a>
+      </div>
+    </div>
+  </article>
+</Base>

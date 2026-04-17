@@ -1,0 +1,98 @@
+{
+  "model": "JOYOR C10",
+  "title": "JOYOR C10 City Commuter Electric Scooter（NFC Key）",
+  "handle": "joyor-c10",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/03e3e852fa7319cd5d3e3871a519b18c_1.png?v=1762416259&width=600",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/03e3e852fa7319cd5d3e3871a519b18c_1.png?v=1762416259&width=600",
+    "https://joyorprime.com/cdn/shop/files/c1011_1.jpg?v=1762321519&width=600",
+    "https://joyorprime.com/cdn/shop/files/a1fc8e7a76ddbe6db05e1314a73bf69d_1080x_a9813f45-dc5e-4412-80ce-d931bd117981.webp?v=1762321519&width=600",
+    "https://joyorprime.com/cdn/shop/files/9bce481a9e5e9cde5b5ac50e6d1d37db.png?v=1762416187&width=600",
+    "https://joyorprime.com/cdn/shop/files/1d90bfeef3d8e3a786c10754bf18f6ac.png?v=1762416207&width=600"
+  ],
+  "videoId": "O4P3rmF-ttQ",
+  "extraVideos": [
+    "f8BwEVqO8HM",
+    "8GlybWMtXWY"
+  ],
+  "sellingPoints": [
+    "Removable Battery for Convenient Charging",
+    "500 W motor for effortless city rides",
+    "Using advanced NFC near field communication technology"
+  ],
+  "lifestyleImages": [
+    "https://joyorprime.com/cdn/shop/files/WX20251009-1839182x_7b98650f-1c5f-4582-a944-0e89efd7e91b.png?v=1763371852&width=1500",
+    "https://joyorprime.com/cdn/shop/files/8000x5500.jpg?v=1763458239&width=1500",
+    "https://joyorprime.com/cdn/shop/files/DSC00715.jpg?v=1763458239&width=1500",
+    "https://joyorprime.com/cdn/shop/files/DSC00733_41e18509-2913-42b4-a0c2-14136077cf64.jpg?v=1763458239&width=1500"
+  ],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241231110806.jpg?v=1735615263&width=1500",
+      "title": "Ultra-light magnesium alloy frame",
+      "content": "The C10 electric scooter uses an integrated die-cast magnesium alloy ultra-light frame, which provides excellent lightness and durability. The exterior design is simple and exquisite, and the parts and accessories use the same geometric design language."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/DSC00565.jpg?v=1741081861&width=1500",
+      "title": "Full Control",
+      "content": "Take full control with the Joyor C10’s multifunctional LCD display and intuitive button panel. Easily manage settings, activate turn signals, use the high-decibel horn, and switch between modes, all with a simple press for a safer and more convenient ride."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_200_joyor-c10-electric-scooter-motor.jpg?v=1763538197&width=1500",
+      "title": "500W Powerful Motor",
+      "content": "Glide through the city with ease with the Joyor C10’s 500W motor. Perfect for urban terrains, it delivers smooth acceleration, reliable performance, and the right power for your daily commute. Conquer the streets effortlessly while enjoying a comfortable ride."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/C10__04.jpg?v=1741155373&width=1500",
+      "title": "removable battery",
+      "content": "Lithium battery Enjoy up to 35 km of range with the Joyor C10's removable lithium battery. Charge anywhere and experience the convenience of a long-lasting, eco-friendly solution for your daily city commute."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250305152315.jpg?v=1741159458&width=1500",
+      "title": "Double wishbone suspension system",
+      "content": "Front and rear double wishbone suspension for superior stability and shock absorption."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_203_joyor-c10-electric-scooter-design.jpg?v=1763538552&width=1500",
+      "title": "Foldable and portable",
+      "content": "The Joyor C10 features a one-piece die-cast magnesium alloy frame, offering exceptional lightness and durability. Its curved swan neck riser ensures ergonomic comfort for a smooth ride, while the one-button folding design makes storage and transport effortless."
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241231112544.jpg?v=1735615779&width=710",
+      "caption": "With advanced NFC near-field communication technology, you only need to get the NFC key close to the scooter to unlock it in one click, saying goodbye to the traditional tedious unlocking method and making travel more convenient."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241231112623.jpg?v=1735615793&width=710",
+      "caption": "Navigate city streets with confidence using the Joyor C10’s integrated turning lights. These bright indicators enhance visibility and communication, ensuring safer rides for you and those around you."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241231112705.jpg?v=1735615793&width=710",
+      "caption": "The Joyor C10 features 10\" tyres and dual front suspension, delivering a stable and comfortable ride across city streets. Enjoy smooth handling and enhanced comfort, even on uneven terrain."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241231132530.jpg?v=1735622816&width=710",
+      "caption": "The Joyor C10 is equipped with a reliable dual disc brake system, featuring both front and rear disc brakes for enhanced stopping power. Enjoy smooth, responsive braking for greater control and safety on every ride."
+    }
+  ],
+  "specs": {
+    "Motor": "500 W",
+    "Speed": "45km/h",
+    "Battery": "48V10.4AH",
+    "Charging": "6-8h",
+    "Range": "30-50km",
+    "Net Weight": "19.5kg",
+    "Load": "120kg",
+    "Tire": "10 inch air tire",
+    "Brake": "Front＆Rear disc brake",
+    "Front Shock Absorber": "none",
+    "Rear Shock Absorber": "Yes",
+    "Frame Meterial": "Aluminum Alloy",
+    "Pack size": "1200*220*585mm",
+    "Unfold size": "1160*620*1220mm",
+    "Fold size": "1160*167*550mm"
+  },
+  "price": 499,
+  "shopifyTitle": "JOYOR C10 City Commuter Electric Scooter（NFC Key）"
+}

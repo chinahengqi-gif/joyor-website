@@ -1,0 +1,73 @@
+{
+  "model": "JOYOR S8-Z",
+  "title": "JOYOR S8-Z All-terrain Electric Scooter",
+  "handle": "joyor-s8-z-electric-scooter",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/S8_2.png?v=1762321872&width=493",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/S8_2.png?v=1762321872&width=493",
+    "https://joyorprime.com/cdn/shop/files/20250425162205.jpg?v=1762321872&width=467",
+    "https://joyorprime.com/cdn/shop/files/imgi_2_9abcc31a4b7f9b916ac3c985c6bb2ba2_540x_764ba56e-7576-480d-bcb1-a40b4e5b9dbc.jpg?v=1772004057&width=493",
+    "https://joyorprime.com/cdn/shop/files/imgi_7_4a366c7f5a2898b27195558a1e07c466_540x_006cab62-cb48-425d-bf0e-a0ed247bc2b6.jpg?v=1772004057&width=493",
+    "https://joyorprime.com/cdn/shop/files/imgi_29_12ae2da95e0014a0c01bfbc61c0ace39_720x_e96bc8d8-27f4-4355-8720-094f98972dce.png?v=1772004058&width=493"
+  ],
+  "videoId": "ZRgF7EhbJsI",
+  "extraVideos": [],
+  "sellingPoints": [
+    "With turn signal function, improve driving safety",
+    "70-90 km ultra-long endurance",
+    "600W motor with high-elastic suspension"
+  ],
+  "lifestyleImages": [
+    "https://joyorprime.com/cdn/shop/files/20240513140353.jpg?v=1745569502&width=1500"
+  ],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/6.jpg?v=1735476378&width=1500",
+      "title": "600w Brushless Motor",
+      "content": "Joyor S8 features a 600W electric motor for powerful acceleration, large wheels, and swingarm suspension for a smooth ride on any terrain. Its aerospace-grade aluminum frame is lightweight yet durable. The 600W brushless motor provides strong power."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250425161010.jpg?v=1745568774&width=1500",
+      "title": "90km Runner",
+      "content": "Whether commuting, going to work, or leisurely strolling, the 48V26ah,1248wh large battery ensures you the freedom to move around effortlessly."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/m_71104ade-b24a-4648-a3f6-bbb8a5e14fc9.jpg?v=1745567293&width=1500",
+      "title": "Rocker arm high-elasticitysuspension system",
+      "content": "Equipped with a patented damping suspension system,allowing you to travel smoothly as if on flat ground while also enjoying an attractive visual experience."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102160537.jpg?v=1735805219&width=700",
+      "title": "Foldable and portable",
+      "content": "The S5 electric scooter has an unfolded size of 1215*610*1230mm and a folded size of 1120*610*525mm. It weighs 26.7kg and is easy to transport and store. It is an ideal choice for commuting to school, work or short trips."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241223152915.jpg?v=1734939620&width=550",
+      "title": "",
+      "content": "The scooter features a smart LCD showing speed, mode, battery, and lighting."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102160416.jpg?v=1735805152&width=550",
+      "title": "",
+      "content": "6 Light System with front headlights, rear taillights, and turning indicators for all-around illumination."
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241228173603.jpg?v=1735378702&width=550",
+      "caption": "Front and rear disc brakes provide stable braking performance even at high speeds"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102161255.jpg?v=1735805678&width=550",
+      "caption": "10inch widen tire Upgrade your ride with the durable and reliable 10-inch widen tire."
+    }
+  ],
+  "specs": {
+    "JOYOR S8-Z": "Range",
+    "70-100km": "Top Speed",
+    "45 km/h": "Motor Power",
+    "600W": "Battery"
+  },
+  "price": 575,
+  "shopifyTitle": "JOYOR S8-Z All-terrain Electric Scooter"
+}

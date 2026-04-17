@@ -13,6 +13,9 @@ yarn-error.log*
 pnpm-debug.log*
 
 
+# shopify data cache
+.cache/
+
 # environment variables
 .env
 .env.production

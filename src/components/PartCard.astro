@@ -1,4 +1,6 @@
 ---
+import { getTranslations, LANG } from '../i18n/index.js'
+
 interface Props {
   product: {
     handle: string
@@ -13,14 +15,15 @@ interface Props {
 
 const { product } = Astro.props
 const image = product.images[0]
+const t = getTranslations(LANG)
 // Note: Shopify minVariantPrice.amount often comes as cents in some contexts, 
 // but based on lib/shopify.js it's already divided or handled.
 const priceDisplay = product.price.amount.toFixed(2)
 ---
 
-<article class="bg-white group relative h-full flex flex-col transition-all duration-300 rounded-lg overflow-hidden border border-transparent">
+<article class="bg-white group relative h-full flex flex-col transition-all duration-300 rounded-none md:rounded-lg overflow-hidden border border-transparent">
   <!-- Image Container (Full Width) -->
-  <div class="aspect-square overflow-hidden bg-[#f7f7f7] relative">
+  <a href={`/parts/product/${product.handle}/`} class="block aspect-square overflow-hidden bg-[#f7f7f7] relative rounded-none md:rounded-t-lg">
     {image ? (
       <img
         src={image.url}
@@ -31,28 +34,28 @@ const priceDisplay = product.price.amount.toFixed(2)
     ) : (
       <div class="w-full h-full bg-gray-50 flex items-center justify-center text-gray-200 uppercase text-[10px] tracking-widest font-bold">No Image</div>
     )}
-  </div>
+  </a>
 
   <!-- Content Section -->
-  <div class="p-5 flex-1 flex flex-col">
+  <div class="p-3 md:p-5 flex-1 flex flex-col">
     <!-- Category/Tags -->
-    <div class="flex flex-wrap gap-1 mb-3 min-h-[16px]">
+    <div class="flex flex-wrap gap-1 mb-2 md:mb-3 min-h-[16px]">
       {product.compatible.slice(0, 2).map(model => (
-        <span class="text-[9px] uppercase tracking-wider bg-gray-100 text-gray-500 px-2 py-0.5 font-bold rounded-sm">{model}</span>
+        <span class="text-[8px] md:text-[9px] uppercase tracking-wider bg-gray-100 text-gray-500 px-1.5 md:px-2 py-0.5 font-bold rounded-sm">{model}</span>
       ))}
       {product.compatible.length > 2 && (
-        <span class="text-[9px] uppercase tracking-wider bg-gray-50 text-gray-400 px-2 py-0.5 font-bold rounded-sm">+{product.compatible.length - 2}</span>
+        <span class="text-[8px] md:text-[9px] uppercase tracking-wider bg-gray-50 text-gray-400 px-1.5 md:px-2 py-0.5 font-bold rounded-sm">+{product.compatible.length - 2}</span>
       )}
     </div>
 
     <!-- Title -->
-    <h3 class="text-sm font-medium leading-relaxed text-gray-900 mb-4 line-clamp-2 min-h-[44px]">
-      {product.title}
+    <h3 class="text-xs md:text-sm font-medium leading-relaxed text-gray-900 mb-2 md:mb-4 line-clamp-2 min-h-[32px] md:min-h-[44px]">
+      <a href={`/parts/product/${product.handle}/`} class="hover:text-gray-600 transition-colors">{product.title}</a>
     </h3>
 
     <!-- Price Section -->
-    <div class="mb-5">
-      <span class="text-base font-semibold text-gray-900">
+    <div class="mb-3 md:mb-5">
+      <span class="text-sm md:text-base font-semibold text-gray-900">
         €{priceDisplay}
       </span>
     </div>
@@ -60,13 +63,13 @@ const priceDisplay = product.price.amount.toFixed(2)
     <!-- Action Section (Full Width Button) -->
     <div class="mt-auto">
       <button 
-        class="add-to-cart-btn w-full flex items-center justify-center bg-black text-white text-[11px] font-bold uppercase tracking-widest px-4 py-3 rounded-lg hover:bg-gray-800 transition-all active:scale-[0.98]"
+        class="add-to-cart-btn w-full flex items-center justify-center bg-black text-white text-[9px] md:text-[11px] font-bold uppercase tracking-widest px-2 md:px-4 py-2 md:py-3 rounded-md md:rounded-lg hover:bg-gray-800 transition-all active:scale-[0.98]"
         data-handle={product.handle}
         data-title={product.title}
         data-price={product.price.amount}
         data-image={image?.url}
       >
-        <span>Add to Cart</span>
+        <span>{t.add_to_cart}</span>
       </button>
     </div>
   </div>

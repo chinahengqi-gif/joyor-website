@@ -1,6 +1,33 @@
 import dns from 'node:dns'
+import fs from 'node:fs'
+import path from 'node:path'
+
 if (dns.setDefaultResultOrder) {
   dns.setDefaultResultOrder('ipv4first')
+}
+
+// 本地文件缓存：避免 dev 模式下每次刷新都请求 Shopify API
+const CACHE_DIR = path.resolve('.cache')
+const CACHE_TTL = 30 * 60 * 1000 // 30 分钟
+
+function readCache(key) {
+  try {
+    const file = path.join(CACHE_DIR, `${key}.json`)
+    if (!fs.existsSync(file)) return null
+    const { timestamp, data } = JSON.parse(fs.readFileSync(file, 'utf-8'))
+    if (Date.now() - timestamp > CACHE_TTL) return null
+    return data
+  } catch { return null }
+}
+
+function writeCache(key, data) {
+  try {
+    if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true })
+    fs.writeFileSync(
+      path.join(CACHE_DIR, `${key}.json`),
+      JSON.stringify({ timestamp: Date.now(), data }),
+    )
+  } catch { /* 写缓存失败不影响功能 */ }
 }
 
 const SHOP = import.meta.env.SHOPIFY_STORE_DOMAIN || '27a117-f1.myshopify.com'
@@ -75,6 +102,15 @@ let cachedProducts = null
 export async function getCollectionProducts() {
   if (cachedProducts) return cachedProducts
 
+  // 优先读本地文件缓存
+  const diskCache = readCache('products')
+  if (diskCache) {
+    console.log('[Shopify] Using cached products data (local file)')
+    cachedProducts = diskCache
+    return cachedProducts
+  }
+
+  console.log('[Shopify] Fetching products from Shopify API...')
   const products = []
   let cursor = null
   let hasNextPage = true
@@ -94,8 +130,10 @@ export async function getCollectionProducts() {
               handle
               title
               description
+              descriptionHtml
               productType
               tags
+              vendor
               compatible: metafield(namespace: "custom", key: "compatible") {
                 value
                 type
@@ -109,7 +147,17 @@ export async function getCollectionProducts() {
                   currencyCode
                 }
               }
-              images(first: 5) {
+              variants(first: 10) {
+                edges {
+                  node {
+                    title
+                    price
+                    availableForSale
+                    selectedOptions { name value }
+                  }
+                }
+              }
+              images(first: 8) {
                 edges {
                   node { url altText }
                 }
@@ -133,6 +181,7 @@ export async function getCollectionProducts() {
   }
 
   cachedProducts = products
+  writeCache('products', products)
   return products
 }
 
@@ -155,14 +204,22 @@ function normalizeProduct(node) {
     handle: node.handle,
     title: node.title,
     description: node.description,
+    descriptionHtml: node.descriptionHtml || '',
     productType: node.productType || '',
     category: node.partsCla?.value || node.productType || '',
     compatible,
     tags: node.tags,
+    vendor: node.vendor || '',
     price: {
       amount: parseFloat(node.priceRange.minVariantPrice.amount) / 100,
       currency: node.priceRange.minVariantPrice.currencyCode,
     },
+    variants: (node.variants?.edges || []).map(({ node: v }) => ({
+      title: v.title,
+      price: parseFloat(v.price) / 100,
+      available: v.availableForSale,
+      options: v.selectedOptions,
+    })),
     images: node.images.edges.map(({ node: img }) => ({
       url: img.url,
       alt: img.altText || '',
@@ -174,6 +231,75 @@ function normalizeProduct(node) {
 // === Scooter Collection ===
 
 let cachedScooters = null
+const collectionCache = new Map()
+
+/**
+ * 拉取指定系列全部 scooter 产品（含规格元字段）
+ */
+export async function getScootersByCollection(handle) {
+  if (collectionCache.has(handle)) return collectionCache.get(handle)
+
+  const cacheKey = `scooters-${handle}`
+  const diskCache = readCache(cacheKey)
+  if (diskCache) {
+    console.log(`[Shopify] Using cached data for collection "${handle}"`)
+    collectionCache.set(handle, diskCache)
+    return diskCache
+  }
+
+  console.log(`[Shopify] Fetching collection "${handle}" from Shopify API...`)
+  const query = `{
+    collectionByHandle(handle: "${handle}") {
+      products(first: 50) {
+        edges {
+          node {
+            id
+            handle
+            title
+            description
+            priceRange { minVariantPrice { amount currencyCode } }
+            images(first: 3) { edges { node { url altText } } }
+            supply: metafield(namespace: "custom", key: "supply") { value }
+            batterylife: metafield(namespace: "custom", key: "batterylife") { value }
+            speed: metafield(namespace: "custom", key: "speed") { value }
+            motor: metafield(namespace: "custom", key: "motor") { value }
+            scooterpng: metafield(namespace: "custom", key: "scooterpng") { reference { ... on MediaImage { image { url altText } } } }
+            point1: metafield(namespace: "custom", key: "_1") { value }
+            point2: metafield(namespace: "custom", key: "_2") { value }
+            point3: metafield(namespace: "custom", key: "_3") { value }
+          }
+        }
+      }
+    }
+  }`
+
+  const { data } = await adminFetch(query)
+  const edges = data.collectionByHandle?.products?.edges || []
+  const result = edges.map(({ node }) => ({
+    id: node.id,
+    handle: node.handle,
+    title: node.title,
+    description: node.description,
+    price: {
+      amount: parseFloat(node.priceRange.minVariantPrice.amount) / 100,
+      currency: node.priceRange.minVariantPrice.currencyCode,
+    },
+    images: node.images.edges.map(({ node: img }) => ({ url: img.url, alt: img.altText || '' })),
+    specs: {
+      supply: node.supply?.value || '',
+      range: node.batterylife?.value || '',
+      speed: node.speed?.value || '',
+      motor: node.motor?.value || '',
+    },
+    scooterpng: node.scooterpng?.reference?.image?.url || '',
+    sellingPoints: [node.point1?.value || '', node.point2?.value || '', node.point3?.value || ''].filter(Boolean),
+    buyUrl: `https://joyorprime.com/products/${node.handle}`,
+  }))
+
+  writeCache(cacheKey, result)
+  collectionCache.set(handle, result)
+  return result
+}
 
 /**
  * 拉取 scooter 系列全部产品（含规格元字段）
@@ -181,6 +307,14 @@ let cachedScooters = null
 export async function getScooters() {
   if (cachedScooters) return cachedScooters
 
+  const diskCache = readCache('scooters')
+  if (diskCache) {
+    console.log('[Shopify] Using cached scooters data (local file)')
+    cachedScooters = diskCache
+    return cachedScooters
+  }
+
+  console.log('[Shopify] Fetching scooters from Shopify API...')
   const query = `{
     collectionByHandle(handle: "scooter") {
       products(first: 50) {
@@ -200,6 +334,11 @@ export async function getScooters() {
             batterylife: metafield(namespace: "custom", key: "batterylife") { value }
             speed: metafield(namespace: "custom", key: "speed") { value }
             motor: metafield(namespace: "custom", key: "motor") { value }
+            video: metafield(namespace: "custom", key: "video") { value reference { ... on Video { sources { url mimeType } } } }
+            scooterpng: metafield(namespace: "custom", key: "scooterpng") { reference { ... on MediaImage { image { url altText } } } }
+            point1: metafield(namespace: "custom", key: "_1") { value }
+            point2: metafield(namespace: "custom", key: "_2") { value }
+            point3: metafield(namespace: "custom", key: "_3") { value }
           }
         }
       }
@@ -228,9 +367,18 @@ export async function getScooters() {
       speed: node.speed?.value || '',
       motor: node.motor?.value || '',
     },
+    scooterpng: node.scooterpng?.reference?.image?.url || '',
+    video: node.video?.reference?.sources?.find(s => s.mimeType === 'video/mp4')?.url
+           || node.video?.reference?.sources?.[0]?.url || '',
+    sellingPoints: [
+      node.point1?.value || '',
+      node.point2?.value || '',
+      node.point3?.value || '',
+    ].filter(Boolean),
     buyUrl: `https://joyorprime.com/products/${node.handle}`,
   }))
 
+  writeCache('scooters', cachedScooters)
   return cachedScooters
 }
 

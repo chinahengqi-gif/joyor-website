@@ -1,13 +1,149 @@
 ---
 import Base from '../../layouts/Base.astro'
+import { getCollection } from 'astro:content'
 import { getTranslations, LANG } from '../../i18n/index.js'
 
 const t = getTranslations(LANG)
+
+const posts = (await getCollection('blog', ({ id, data }) => !data.draft && id.startsWith(`${LANG}/`)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+
+// Collection id is `{lang}/post-name`; strip language prefix for URLs.
+const stripLang = (id: string) => id.replace(new RegExp(`^${LANG}/`), '')
+
+const featured = posts[0]
+const rest = posts.slice(1)
+const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort()
+
+const fmtDate = (d: Date) => d.toLocaleDateString(LANG, { year: 'numeric', month: 'long', day: 'numeric' })
 ---
 
-<Base title={t.blog_title} description={t.blog_title}>
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h1 class="text-3xl font-bold mb-8">{t.blog_title}</h1>
-    <p class="text-gray-500">{t.blog_no_posts}</p>
+<Base title={t.blog_title} description={t.blog_subtitle} bgColor="#eeeff2">
+  <div class="pt-28 pb-20">
+
+    <!-- Header -->
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-12 lg:mb-16">
+      <p class="text-xs uppercase tracking-[0.25em] text-black/50 mb-4">{t.blog_eyebrow || 'Journal'}</p>
+      <h1 class="text-4xl md:text-6xl font-medium tracking-tight text-black font-['IBM_Plex_Sans',sans-serif]">{t.blog_title}</h1>
+      <p class="mt-4 max-w-2xl text-base lg:text-lg text-black">{t.blog_subtitle}</p>
+    </section>
+
+    {posts.length === 0 ? (
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 text-center">
+        <p class="text-black/60">{t.blog_no_posts}</p>
+      </div>
+    ) : (
+      <>
+        <!-- Featured post -->
+        {featured && (
+          <section class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-16 lg:mb-20">
+            <a href={`/blog/${stripLang(featured.id)}/`} class="group grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch bg-white rounded-3xl overflow-hidden">
+              <div class="aspect-[4/3] lg:aspect-auto bg-[#f5f5f7] overflow-hidden">
+                {featured.data.cover ? (
+                  <img src={featured.data.cover.src} alt={featured.data.coverAlt || featured.data.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                ) : (
+                  <div class="w-full h-full min-h-[280px] flex items-center justify-center text-black/20 text-xs uppercase tracking-widest">{t.blog_featured}</div>
+                )}
+              </div>
+              <div class="p-8 lg:p-12 flex flex-col justify-center">
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-black/40 mb-4">{t.blog_featured}</p>
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight text-black leading-tight mb-4 group-hover:underline underline-offset-4">{featured.data.title}</h2>
+                <p class="text-base text-black mb-6 leading-relaxed">{featured.data.description}</p>
+                <div class="flex items-center gap-3 text-xs text-black/50">
+                  <span>{fmtDate(featured.data.date)}</span>
+                  <span>·</span>
+                  <span>{featured.data.author}</span>
+                </div>
+              </div>
+            </a>
+          </section>
+        )}
+
+        <!-- Tag filter -->
+        {allTags.length > 0 && (
+          <section class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-8">
+            <div class="flex flex-wrap gap-2" id="tag-filter">
+              <button class="tag-btn active px-4 py-2 border border-black text-xs font-semibold rounded-full uppercase tracking-wider transition-colors" data-tag="">{t.filter_all}</button>
+              {allTags.map(tag => (
+                <button class="tag-btn px-4 py-2 border border-black text-xs font-semibold rounded-full uppercase tracking-wider hover:bg-black/5 transition-colors" data-tag={tag}>{tag}</button>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Post grid -->
+        <section class="max-w-[1440px] mx-auto px-6 lg:px-10">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
+            {rest.map(post => (
+              <a
+                href={`/blog/${stripLang(post.id)}/`}
+                class="post-card group block bg-white rounded-2xl overflow-hidden transition-colors"
+                data-tags={post.data.tags.join(',')}
+              >
+                <div class="aspect-[4/3] bg-[#f5f5f7] overflow-hidden">
+                  {post.data.cover ? (
+                    <img src={post.data.cover.src} alt={post.data.coverAlt || post.data.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center text-black/20 text-[10px] uppercase tracking-widest">{t.blog_image_placeholder}</div>
+                  )}
+                </div>
+                <div class="p-6">
+                  {post.data.tags[0] && (
+                    <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-black/40 mb-3">{post.data.tags[0]}</p>
+                  )}
+                  <h3 class="text-xl font-medium tracking-tight text-black mb-3 leading-snug group-hover:underline underline-offset-4">{post.data.title}</h3>
+                  <p class="text-sm text-black leading-relaxed mb-4 line-clamp-2">{post.data.description}</p>
+                  <div class="flex items-center gap-2 text-xs text-black/50">
+                    <span>{fmtDate(post.data.date)}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <div id="no-posts" class="hidden py-20 text-center">
+            <p class="text-black/60">{t.blog_no_posts}</p>
+          </div>
+        </section>
+      </>
+    )}
+
   </div>
 </Base>
+
+<style>
+  .tag-btn.active {
+    background: #000;
+    color: #fff;
+  }
+</style>
+
+<script>
+  function setupBlogFilter() {
+    const buttons = document.querySelectorAll('.tag-btn');
+    const cards = document.querySelectorAll('.post-card');
+    const grid = document.getElementById('posts-grid');
+    const empty = document.getElementById('no-posts');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.getAttribute('data-tag') || '';
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        let visible = 0;
+        cards.forEach(card => {
+          const tags = (card.getAttribute('data-tags') || '').split(',');
+          const match = !tag || tags.includes(tag);
+          (card as HTMLElement).style.display = match ? '' : 'none';
+          if (match) visible++;
+        });
+
+        if (grid) grid.style.display = visible === 0 ? 'none' : '';
+        if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+      });
+    });
+  }
+  setupBlogFilter();
+  document.addEventListener('astro:after-swap', setupBlogFilter);
+</script>

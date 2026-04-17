@@ -1,0 +1,1153 @@
+---
+import Base from '../../layouts/Base.astro'
+import { getTranslations, LANG, t as translate } from '../../i18n/index.js'
+import { getScooters } from '../../lib/shopify.js'
+const t = getTranslations(LANG)
+
+export async function getStaticPaths() {
+  const { getScooters } = await import('../../lib/shopify.js')
+  const scooters = await getScooters()
+  return scooters
+    .filter((s: any) => !s.title.toLowerCase().includes('used'))
+    .map((s: any) => ({
+      params: { handle: s.handle },
+      props: { scooter: s },
+    }))
+}
+
+// Always resolve scooter data — works in both build and dev
+const allScooters = await getScooters()
+const { handle } = Astro.params
+const scooter = Astro.props.scooter || allScooters.find((s: any) => s.handle === handle)
+
+if (!scooter) {
+  return new Response(null, { status: 404, statusText: 'Not found' })
+}
+
+const price = scooter.price?.amount || 0
+const monthly = Math.ceil(price / 24)
+const heroImg = scooter.images?.[0]?.url || ''
+const bgImg = scooter.images?.[1]?.url || heroImg
+const scooterPng = scooter.scooterpng || heroImg
+const metaDesc = [
+  scooter.title,
+  scooter.specs?.motor ? `${scooter.specs.motor} ${t.filter_power}` : '',
+  scooter.specs?.range ? `${scooter.specs.range} ${t.filter_range}` : '',
+  scooter.specs?.speed ? `${scooter.specs.speed} ${t.filter_speed}` : '',
+  t.site_name,
+].filter(Boolean).join(' · ')
+
+// Map series to local video files
+const seriesMatch = scooter.title.match(/JOYOR\s+([A-Z])\d/i)
+const series = seriesMatch ? seriesMatch[1].toUpperCase() : ''
+const seriesVideoMap: Record<string, string> = {
+  T: '/banner.mp4',
+  S: '/videos/Sseries.mp4',
+  Y: '/videos/Yseries.mp4',
+  C: '/videos/Cseries.mp4',
+}
+const videoUrl = seriesVideoMap[series] || ''
+const buyUrl = scooter.buyUrl || `https://joyorprime.com/products/${handle}`
+
+// Series family: all scooters in same series (excluding "used")
+const seriesFamilyAll = allScooters
+  .filter((s: any) => !s.title.toLowerCase().includes('used'))
+  .filter((s: any) => {
+    const m = s.title.match(/JOYOR\s+([A-Z])\d/i)
+    return m && m[1].toUpperCase() === series
+  })
+  .map((s: any) => ({
+    handle: s.handle,
+    title: s.title,
+    shortTitle: s.title.replace(/\s+(Electric\s+Scooter|Scooter)$/i, ''),
+    titleSuffix: (s.title.match(/\s+(Electric\s+Scooter|Scooter)$/i) || [''])[0].trim(),
+    image: s.images?.[0]?.url || '',
+    scooterpng: s.scooterpng || s.images?.[0]?.url || '',
+    price: s.price?.amount || 0,
+    battery: s.specs?.supply || '',
+    motor: s.specs?.motor || '',
+    isCurrent: s.handle === handle,
+  }))
+const seriesFamily = seriesFamilyAll.filter((s: any) => s.handle !== handle)
+
+// Series tagline & background image
+const seriesTaglineMap: Record<string, string> = {
+  S: t.series_tagline_s,
+  T: t.series_tagline_t,
+  Y: t.series_tagline_y,
+  C: t.series_tagline_c,
+  F: t.series_tagline_f,
+}
+const seriesTagline = seriesTaglineMap[series] || ''
+const seriesBgImage = series ? `/images/${series}series.jpg` : ''
+
+// Load local JSON data for album images & video
+let localData: any = null
+try {
+  const jsonFiles = import.meta.glob('../../data/scooters/*.json', { eager: true })
+  for (const [path, mod] of Object.entries(jsonFiles)) {
+    const d = (mod as any).default || mod
+    if (d.handle === handle) { localData = d; break }
+  }
+} catch {}
+const albumImages = localData?.heroImages || scooter.images?.map((img: any) => img.url) || []
+const youtubeVideoId = localData?.videoId || ''
+const details = (localData?.details || []).filter((d: any) => d.image && (d.title || d.content))
+const moreDetails = (localData?.moreDetails || []).filter((d: any) => d.image && d.caption)
+const specs = localData?.specs || {}
+const specsEntries = Object.entries(specs)
+
+// Comparison: load specs for all models in same series (including current)
+const comparisonSpecKeysShort = ['Motor', 'Speed', 'Battery', 'Range', 'Net Weight', 'Load']
+const comparisonSpecKeys = ['Motor', 'Speed', 'Battery', 'Range', 'Net Weight', 'Load', 'Tire', 'Brake', 'Charging', 'Front Shock Absorber', 'Rear Shock Absorber', 'Fold size', 'Unfold size']
+const allJsonFiles = import.meta.glob('../../data/scooters/*.json', { eager: true })
+const allJsonMap = new Map<string, any>()
+for (const [path, mod] of Object.entries(allJsonFiles)) {
+  const d = (mod as any).default || mod
+  if (d.handle) allJsonMap.set(d.handle, d)
+}
+
+// Build comparison models: current model first, then siblings
+const comparisonModels = [
+  { handle, title: scooter.title, shortTitle: scooter.title.replace(/\s+(Electric\s+Scooter|Scooter)$/i, ''), image: scooterPng, price: scooter.price?.amount || 0 },
+  ...seriesFamily.map((s: any) => ({ handle: s.handle, title: s.title, shortTitle: s.shortTitle, image: s.scooterpng, price: s.price }))
+].slice(0, 5)
+
+// Resolve specs for each model
+const comparisonData = comparisonModels.map((m: any) => {
+  // Try local JSON first, fall back to Shopify scooter data
+  const json = allJsonMap.get(m.handle)
+  const modelSpecs = json?.specs || {}
+  return { ...m, specs: modelSpecs }
+})
+
+// Filter spec rows: short list for inline, full list for modal
+const activeSpecKeys = comparisonSpecKeysShort.filter(key =>
+  comparisonData.some((m: any) => m.specs[key])
+)
+
+// All models data for fullscreen compare modal
+const allModelsData = allScooters
+  .filter((s: any) => !s.title.toLowerCase().includes('used'))
+  .map((s: any) => {
+    const json = allJsonMap.get(s.handle)
+    const shortTitle = s.title.replace(/\s+(Electric\s+Scooter|Scooter|E-Motorcycle).*$/i, '').trim()
+    return {
+      handle: s.handle,
+      title: s.title,
+      shortTitle,
+      image: s.scooterpng || s.images?.[0]?.url || '',
+      price: s.price?.amount || 0,
+      specs: json?.specs || {},
+    }
+  })
+  .filter((m: any) => Object.keys(m.specs).length > 2) // exclude broken/empty specs
+
+// Default 4 models for compare modal
+const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km-endurance', 'joyor-y8s-abe-electric-scooter', 'joyor-c10']
+---
+
+<Base title={scooter.title} description={metaDesc} transparentHeader={true}>
+
+  <!-- ===== HERO: Full-viewport video background + floating product card ===== -->
+  <section class="relative h-screen min-h-[700px] flex items-end justify-center overflow-hidden bg-black">
+
+    <!-- Background: series image or fallback lifestyle image -->
+    <img src={seriesBgImage || bgImg} alt={scooter.title} class="absolute inset-0 w-full h-full object-cover z-0" />
+
+    <!-- Subtle darkening overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 z-[1]"></div>
+
+  </section>
+
+  <!-- Floating Product Card (scroll-aware) -->
+  <div id="product-card" class="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 pb-6 lg:pb-10 transition-[transform,opacity] duration-300">
+    <div class="w-full max-w-[560px] bg-white/80 backdrop-blur-2xl rounded-2xl shadow-2xl px-5 py-5 lg:px-8 lg:py-7">
+      <div class="flex gap-4">
+        <!-- Left: Info -->
+        <div class="flex-1 min-w-0">
+          <h1 class="text-base lg:text-lg font-medium text-black tracking-tight leading-snug">{scooter.title}</h1>
+
+          <!-- Price + Klarna -->
+          <div class="mt-1.5 flex items-baseline flex-wrap gap-x-3 gap-y-1">
+            <span class="text-lg lg:text-xl font-semibold text-black">€{price}</span>
+            <span class="text-[11px] text-black/70">{t.klarna_from} <strong>{monthly} {t.klarna_per_month}</strong> {t.klarna_with} <span class="font-semibold tracking-tight">Klarna.</span></span>
+          </div>
+
+          <!-- Selling Points -->
+          {scooter.sellingPoints.length > 0 && (
+            <div class="mt-3 lg:mt-4 space-y-1.5">
+              {scooter.sellingPoints.map((point: string, i: number) => (
+                <div class="flex items-start gap-2">
+                  {i === 0 ? (
+                    <svg class="w-3.5 h-3.5 text-black/60 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+                  ) : i === 1 ? (
+                    <svg class="w-3.5 h-3.5 text-black/60 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                  ) : (
+                    <svg class="w-3.5 h-3.5 text-black/60 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25m-2.25 0h2.25m0 0V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25"/></svg>
+                  )}
+                  <span class="text-xs lg:text-sm text-black leading-snug">{point}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Right: Product Image -->
+        {scooterPng && (
+          <div class="flex flex-shrink-0 w-20 sm:w-24 lg:w-32 items-center justify-center">
+            <img src={`${scooterPng}${scooterPng.includes('?') ? '&' : '?'}width=300`} alt={scooter.title} class="w-full h-auto object-contain" />
+          </div>
+        )}
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="mt-4 grid grid-cols-2 gap-2.5">
+        <button id="scooter-add-to-cart"
+           class="py-2.5 bg-black text-white text-xs lg:text-sm font-medium tracking-wide rounded-lg hover:bg-black/85 transition-colors uppercase flex items-center justify-center gap-1.5"
+           data-handle={handle}
+           data-title={scooter.title}
+           data-price={price}
+           data-image={heroImg}>
+          {t.add_to_cart}
+        </button>
+        <button id="product-album-btn"
+           class="py-2.5 border border-black text-black text-xs lg:text-sm font-medium tracking-wide rounded-lg hover:bg-black hover:text-white transition-colors text-center uppercase">
+          {t.album}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Series Family Card (fixed between header and product card) -->
+  <div id="series-family-modal" class="fixed bottom-0 left-0 right-0 z-40 flex justify-center px-4 transition-transform duration-300 translate-y-[120%]">
+    <div id="family-card-inner" class="w-full max-w-[560px] bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <!-- Header -->
+      <div class="px-5 pt-4 pb-3 flex items-center justify-between border-b border-black/5">
+        <span class="text-sm font-medium text-black">{series} {t.series_suffix}</span>
+        <button id="series-family-close" class="p-1.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors group" aria-label="Close">
+          <svg class="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <!-- List -->
+      <div class="overflow-y-auto p-5 flex-1 divide-y divide-dotted divide-black/10">
+        {seriesFamilyAll.map((s: any) => (
+          <div class:list={['flex gap-4 items-center p-3 rounded-xl', s.isCurrent && 'bg-black/5']}>
+            <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-[#f0f0f0]">
+              {s.scooterpng && <img src={`${s.scooterpng}${s.scooterpng.includes('?') ? '&' : '?'}width=200`} alt={s.title} class="w-full h-full object-contain" />}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <a href={`/e-scooters/${s.handle}/`} class="text-sm font-medium text-black truncate block hover:underline">{s.shortTitle}{s.titleSuffix && <span class="hidden sm:inline"> {s.titleSuffix}</span>}</a>
+                {s.isCurrent && <span class="text-[10px] font-medium text-black/40 uppercase tracking-wider flex-shrink-0">{t.current_model}</span>}
+              </div>
+              <p class="mt-1 text-base font-semibold text-black">€{s.price}</p>
+              <div class="mt-1.5 flex gap-2 text-[11px] text-black/70">
+                {s.battery && <span class="px-2 py-0.5 bg-black/5 rounded-full">{s.battery}</span>}
+                {s.motor && <span class="px-2 py-0.5 bg-black/5 rounded-full">{s.motor}</span>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SERIES TAGLINE: Full-width bg image + slogan + album/video buttons ===== -->
+  {seriesTagline && seriesBgImage && (
+    <section class="relative h-screen lg:h-auto min-h-[600px] flex items-center justify-center overflow-hidden bg-black">
+      {videoUrl ? (
+        <video src={videoUrl} autoplay muted loop playsinline class="absolute lg:relative inset-0 w-full h-full lg:h-auto object-cover z-0"></video>
+      ) : (
+        <img src={seriesBgImage} alt={`${series} ${t.series_suffix}`} class="absolute lg:relative inset-0 w-full h-full lg:h-auto object-cover z-0" />
+      )}
+      <div class="absolute inset-0 bg-black/15 z-[1]"></div>
+
+      <div class="absolute lg:absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+        <span class="text-sm lg:text-base text-white/70 uppercase tracking-[0.3em] mb-4">{series} {t.series_suffix}</span>
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white font-normal tracking-wider" style="font-family: 'Zen Dots', sans-serif;">
+          {seriesTagline}
+        </h2>
+
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <!-- Series Family -->
+          <button id="tagline-family-btn" class="px-8 py-3 bg-white text-black text-sm font-medium tracking-wide rounded-lg hover:bg-white/85 transition-colors uppercase">
+            {translate('series_family', LANG, { series })}
+          </button>
+
+          <!-- Play Video -->
+          {youtubeVideoId && (
+            <button id="video-btn" class="px-8 py-3 flex items-center justify-center gap-2 border border-white rounded-lg hover:bg-white hover:text-black text-white text-sm font-medium tracking-wide transition-colors uppercase">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              Video
+            </button>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Album Lightbox -->
+  <div id="album-lightbox" class="fixed inset-0 z-[9999] bg-black/95 flex-col album-lightbox-hidden">
+    <!-- Top bar -->
+    <div class="flex items-center justify-between px-4 lg:px-6 py-3 flex-shrink-0">
+      <span id="album-counter" class="text-white/50 text-sm"></span>
+      <button id="album-close" class="p-2 text-white/70 hover:text-white transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Center: prev + (image + thumbs) + next -->
+    <div class="flex-1 flex items-center justify-center min-h-0 px-4 lg:px-8">
+      <!-- Prev button (desktop) -->
+      <button id="album-prev" class="hidden lg:flex flex-shrink-0 w-10 h-10 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors mr-4">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+      </button>
+
+      <!-- Image + thumbnails column -->
+      <div class="flex flex-col items-center min-h-0 max-h-full flex-1 lg:flex-initial lg:max-w-[75vw]">
+        <!-- Main image -->
+        <div id="album-img-wrap" class="relative flex items-center justify-center flex-1 min-h-0 w-full">
+          <div id="album-spinner" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <svg class="w-8 h-8 animate-spin text-white/30" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+          </div>
+          <img id="album-img" src="" alt="" class="max-w-full max-h-full object-contain transition-opacity duration-200" />
+        </div>
+
+        <!-- Thumbnails (directly below image) -->
+        <div class="flex-shrink-0 pt-3 pb-1 w-full">
+          <div id="album-thumbs" class="flex items-center justify-center gap-1.5 lg:gap-2 overflow-x-auto compare-scroll-hide">
+            {albumImages.map((img: string, i: number) => (
+              <button data-album-index={i}
+                class:list={['album-thumb flex-shrink-0 w-11 h-11 lg:w-14 lg:h-14 rounded-md overflow-hidden border-2 transition-all duration-200 hover:opacity-100',
+                  i === 0 ? 'border-white opacity-100' : 'border-transparent opacity-50']}>
+                <img src={`${img}${img.includes('?') ? '&' : '?'}width=120`} alt="" class="w-full h-full object-cover" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Next button (desktop) -->
+      <button id="album-next" class="hidden lg:flex flex-shrink-0 w-10 h-10 items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors ml-4">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  {youtubeVideoId && (
+    <div id="video-modal" class="fixed inset-0 z-[9999] bg-black/95 hidden items-center justify-center" style="display:none;">
+      <button id="video-close" class="absolute top-5 right-5 text-white/70 hover:text-white z-10">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+      <div class="w-full max-w-4xl aspect-video mx-4">
+        <iframe id="video-iframe" class="w-full h-full rounded-lg" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  )}
+
+  <div data-dark-header-end></div>
+  <!-- ===== KEY FEATURES: Multi-column grid (details data) ===== -->
+  {details.length > 0 && (
+    <section class="bg-[#ebebeb] py-16 lg:py-24">
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+        <h2 class="text-2xl lg:text-3xl font-medium text-black mb-10 lg:mb-14">{t.key_features}</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
+          {details.map((detail: any) => (
+            <div class="flex flex-col lg:flex-row gap-4 lg:gap-5">
+              <div class="aspect-[4/3] lg:aspect-square lg:w-48 lg:flex-shrink-0 rounded-md overflow-hidden bg-[#e8e8e8]">
+                <img src={detail.image} alt={detail.title} class="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div class="bg-[#fafafa] rounded-lg p-4 flex-1 flex flex-col justify-center">
+                <h3 class="text-lg font-medium text-black leading-snug">{detail.title}</h3>
+                {detail.content && <p class="mt-2 text-sm text-black/85 leading-relaxed">{detail.content}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {specsEntries.length > 0 && (
+          <div class="mt-10 lg:mt-14 text-center">
+            <button id="specs-btn" class="px-8 py-3 bg-black text-white text-sm font-medium tracking-wide rounded-lg hover:bg-black/85 transition-colors uppercase">
+              {t.see_all_specifications}
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Specs Card (fixed, same style as product card / family card) -->
+  {specsEntries.length > 0 && (
+    <div id="specs-card" class="fixed bottom-0 left-0 right-0 z-40 flex justify-center px-4 transition-transform duration-300 translate-y-[120%]">
+      <div id="specs-card-inner" class="w-full max-w-[560px] bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between px-5 py-4">
+          <h3 class="text-base font-medium text-black">{t.specifications}</h3>
+          <button id="specs-close" class="p-1.5 bg-black/5 hover:bg-black/10 rounded-full transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="overflow-y-auto flex-1 px-5 pb-5">
+          <table class="w-full text-sm">
+            {specsEntries.map(([key, value], i) => (
+              <tr class:list={[i > 0 && 'border-t border-black/5']}>
+                <td class="py-2.5 pr-4 text-black/50 whitespace-nowrap">{key}</td>
+                <td class="py-2.5 text-black font-medium text-right">{value}</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+      </div>
+    </div>
+  )}
+
+  <!-- ===== MORE DETAILS: Carousel with progress line ===== -->
+  {moreDetails.length > 0 && (
+    <section class="bg-[#0a0a0a] py-16 lg:py-24 overflow-hidden">
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+        <h2 class="text-2xl lg:text-3xl font-medium text-white mb-10 lg:mb-14">{t.more_details}</h2>
+        <!-- Carousel track -->
+        <div class="relative overflow-hidden">
+          <div id="detail-track" class="flex gap-5 transition-transform duration-500 ease-out">
+            {moreDetails.map((item: any) => (
+              <div class="detail-slide flex-shrink-0 w-[85vw] sm:w-[45vw] lg:w-[calc(33.333%-14px)]">
+                <div class="aspect-square rounded-lg overflow-hidden">
+                  <img src={item.image} alt={item.caption} class="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Progress line with dots + arrows -->
+        <div class="mt-8 flex items-center gap-4">
+          <button id="detail-prev" class="text-white/20 hover:text-white transition-colors flex-shrink-0">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+          </button>
+
+          <div class="flex-1 relative h-[1px] bg-white/15">
+            <div id="detail-progress" class="absolute top-0 left-0 h-full bg-white/40 transition-all duration-500"></div>
+          </div>
+
+          <button id="detail-next" class="text-white hover:text-white transition-colors flex-shrink-0">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+          </button>
+        </div>
+
+        <!-- Captions -->
+        <div class="relative mt-6 overflow-hidden">
+          <div id="detail-captions" class="flex gap-5 transition-transform duration-500 ease-out">
+            {moreDetails.map((item: any) => (
+              <div class="detail-caption flex-shrink-0 w-[85vw] sm:w-[45vw] lg:w-[calc(33.333%-14px)]">
+                <p class="text-sm text-white/60 leading-relaxed">{item.caption}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ===== SERIES COMPARISON ===== -->
+  {comparisonData.length > 1 && activeSpecKeys.length > 0 && (
+    <section class="bg-[#0a0a0a] py-16 lg:py-24">
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10">
+        <h2 class="text-2xl lg:text-3xl font-medium text-white mb-10 lg:mb-14">{translate('compare_series', LANG, { series })}</h2>
+
+        <!-- Scrollable area -->
+        <div class="relative">
+          <div id="compare-scroll" class="overflow-x-auto compare-scroll-hide">
+            <div style={`min-width: ${Math.max(comparisonData.length * 140, 500)}px`}>
+
+              {/* ── Model Cards Row ── */}
+              <div class="grid gap-0" style={`grid-template-columns: ${comparisonData.map(() => '1fr').join(' ')}`}>
+                {comparisonData.map((m: any, i: number) => (
+                  <div class="text-center px-2 lg:px-6 flex flex-col">
+                    <a href={`/e-scooters/${m.handle}/`} class="block group">
+                      <div class="h-20 lg:h-44 flex items-end justify-center mb-3 lg:mb-5">
+                        {m.image && <img src={m.image} alt={m.shortTitle} class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />}
+                      </div>
+                    </a>
+                    <a href={`/e-scooters/${m.handle}/`} class="flex-1 flex items-start justify-center">
+                      <p class="text-xs lg:text-xl font-normal text-white tracking-tight">{m.shortTitle}</p>
+                    </a>
+                    <div class="mt-3 lg:mt-5">
+                      <a href={`/e-scooters/${m.handle}/`}
+                         class="block py-1.5 lg:py-2.5 border border-white/25 text-white text-[10px] lg:text-xs font-medium tracking-[0.15em] uppercase rounded-sm hover:bg-white hover:text-black transition-all duration-300">
+                        {t.explore}
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* ── Spec Rows ── */}
+              <div class="mt-8 lg:mt-20">
+                {activeSpecKeys.map((key: string) => (
+                  <div class="relative border-t border-white/10 pt-3 pb-3 lg:pt-5 lg:pb-6">
+                    <p class="text-[9px] lg:text-[10px] font-medium tracking-[0.2em] uppercase text-white/35 pl-2 lg:pl-6 mb-1.5 lg:mb-3">{key}</p>
+                    <div class="grid" style={`grid-template-columns: ${comparisonData.map(() => '1fr').join(' ')}`}>
+                      {comparisonData.map((m: any) => (
+                        <p class="text-xs lg:text-base text-white text-center px-1 lg:px-6">{m.specs[key] || '—'}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Compare All button -->
+        <div class="mt-12 text-center">
+          <button id="compare-all-btn" class="px-8 py-3 border border-white/25 text-white text-xs font-medium tracking-[0.15em] uppercase rounded-sm hover:bg-white hover:text-black transition-all duration-300">
+            {t.compare_all_models}
+          </button>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ===== FULLSCREEN COMPARE MODAL ===== -->
+  <div id="compare-modal" class="fixed inset-0 z-[200] bg-white compare-modal-hidden" style="overflow-y: auto">
+    <!-- Modal Header -->
+    <div class="sticky top-0 bg-white/95 backdrop-blur-xl z-10 border-b border-black/5">
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+        <h2 class="text-lg font-medium text-black">{t.compare_models}</h2>
+        <button id="compare-modal-close" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors group" aria-label="Close">
+          <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-8 lg:py-12">
+      <div id="compare-modal-scroll" class="overflow-x-auto compare-scroll-hide">
+        <div id="compare-modal-inner">
+          <!-- Selectors + specs rendered here by JS -->
+          <div id="compare-selectors"></div>
+          <div id="compare-modal-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="specs"></div>
+
+  <script define:vars={{ albumImages, youtubeVideoId }}>
+    // Album lightbox
+    const albumBtn = document.getElementById('product-album-btn')
+    const albumLightbox = document.getElementById('album-lightbox')
+    const albumImg = document.getElementById('album-img')
+    const albumSpinner = document.getElementById('album-spinner')
+    const albumCounter = document.getElementById('album-counter')
+    const albumClose = document.getElementById('album-close')
+    const albumPrev = document.getElementById('album-prev')
+    const albumNext = document.getElementById('album-next')
+    const albumThumbs = document.querySelectorAll('.album-thumb')
+    let albumIndex = 0
+    const preloaded = new Set()
+
+    function preloadImage(src) {
+      if (preloaded.has(src)) return
+      const img = new Image()
+      img.src = src
+      preloaded.add(src)
+    }
+
+    function preloadNearby(i) {
+      // Preload current, next, and previous
+      if (albumImages[i]) preloadImage(albumImages[i])
+      if (albumImages[i + 1]) preloadImage(albumImages[i + 1])
+      if (albumImages[i - 1]) preloadImage(albumImages[i - 1])
+    }
+
+    function showAlbum(i) {
+      albumIndex = i
+      if (albumImg) {
+        // Show spinner if image not cached
+        if (!preloaded.has(albumImages[i])) {
+          albumImg.style.opacity = '0'
+          if (albumSpinner) albumSpinner.style.display = 'flex'
+        }
+        albumImg.src = albumImages[i]
+        albumImg.onload = () => {
+          albumImg.style.opacity = '1'
+          if (albumSpinner) albumSpinner.style.display = 'none'
+        }
+      }
+      if (albumCounter) albumCounter.textContent = `${i + 1} / ${albumImages.length}`
+
+      // Update thumbnails
+      albumThumbs.forEach((thumb, ti) => {
+        if (ti === i) {
+          thumb.classList.add('border-white', 'opacity-100')
+          thumb.classList.remove('border-transparent', 'opacity-50')
+          // Scroll thumb into view
+          thumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+        } else {
+          thumb.classList.remove('border-white', 'opacity-100')
+          thumb.classList.add('border-transparent', 'opacity-50')
+        }
+      })
+
+      preloadNearby(i)
+    }
+
+    function openAlbum() {
+      if (!albumImages.length) return
+      albumImages.slice(0, 4).forEach(preloadImage)
+      showAlbum(0)
+      if (albumLightbox) {
+        albumLightbox.classList.remove('album-lightbox-hidden')
+      }
+      document.body.style.overflow = 'hidden'
+    }
+    function closeAlbum() {
+      if (albumLightbox) {
+        albumLightbox.classList.add('album-lightbox-hidden')
+      }
+      document.body.style.overflow = ''
+    }
+
+    albumBtn?.addEventListener('click', openAlbum)
+    albumClose?.addEventListener('click', closeAlbum)
+    albumPrev?.addEventListener('click', () => showAlbum((albumIndex - 1 + albumImages.length) % albumImages.length))
+    albumNext?.addEventListener('click', () => showAlbum((albumIndex + 1) % albumImages.length))
+
+    // Thumbnail clicks
+    albumThumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const i = parseInt(thumb.dataset.albumIndex || '0')
+        showAlbum(i)
+      })
+    })
+
+    // Close on backdrop click (only if clicking the main image area background, not thumbs/buttons)
+    albumLightbox?.addEventListener('click', (e) => {
+      const t = e.target
+      if (t === albumLightbox || t.id === 'album-img') return
+      if (t.closest && (t.closest('#album-thumbs') || t.closest('button'))) return
+      closeAlbum()
+    })
+
+    // Mobile swipe on main image
+    let albumTouchX = 0
+    let albumTouchY = 0
+    let albumSwipeLocked = null
+    albumImg?.parentElement?.addEventListener('touchstart', (e) => {
+      albumTouchX = e.touches[0].clientX
+      albumTouchY = e.touches[0].clientY
+      albumSwipeLocked = null
+    }, { passive: true })
+    albumImg?.parentElement?.addEventListener('touchmove', (e) => {
+      if (albumSwipeLocked === 'vertical') return
+      const dx = e.touches[0].clientX - albumTouchX
+      const dy = e.touches[0].clientY - albumTouchY
+      if (!albumSwipeLocked && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        albumSwipeLocked = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical'
+      }
+      if (albumSwipeLocked === 'horizontal') e.preventDefault()
+    }, { passive: false })
+    albumImg?.parentElement?.addEventListener('touchend', (e) => {
+      if (albumSwipeLocked !== 'horizontal') return
+      const diff = albumTouchX - e.changedTouches[0].clientX
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) showAlbum((albumIndex + 1) % albumImages.length)
+        else showAlbum((albumIndex - 1 + albumImages.length) % albumImages.length)
+      }
+    })
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (albumLightbox?.classList.contains('album-lightbox-hidden')) return
+      if (e.key === 'ArrowLeft') showAlbum((albumIndex - 1 + albumImages.length) % albumImages.length)
+      else if (e.key === 'ArrowRight') showAlbum((albumIndex + 1) % albumImages.length)
+      else if (e.key === 'Escape') closeAlbum()
+    })
+
+    // Video modal
+    const videoBtn = document.getElementById('video-btn')
+    const videoModal = document.getElementById('video-modal')
+    const videoClose = document.getElementById('video-close')
+    const videoIframe = document.getElementById('video-iframe')
+
+    videoBtn?.addEventListener('click', () => {
+      if (videoIframe) videoIframe.src = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`
+      if (videoModal) { videoModal.style.display = 'flex'; videoModal.classList.remove('hidden') }
+    })
+    function closeVideo() {
+      if (videoIframe) videoIframe.src = ''
+      if (videoModal) { videoModal.style.display = 'none'; videoModal.classList.add('hidden') }
+    }
+    videoClose?.addEventListener('click', closeVideo)
+    videoModal?.addEventListener('click', (e) => { if (e.target === videoModal) closeVideo() })
+  </script>
+
+  <script define:vars={{ addedLabel: t.parts_added }}>
+    // Scooter add to cart
+    const addToCartBtn = document.getElementById('scooter-add-to-cart') as HTMLButtonElement | null
+    addToCartBtn?.addEventListener('click', () => {
+      if (addToCartBtn.disabled) return
+      const d = addToCartBtn.dataset
+      const original = addToCartBtn.innerHTML
+
+      addToCartBtn.disabled = true
+      addToCartBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>'
+
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('cart:add', {
+          detail: {
+            handle: d.handle,
+            title: d.title,
+            price: parseFloat(d.price || '0'),
+            image: d.image,
+          }
+        }))
+
+        addToCartBtn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span>${addedLabel}</span>`
+        setTimeout(() => {
+          addToCartBtn.innerHTML = original
+          addToCartBtn.disabled = false
+        }, 1200)
+      }, 600)
+    })
+
+    // Series family modal
+    const familyBtn = document.getElementById('tagline-family-btn')
+    const familyModal = document.getElementById('series-family-modal')
+    const familyClose = document.getElementById('series-family-close')
+
+    const familyCardInner = document.getElementById('family-card-inner')
+
+    function updateFamilyPosition() {
+      if (!familyCardInner || !familyModal) return
+      const headerH = window.innerWidth >= 1024 ? 56 : 48
+      const productCard = document.getElementById('product-card')
+      const isProductCardVisible = productCard && !productCard.classList.contains('product-card-hidden')
+
+      let bottomOffset = 24
+      if (isProductCardVisible && productCard) {
+        const rect = productCard.getBoundingClientRect()
+        if (rect.top < window.innerHeight) {
+          bottomOffset = window.innerHeight - rect.top + 12
+        }
+      }
+
+      familyModal.style.paddingBottom = bottomOffset + 'px'
+      const maxH = window.innerHeight - headerH - bottomOffset - 16
+      familyCardInner.style.maxHeight = Math.max(maxH, 120) + 'px'
+    }
+
+    function showFamily() {
+      updateFamilyPosition()
+      familyModal?.classList.remove('translate-y-[120%]')
+    }
+    function hideFamily() {
+      familyModal?.classList.add('translate-y-[120%]')
+    }
+    function isFamilyVisible() {
+      return !familyModal?.classList.contains('translate-y-[120%]')
+    }
+
+    familyBtn?.addEventListener('click', () => {
+      isFamilyVisible() ? hideFamily() : showFamily()
+    })
+    familyClose?.addEventListener('click', hideFamily)
+    window.addEventListener('resize', updateFamilyPosition)
+    // Close cards on scroll, but only if not triggered by card internal scroll
+    let ignoreScroll = false
+
+    function onCardScroll() {
+      ignoreScroll = true
+      clearTimeout(onCardScroll._timer)
+      onCardScroll._timer = setTimeout(() => { ignoreScroll = false }, 150)
+    }
+    onCardScroll._timer = 0
+
+    // Attach scroll listeners to card inner scrollable areas
+    document.querySelector('#series-family-modal .overflow-y-auto')?.addEventListener('scroll', onCardScroll, { passive: true })
+    document.querySelector('#specs-card .overflow-y-auto')?.addEventListener('scroll', onCardScroll, { passive: true })
+
+    // Also suppress scroll-close when touching the card itself (header, etc.)
+    function onCardTouch() {
+      ignoreScroll = true
+      clearTimeout(onCardScroll._timer)
+      onCardScroll._timer = setTimeout(() => { ignoreScroll = false }, 300)
+    }
+    document.getElementById('family-card-inner')?.addEventListener('touchstart', onCardTouch, { passive: true })
+    document.getElementById('family-card-inner')?.addEventListener('touchmove', onCardTouch, { passive: true })
+    document.querySelector('#specs-card > div')?.addEventListener('touchstart', onCardTouch, { passive: true })
+    document.querySelector('#specs-card > div')?.addEventListener('touchmove', onCardTouch, { passive: true })
+
+    window.addEventListener('scroll', () => {
+      if (ignoreScroll) return
+      if (isFamilyVisible()) hideFamily()
+      if (isSpecsVisible()) hideSpecs()
+    }, { passive: true })
+
+    // Prevent page scroll when scrolling inside cards at boundaries
+    function preventOverscroll(el: Element | null) {
+      if (!el) return
+      el.addEventListener('wheel', (e) => {
+        const ev = e as WheelEvent
+        const target = el as HTMLElement
+        const atTop = target.scrollTop <= 0
+        const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 1
+        if ((atTop && ev.deltaY < 0) || (atBottom && ev.deltaY > 0)) {
+          ev.preventDefault()
+        }
+      }, { passive: false })
+
+      el.addEventListener('touchstart', (e) => {
+        (el as any)._touchY = (e as TouchEvent).touches[0].clientY
+      }, { passive: true })
+      el.addEventListener('touchmove', (e) => {
+        const ev = e as TouchEvent
+        const target = el as HTMLElement
+        const dy = (el as any)._touchY - ev.touches[0].clientY;
+        (el as any)._touchY = ev.touches[0].clientY
+        const atTop = target.scrollTop <= 0
+        const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 1
+        if ((atTop && dy < 0) || (atBottom && dy > 0)) {
+          ev.preventDefault()
+        }
+      }, { passive: false })
+    }
+
+    preventOverscroll(document.querySelector('#series-family-modal .overflow-y-auto'))
+    preventOverscroll(document.querySelector('#specs-card .overflow-y-auto'))
+
+    // Specs card
+    const specsBtn = document.getElementById('specs-btn')
+    const specsCard = document.getElementById('specs-card')
+    const specsClose = document.getElementById('specs-close')
+    const specsCardInner = document.getElementById('specs-card-inner')
+
+    function updateSpecsPosition() {
+      if (!specsCardInner || !specsCard) return
+      const headerH = window.innerWidth >= 1024 ? 56 : 48
+      const productCard = document.getElementById('product-card')
+      const isProductCardVisible = productCard && !productCard.classList.contains('product-card-hidden')
+
+      let bottomOffset = 24 // default padding from bottom
+      if (isProductCardVisible && productCard) {
+        const rect = productCard.getBoundingClientRect()
+        if (rect.top < window.innerHeight) {
+          bottomOffset = window.innerHeight - rect.top + 12
+        }
+      }
+
+      specsCard.style.paddingBottom = bottomOffset + 'px'
+      const maxH = window.innerHeight - headerH - bottomOffset - 16
+      specsCardInner.style.maxHeight = Math.max(maxH, 120) + 'px'
+    }
+
+    function showSpecs() {
+      if (isFamilyVisible()) hideFamily()
+      updateSpecsPosition()
+      specsCard?.classList.remove('translate-y-[120%]')
+    }
+    function hideSpecs() {
+      specsCard?.classList.add('translate-y-[120%]')
+    }
+    function isSpecsVisible() {
+      return !specsCard?.classList.contains('translate-y-[120%]')
+    }
+
+    specsBtn?.addEventListener('click', () => {
+      isSpecsVisible() ? hideSpecs() : showSpecs()
+    })
+    specsClose?.addEventListener('click', hideSpecs)
+    window.addEventListener('resize', updateSpecsPosition)
+
+    // Product card: show on scroll up (after 80px), hide on scroll down
+    const productCard = document.getElementById('product-card')
+    let lastScrollY = window.scrollY
+    let scrollUpDistance = 0
+    let isCardHidden = false
+    let ticking = false
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentY = window.scrollY
+          const delta = currentY - lastScrollY
+
+          if (delta > 0) {
+            // Scrolling down
+            scrollUpDistance = 0
+            if (currentY > 100 && !isCardHidden) {
+              productCard?.classList.add('product-card-hidden')
+              isCardHidden = true
+            }
+          } else {
+            // Scrolling up
+            scrollUpDistance += Math.abs(delta)
+            if (scrollUpDistance > 80 && isCardHidden) {
+              productCard?.classList.remove('product-card-hidden')
+              isCardHidden = false
+            }
+          }
+
+          // Always show at top
+          if (currentY <= 50) {
+            productCard?.classList.remove('product-card-hidden')
+            isCardHidden = false
+            scrollUpDistance = 0
+          }
+
+          lastScrollY = currentY
+          ticking = false
+        })
+        ticking = true
+      }
+    })
+    // Detail carousel
+    const detailTrack = document.getElementById('detail-track')
+    const detailCaptions = document.getElementById('detail-captions')
+    const detailPrev = document.getElementById('detail-prev')
+    const detailNext = document.getElementById('detail-next')
+    const detailProgress = document.getElementById('detail-progress')
+    const detailSlides = document.querySelectorAll('.detail-slide')
+
+    if (detailTrack && detailSlides.length > 0) {
+      let detailPage = 0
+
+      function getVisibleCount() {
+        if (window.innerWidth >= 1024) return 3
+        if (window.innerWidth >= 640) return 2
+        return 1
+      }
+
+      function getMaxPage() {
+        return Math.max(0, detailSlides.length - getVisibleCount())
+      }
+
+      function updateCarousel() {
+        const slide = detailSlides[0] as HTMLElement
+        const gap = 20
+        const offset = detailPage * (slide.offsetWidth + gap)
+        detailTrack.style.transform = `translateX(-${offset}px)`
+        if (detailCaptions) detailCaptions.style.transform = `translateX(-${offset}px)`
+
+        // Update progress bar
+        const maxPage = getMaxPage()
+        const progress = maxPage > 0 ? (detailPage + getVisibleCount()) / detailSlides.length : 1
+        if (detailProgress) detailProgress.style.width = `${progress * 100}%`
+
+        // Update arrow states
+        if (detailPrev) detailPrev.className = detailPage <= 0
+          ? 'text-white/20 flex-shrink-0 transition-colors'
+          : 'text-white hover:text-white flex-shrink-0 transition-colors'
+        if (detailNext) detailNext.className = detailPage >= maxPage
+          ? 'text-white/20 flex-shrink-0 transition-colors'
+          : 'text-white hover:text-white flex-shrink-0 transition-colors'
+
+      }
+
+      detailPrev?.addEventListener('click', () => {
+        detailPage = Math.max(0, detailPage - 1)
+        updateCarousel()
+      })
+
+      detailNext?.addEventListener('click', () => {
+        detailPage = Math.min(getMaxPage(), detailPage + 1)
+        updateCarousel()
+      })
+
+      // Touch swipe with drag follow
+      let touchStartX = 0
+      let touchStartY = 0
+      let touchCurrentX = 0
+      let isDragging = false
+      let baseOffset = 0
+      let directionLocked: 'horizontal' | 'vertical' | null = null
+
+      function getBaseOffset() {
+        const slide = detailSlides[0] as HTMLElement
+        return detailPage * (slide.offsetWidth + 20)
+      }
+
+      detailTrack.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX
+        touchStartY = e.touches[0].clientY
+        isDragging = true
+        directionLocked = null
+        baseOffset = getBaseOffset()
+      }, { passive: true })
+
+      detailTrack.addEventListener('touchmove', (e) => {
+        if (!isDragging) return
+        const dx = e.touches[0].clientX - touchStartX
+        const dy = e.touches[0].clientY - touchStartY
+
+        // Lock direction on first significant movement
+        if (!directionLocked) {
+          if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return
+          directionLocked = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical'
+          if (directionLocked === 'horizontal') {
+            detailTrack.style.transition = 'none'
+            if (detailCaptions) detailCaptions.style.transition = 'none'
+          }
+        }
+
+        if (directionLocked === 'vertical') return
+
+        touchCurrentX = e.touches[0].clientX
+        const drag = touchStartX - touchCurrentX
+        const offset = baseOffset + drag
+        detailTrack.style.transform = `translateX(-${offset}px)`
+        if (detailCaptions) detailCaptions.style.transform = `translateX(-${offset}px)`
+      }, { passive: true })
+
+      detailTrack.addEventListener('touchend', (e) => {
+        if (!isDragging) return
+        isDragging = false
+        detailTrack.style.transition = ''
+        if (detailCaptions) detailCaptions.style.transition = ''
+        if (directionLocked !== 'horizontal') { directionLocked = null; return }
+        directionLocked = null
+        const diff = touchStartX - e.changedTouches[0].clientX
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) detailPage = Math.min(getMaxPage(), detailPage + 1)
+          else detailPage = Math.max(0, detailPage - 1)
+        }
+        updateCarousel()
+      })
+
+      window.addEventListener('resize', () => {
+        detailPage = Math.min(detailPage, getMaxPage())
+        updateCarousel()
+      })
+
+      updateCarousel()
+    }
+
+  </script>
+
+  <script define:vars={{ allModelsData, defaultCompareHandles, comparisonSpecKeys }}>
+    const modal = document.getElementById('compare-modal')
+    const openBtn = document.getElementById('compare-all-btn')
+    const closeBtn = document.getElementById('compare-modal-close')
+    const selectorsEl = document.getElementById('compare-selectors')
+    const contentEl = document.getElementById('compare-modal-content')
+    const modalScroll = document.getElementById('compare-modal-scroll')
+
+    let selectedHandles = [...defaultCompareHandles]
+
+    function getModel(h) {
+      return allModelsData.find(m => m.handle === h)
+    }
+
+    const innerEl = document.getElementById('compare-modal-inner')
+    const cols = () => selectedHandles.map(() => '1fr').join(' ')
+
+    function renderSelectors() {
+      if (!selectorsEl) return
+      const models = selectedHandles.map(h => getModel(h))
+      selectorsEl.innerHTML = `
+        <div class="grid gap-4 lg:gap-6 mb-10 lg:mb-16" style="grid-template-columns: ${cols()}">
+          ${models.map((m, i) => `
+            <div class="text-center">
+              <div class="h-24 lg:h-36 flex items-end justify-center mb-3">
+                ${m?.image ? `<img src="${m.image}" alt="${m.shortTitle}" class="max-h-full max-w-full object-contain" />` : '<div class="w-20 h-20 bg-gray-100 rounded-lg"></div>'}
+              </div>
+              <select data-slot="${i}" class="compare-select w-full appearance-none bg-transparent border border-black rounded-lg pl-2 pr-7 py-2.5 text-xs lg:text-sm font-medium text-black text-center cursor-pointer hover:bg-gray-50 transition-colors focus:outline-none truncate"
+                style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 6px center;">
+                ${allModelsData.map(am => `<option value="${am.handle}" ${am.handle === selectedHandles[i] ? 'selected' : ''}>${am.shortTitle}</option>`).join('')}
+              </select>
+            </div>
+          `).join('')}
+        </div>
+      `
+
+      selectorsEl.querySelectorAll('.compare-select').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+          const t = e.target
+          const slot = parseInt(t.dataset.slot)
+          selectedHandles[slot] = t.value
+          renderSelectors()
+          renderTable()
+        })
+      })
+    }
+
+    function renderTable() {
+      if (!contentEl) return
+      const models = selectedHandles.map(h => getModel(h)).filter(Boolean)
+      const activeKeys = comparisonSpecKeys.filter(key => models.some(m => m.specs[key]))
+      const colW = Math.max(models.length * 160, 600)
+
+      if (innerEl) innerEl.style.minWidth = window.innerWidth >= 1024 ? '' : `${colW}px`
+      contentEl.innerHTML = activeKeys.map(key => `
+        <div class="border-t border-black/8 pt-4 pb-5">
+          <p class="text-[10px] font-medium tracking-[0.2em] uppercase text-black/35 pl-4 lg:pl-0 mb-2">${key}</p>
+          <div class="grid" style="grid-template-columns: ${cols()}">
+            ${models.map(m => `
+              <p class="text-sm lg:text-base text-black text-center px-4">${m.specs[key] || '—'}</p>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')
+    }
+
+    function openModal() {
+      selectedHandles = [...defaultCompareHandles]
+      modal?.classList.remove('compare-modal-hidden')
+      document.body.style.overflow = 'hidden'
+      renderSelectors()
+      renderTable()
+    }
+
+    function closeModal() {
+      modal?.classList.add('compare-modal-hidden')
+      document.body.style.overflow = ''
+    }
+
+    openBtn?.addEventListener('click', openModal)
+    closeBtn?.addEventListener('click', closeModal)
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal?.classList.contains('compare-modal-hidden')) {
+        closeModal()
+      }
+    })
+
+    modalScroll?.addEventListener('scroll', updateModalShadows, { passive: true })
+  </script>
+
+<style>
+  .product-card-hidden {
+    transform: translateY(calc(100% + 4rem));
+    opacity: 0;
+  }
+  #compare-modal {
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .compare-modal-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+  }
+  #album-lightbox {
+    display: flex;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .album-lightbox-hidden {
+    opacity: 0;
+    transform: scale(0.97);
+    pointer-events: none;
+  }
+  .compare-scroll-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .compare-scroll-hide::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+</Base>

@@ -1,127 +1,266 @@
 ---
 import { getTranslations, LANG } from '../i18n/index.js'
 const t = getTranslations(LANG)
+const cartRedirectNotice = t.cart_redirect_notice.replace('{store}', '<span class="font-medium text-gray-500">Joyorprime.com</span>')
 ---
 
 <div id="cart-drawer-root" class="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
   <!-- Backdrop -->
-  <div 
-    id="cart-overlay" 
+  <div
+    id="cart-overlay"
     class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200 ease-in-out cursor-pointer"
   ></div>
 
   <!-- Drawer Panel -->
-  <div 
-    id="cart-panel" 
-    class="absolute right-0 top-0 h-full w-full max-w-[420px] bg-white shadow-2xl translate-x-full transition-transform duration-200 ease-in-out flex flex-col overflow-hidden"
+  <div
+    id="cart-panel"
+    data-item-singular={t.cart_item_singular}
+    data-item-plural={t.cart_item_plural}
+    class="absolute right-4 top-4 bottom-4 w-[calc(100%-2rem)] max-w-[460px] bg-white/80 backdrop-blur-2xl shadow-2xl rounded-2xl translate-x-[calc(100%+2rem)] transition-transform duration-300 flex flex-col overflow-hidden"
   >
     <!-- Header -->
-    <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+    <div class="px-6 py-5 border-b border-black/5 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <h2 class="text-xl font-medium tracking-tight">Your Cart</h2>
-        <span id="cart-count-badge" class="bg-gray-100 text-gray-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">0 Items</span>
+        <h2 class="text-xl font-medium tracking-tight">{t.cart_title}</h2>
+        <span id="cart-count-badge" class="bg-gray-100 text-gray-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">0 {t.cart_item_plural}</span>
       </div>
-      <button id="cart-close-btn" class="p-2 hover:bg-gray-50 rounded-full transition-colors group" aria-label="Close cart">
+      <button id="cart-close-btn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors group" aria-label="Close cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-90 transition-transform duration-300"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
 
-    <!-- Body (Content) -->
-    <div class="flex-1 overflow-y-auto px-6 py-8 flex flex-col items-center justify-center text-center">
+    <!-- Body -->
+    <div id="cart-body" class="flex-1 overflow-y-auto px-6 pt-4 pb-6">
       <!-- Empty State -->
-      <div id="cart-empty-state" class="space-y-6">
-        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.56-7.43H5.12"/></svg>
+      <div id="cart-empty-state" class="flex flex-col items-center justify-center text-center h-full space-y-6">
+        <h3 class="text-xl font-medium text-gray-900">{t.cart_empty}</h3>
+        <div class="flex flex-col gap-3 w-full max-w-[240px]">
+          <button id="cart-continue-shopping" class="w-full py-2.5 bg-black text-white text-sm font-medium tracking-wide rounded-full hover:bg-gray-800 transition-colors">
+            {t.cart_browse_parts}
+          </button>
+          <a href="/e-scooters/" class="w-full py-2.5 border border-gray-900 text-gray-900 text-center text-sm font-medium tracking-wide rounded-full hover:bg-gray-50 transition-colors">
+            {t.cart_browse_scooters}
+          </a>
         </div>
-        <div>
-          <h3 class="text-lg font-medium text-gray-900">Your cart is empty</h3>
-          <p class="mt-2 text-sm text-gray-400 max-w-[240px] mx-auto">Looks like you haven't added anything to your cart yet.</p>
-        </div>
-        <button id="cart-continue-shopping" class="inline-flex items-center justify-center px-8 py-3 bg-black text-white text-sm font-medium tracking-wide rounded-full hover:bg-gray-800 transition-colors duration-300 group">
-          Explore E-Scooters
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 group-hover:translate-x-1 transition-transform"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-        </button>
       </div>
 
-      <!-- Item List (Hidden for now) -->
-      <div id="cart-items-list" class="hidden w-full space-y-6">
-        <!-- Cart items would be injected here -->
-      </div>
+      <!-- Cart Items -->
+      <div id="cart-items-list" class="hidden w-full space-y-4"></div>
     </div>
 
     <!-- Footer -->
-    <div class="px-6 py-8 bg-gray-50/50 border-t border-gray-100">
-      <div class="flex items-center justify-between mb-6">
-        <span class="text-gray-500 font-medium">Subtotal</span>
-        <span id="cart-subtotal" class="text-xl font-semibold">€0.00</span>
+    <div id="cart-footer" class="hidden m-3 p-5 bg-white/60 rounded-xl">
+      <div class="flex items-center justify-between mb-5">
+        <span class="text-gray-500 font-medium">{t.cart_subtotal}</span>
+        <span id="cart-subtotal" class="text-xl font-medium">€0.00</span>
       </div>
-      <button class="w-full py-4 bg-black text-white rounded-full font-medium tracking-wide hover:bg-gray-800 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none" disabled>
-        Checkout
-      </button>
-      <p class="mt-4 text-[11px] text-gray-400 text-center tracking-tight uppercase">Taxes and shipping calculated at checkout</p>
+      <div class="flex gap-3">
+        <a href="https://joyorprime.com/cart" target="_blank" rel="noopener"
+           class="flex-1 py-3 border border-gray-900 text-gray-900 text-center rounded-lg text-sm font-medium tracking-wide hover:bg-gray-50 transition-all active:scale-[0.98]">
+          {t.cart_view}
+        </a>
+        <a id="cart-checkout-btn" href="https://joyorprime.com/checkout" target="_blank" rel="noopener"
+           class="flex-1 py-3 bg-black text-white text-center rounded-lg text-sm font-medium tracking-wide hover:bg-gray-800 transition-all active:scale-[0.98]">
+          {t.cart_checkout}
+        </a>
+      </div>
+      <div class="mt-4 flex items-center justify-center gap-2">
+        <img src="/images/payicon/1.svg" alt="" class="h-5" />
+        <img src="/images/payicon/2.svg" alt="" class="h-5" />
+        <img src="/images/payicon/3.svg" alt="" class="h-5" />
+        <img src="/images/payicon/4.svg" alt="" class="h-5" />
+        <img src="/images/payicon/5.svg" alt="" class="h-5" />
+        <img src="/images/payicon/6.svg" alt="" class="h-5" />
+      </div>
+      <p class="mt-2 text-[11px] text-gray-400 text-center" set:html={cartRedirectNotice}></p>
     </div>
   </div>
 </div>
 
 <script>
-  function initCartDrawer() {
+  function initCartSystem() {
+    const CART_KEY = 'joyor_cart';
+
+    function getCart() {
+      try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]') } catch { return [] }
+    }
+    function saveCart(cart) {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      renderCart();
+    }
+
+    // DOM refs
     const root = document.getElementById('cart-drawer-root');
     const overlay = document.getElementById('cart-overlay');
     const panel = document.getElementById('cart-panel');
     const closeBtn = document.getElementById('cart-close-btn');
     const continueBtn = document.getElementById('cart-continue-shopping');
+    const emptyState = document.getElementById('cart-empty-state');
+    const itemsList = document.getElementById('cart-items-list');
+    const footer = document.getElementById('cart-footer');
+    const subtotalEl = document.getElementById('cart-subtotal');
+    const countBadge = document.getElementById('cart-count-badge');
+    const headerCartCount = document.getElementById('header-cart-count');
+    const singular = panel?.dataset.itemSingular || 'Item';
+    const plural = panel?.dataset.itemPlural || 'Items';
 
-    const openCart = () => {
+    function openCart() {
       root?.classList.remove('pointer-events-none');
       overlay?.classList.remove('opacity-0');
       overlay?.classList.add('opacity-100');
-      panel?.classList.remove('translate-x-full');
-      document.body.style.overflow = 'hidden';
-    };
+      panel?.classList.remove('translate-x-[calc(100%+2rem)]');
+      renderCart();
+    }
 
-    const closeCart = () => {
+    function closeCart() {
       overlay?.classList.remove('opacity-100');
       overlay?.classList.add('opacity-0');
-      panel?.classList.add('translate-x-full');
+      panel?.classList.add('translate-x-[calc(100%+2rem)]');
       setTimeout(() => {
         root?.classList.add('pointer-events-none');
-        document.body.style.overflow = '';
       }, 200);
-    };
+    }
 
-    // Listen for custom trigger (globally)
+    function renderCart() {
+      const cart = getCart();
+      const count = cart.reduce((s, i) => s + i.quantity, 0);
+      const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+
+      // Badge
+      if (countBadge) countBadge.textContent = `${count} ${count === 1 ? singular : plural}`;
+
+      // Header cart count
+      if (headerCartCount) {
+        headerCartCount.textContent = String(count);
+        headerCartCount.style.display = count > 0 ? 'flex' : 'none';
+      }
+
+      if (cart.length === 0) {
+        emptyState?.classList.remove('hidden');
+        emptyState?.classList.add('flex');
+        itemsList?.classList.add('hidden');
+        footer?.classList.add('hidden');
+        return;
+      }
+
+      emptyState?.classList.add('hidden');
+      emptyState?.classList.remove('flex');
+      itemsList?.classList.remove('hidden');
+      footer?.classList.remove('hidden');
+
+      if (subtotalEl) subtotalEl.textContent = `€${total.toFixed(2)}`;
+
+      if (itemsList) {
+        itemsList.innerHTML = cart.map(item => `
+          <div class="cart-item flex gap-4 py-4 border-b border-black/5 last:border-0 transition-all duration-300" data-handle="${item.handle}">
+            <div class="w-20 h-20 bg-gray-50 rounded-lg flex-shrink-0 overflow-hidden p-1">
+              ${item.image ? `<img src="${item.image}" alt="" class="w-full h-full object-contain" />` : ''}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 line-clamp-2 leading-snug">${item.title}</p>
+              <p class="mt-1 text-sm text-gray-500">€${item.price.toFixed(2)}</p>
+              <div class="mt-2 flex items-center gap-0">
+                <button class="cart-qty-btn w-8 h-8 rounded-l-full bg-white/70 flex items-center justify-center text-black/70 hover:bg-white hover:text-black transition-colors" data-action="decrease" data-handle="${item.handle}">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+                </button>
+                <span class="text-sm font-medium w-8 h-8 flex items-center justify-center bg-white/70">${item.quantity}</span>
+                <button class="cart-qty-btn w-8 h-8 rounded-r-full bg-white/70 flex items-center justify-center text-black/70 hover:bg-white hover:text-black transition-colors" data-action="increase" data-handle="${item.handle}">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+                <button class="ml-auto text-gray-500 hover:text-red-500 transition-colors" data-action="remove" data-handle="${item.handle}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Bind qty buttons with animation
+        itemsList.querySelectorAll('[data-action]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const b = btn as HTMLElement;
+            const handle = b.dataset.handle!;
+            const action = b.dataset.action!;
+            const cart = getCart();
+            const item = cart.find(i => i.handle === handle);
+            if (!item) return;
+
+            const row = b.closest('.cart-item') as HTMLElement;
+
+            if (action === 'increase') {
+              item.quantity++;
+              // Flash animation
+              if (row) { row.style.opacity = '0.5'; setTimeout(() => { row.style.opacity = '1'; }, 150); }
+              saveCart(cart);
+            } else if (action === 'decrease') {
+              item.quantity--;
+              if (item.quantity <= 0) {
+                // Slide out then remove
+                if (row) {
+                  row.style.opacity = '0';
+                  row.style.transform = 'translateX(30px)';
+                  setTimeout(() => { cart.splice(cart.indexOf(item), 1); saveCart(cart); }, 300);
+                } else {
+                  cart.splice(cart.indexOf(item), 1);
+                  saveCart(cart);
+                }
+              } else {
+                if (row) { row.style.opacity = '0.5'; setTimeout(() => { row.style.opacity = '1'; }, 150); }
+                saveCart(cart);
+              }
+            } else if (action === 'remove') {
+              if (row) {
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(30px)';
+                setTimeout(() => { cart.splice(cart.indexOf(item), 1); saveCart(cart); }, 300);
+              } else {
+                cart.splice(cart.indexOf(item), 1);
+                saveCart(cart);
+              }
+            }
+          });
+        });
+      }
+    }
+
+    // Global add-to-cart handler
+    window.addEventListener('cart:add', ((e: CustomEvent) => {
+      const { handle, title, price, image } = e.detail;
+      const cart = getCart();
+      const existing = cart.find(i => i.handle === handle);
+      if (existing) existing.quantity++;
+      else cart.push({ handle, title, price, image, quantity: 1 });
+      saveCart(cart);
+      openCart();
+    }) as EventListener);
+
     window.addEventListener('cart:open', openCart);
     window.addEventListener('cart:close', closeCart);
-
     overlay?.addEventListener('click', closeCart);
     closeBtn?.addEventListener('click', closeCart);
-    continueBtn?.addEventListener('click', closeCart);
+    continueBtn?.addEventListener('click', () => { closeCart(); window.location.href = '/parts/'; });
 
-    // Escape key support
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !panel?.classList.contains('translate-x-full')) {
-        closeCart();
-      }
+      if (e.key === 'Escape' && !panel?.classList.contains('translate-x-[calc(100%+2rem)]')) closeCart();
     });
+
+    // Initial render (for header badge)
+    renderCart();
   }
 
-  // Initialize
-  initCartDrawer();
-
-  // Re-init on View Transitions
-  document.addEventListener('astro:after-swap', initCartDrawer);
+  initCartSystem();
+  document.addEventListener('astro:after-swap', initCartSystem);
 </script>
 
 <style>
-  /* Optional: Custom scrollbar for the drawer */
-  #cart-panel div::-webkit-scrollbar {
-    width: 4px;
+  #cart-panel {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
-  #cart-panel div::-webkit-scrollbar-track {
-    background: transparent;
+  #cart-body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-  #cart-panel div::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 10px;
+  #cart-body::-webkit-scrollbar {
+    display: none;
   }
 </style>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string
+  description: string
+  updatedLabel?: string
+  sections: Array<{ title: string; html: string }>
+}
+
+import Base from '../layouts/Base.astro'
+
+const { title, description, updatedLabel = '', sections } = Astro.props
+---
+
+<Base title={title} description={description}>
+  <div class="max-w-3xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+    <h1 class="text-3xl lg:text-4xl font-medium tracking-tight mb-4">{title}</h1>
+    {updatedLabel && <p class="text-sm text-black/50 mb-12">{updatedLabel}</p>}
+
+    <div class="space-y-10 text-[15px] leading-relaxed text-black">
+      {sections.map((section) => (
+        <section>
+          <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{section.title}</h2>
+          <div class="space-y-4" set:html={section.html} />
+        </section>
+      ))}
+    </div>
+  </div>
+</Base>

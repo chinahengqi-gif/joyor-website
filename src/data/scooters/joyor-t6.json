@@ -1,0 +1,66 @@
+{
+  "model": "JOYOR T6",
+  "title": "JOYOR T6 City Commuter Electric Scooter",
+  "handle": "joyor-t6",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/JoyorT1_d8875467-c06d-46b4-bcd6-0d49ac8097f6.png?v=1762155566&width=600",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/JoyorT1_d8875467-c06d-46b4-bcd6-0d49ac8097f6.png?v=1762155566&width=600",
+    "https://joyorprime.com/cdn/shop/files/DSC09481.jpg?v=1762155566&width=600",
+    "https://joyorprime.com/cdn/shop/files/JoyorT11_8abb43b5-52ed-4101-92b6-0ffef9f3eada.png?v=1762155566&width=600",
+    "https://joyorprime.com/cdn/shop/files/JoyorT6_a56d6aeb-3d12-451c-b8f7-a9bea9735a2c.png?v=1762155566&width=600",
+    "https://joyorprime.com/cdn/shop/files/JoyorT7_a788c2f9-2816-4c14-82a5-97121f4c3064.png?v=1762155566&width=600",
+    "https://joyorprime.com/cdn/shop/files/JoyorT4_f0b7d726-1911-46fe-b115-253da622a85e.png?v=1762155566&width=600",
+    "https://joyorprime.com/cdn/shop/files/JoyorT5_4aabd5fe-892a-4f55-b009-c3c0a13f5928.png?v=1762155566&width=600"
+  ],
+  "videoId": "6wcmDHwKyyw",
+  "extraVideos": [],
+  "sellingPoints": [
+    "600W powerful motor conquers 25° slopes with ease",
+    "Upgraded shock absorption and steering system from the S series",
+    "48V 18Ah battery provides up to 75 km long range"
+  ],
+  "lifestyleImages": [],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__04_4e0e194e-e731-456c-8175-82beb3de26bc.jpg?v=1758523954&width=1500",
+      "title": "600W REAR SPLIT MOTOR",
+      "content": "Meet the T6 Electric Scooter: engineered with a high-torque 600W rear split motor for instant acceleration, buttery-smooth rides, and effortless hill climbs. Whether you’re zipping through city streets or conquering steep slopes, the T6 gets you there faster — and makes every ride feel like an upgrade."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__06_c137b779-0723-4f49-8439-56b43c9f0bd6.jpg?v=1758524883&width=1500",
+      "title": "25° Hill Crusher",
+      "content": "Equipped with a robust 600W motor, the T6 conquers 25° inclines with ease — delivering surging power that makes steep hills feel like flat ground. No more slowing down or struggling uphill. Ride with confidence, freedom, and unstoppable momentum, no matter the terrain."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__07_3461f4b9-abb8-4450-a55d-bce10ce6fcd1.jpg?v=1758525542&width=1500",
+      "title": "70km Ultra-Long Range",
+      "content": "Powered by a large-capacity 48V 18Ah battery, the T6 delivers up to 70km of real-world range on a single charge. Cruise through city streets or escape to the countryside — no charging anxiety, no mid-trip stops. Just pure, uninterrupted freedom, every ride."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__08_f665dc3e-7ac1-4748-a217-9482ab47aa7c.jpg?v=1758525701&width=1500",
+      "title": "48V 18Ah High-Capacity Battery",
+      "content": "Equipped with a powerful 48V 18Ah battery, the T6 smashes range limits — delivering up to 70km of real-world riding on a single charge. Commute, explore, or escape: ride longer, charge less, and go farther without a second thought."
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__09_38f2b7eb-a55f-4f05-8465-135654eaef62.jpg?v=1758534092&width=1500",
+      "caption": "Say goodbye to bumpy journeys! The T6 is equipped with front and rear\nhydraulic spring shock absorbers, making every ride smooth and comfortable, allowing you to fully enjoy the good times of traveling."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__10_810c1830-fc4f-44aa-81f3-20fec4f52fe4.jpg?v=1758526301&width=1500",
+      "caption": "Whether you’re zipping through city streets or cruising down steep hills, the T6’s front and rear mechanical disc brakes deliver powerful, consistent stopping power — giving you total control, rock-solid stability, and peace of mind with every ride."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__11_b66a3a01-8670-4c3d-bb59-96f7e99e96e6.jpg?v=1758534707&width=1500",
+      "caption": "The instrument panel is exquisitely designed for smooth, intuitive operation—just a gentle press to switch functions. It displays real-time riding data like speed, battery level, and mileage clearly at a glance, keeping you informed and making every trip convenient and smart."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/T6__12_e84b3111-4860-4519-b17c-c2e5eddedd4c.jpg?v=1758527448&width=1500",
+      "caption": "The T6 rolls on 10-inch ultra-wide inflatable off-road tires — engineered for buttery-smooth rides and unbeatable grip. Glide over city pavement, crush gravel paths, and tackle uneven trails with total confidence. Wherever the road ends, your ride just gets better."
+    }
+  ],
+  "specs": {},
+  "price": 589,
+  "shopifyTitle": "JOYOR T6 City Commuter Electric Scooter"
+}

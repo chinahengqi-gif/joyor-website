@@ -1,0 +1,97 @@
+{
+  "model": "JOYOR S8E",
+  "title": "JOYOR S8E City Commuter E-Motorcycle",
+  "handle": "joyor-s8e",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/1ef604d03f3259ed27014d0ef8b7d14c.webp?v=1762321533&width=493",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/1ef604d03f3259ed27014d0ef8b7d14c.webp?v=1762321533&width=493",
+    "https://joyorprime.com/cdn/shop/files/compressed_d3de9ecf-cf20-4ace-a24b-311a71aa2f7a.webp?v=1762321533&width=493",
+    "https://joyorprime.com/cdn/shop/files/4848d8fa1914ec9c116cec38bd1d5d99.webp?v=1762321533&width=493",
+    "https://joyorprime.com/cdn/shop/files/d6b4280e0a88b47821020e83f037bc0c.webp?v=1762321533&width=493",
+    "https://joyorprime.com/cdn/shop/files/77.webp?v=1759119239&width=493",
+    "https://joyorprime.com/cdn/shop/files/6d48a5c71665db10651b1d43cb507441.webp?v=1759119239&width=493",
+    "https://joyorprime.com/cdn/shop/files/b0f073c034a843748508defd4276d60c.webp?v=1759119239&width=493"
+  ],
+  "videoId": "uQVRCfuVbYg",
+  "extraVideos": [
+    "yknKR7LZfs0"
+  ],
+  "sellingPoints": [
+    "Equipped with a seat to improve riding comfort",
+    "55-80km long range"
+  ],
+  "lifestyleImages": [
+    "https://joyorprime.com/cdn/shop/files/20250111103535.jpg?v=1745570475&width=1200",
+    "https://joyorprime.com/cdn/shop/files/20250111103543.jpg?v=1736563063&width=1200",
+    "https://joyorprime.com/cdn/shop/files/7_cfaf0bac-5579-42d2-b356-a7b4a33d3003.jpg?v=1763454813&width=1200"
+  ],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/11_077eb92d-6c6e-4370-ad15-73585c122776.webp?v=1734592724&width=700",
+      "title": "Beautiful and comfortable",
+      "content": ""
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/b0f073c034a843748508defd4276d60c_06bb80ca-6076-4b98-8774-54e12118f326.webp?v=1735537984&width=700",
+      "title": "Easy to operate",
+      "content": ""
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/compressed_128d96d0-9479-4f7c-b06f-3f0a9093d4b9.jpg?v=1735539396&width=700",
+      "title": "800W Powerful Motor",
+      "content": ""
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241219153616_19113996-5977-4620-909c-f0f1fb200bee.jpg?v=1735539395&width=700",
+      "title": "48V 26 AH Battery",
+      "content": ""
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/compressed_3a794ccc-93cd-44c4-8849-fcc01a2d8736.webp?v=1735539395&width=700",
+      "title": "Patented Rubber Suspension",
+      "content": ""
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/d6b4280e0a88b47821020e83f037bc0c_2b2da75d-3824-44fc-adef-cd384b0d61e4.webp?v=1735539871&width=700",
+      "title": "Foldable and portable",
+      "content": ""
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/compressed_6d957622-d076-4646-abb1-a590aa9fa800.webp?v=1735539923&width=550",
+      "caption": "The scooter features a smart LCD showing speed, mode, battery, and lighting."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/e9f0a4110f700d8bb2756ca75cd3fac4_3034933b-e846-4a8d-bde1-f88fa80c0a14.jpg?v=1735540091&width=550",
+      "caption": "360-degree lighting enhances visibility for safe driving in low light."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241219150803_9f6850d7-de59-4740-bb69-cba8d327bd41.jpg?v=1735539396&width=550",
+      "caption": "Front and rear disc brakes provide stable braking performance even at high speeds"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241219154722_b2ba1605-5fa6-4116-924b-eec512420923.png?v=1735540153&width=550",
+      "caption": "Equipped with an electric horn, it is convenient to alert pedestrians and other vehicles on crowded streets."
+    }
+  ],
+  "specs": {
+    "Motor": "800w",
+    "Speed": "45km/h",
+    "Battery": "48V 26AH",
+    "Charging": "10-13h",
+    "Range": "55-80km",
+    "Net Weight": "30.65kg",
+    "Load": "120kg",
+    "Tire": "10 inch off-road tire",
+    "Brake": "Front＆Rear disc brake Shock",
+    "Front Shock Absorber": "Yes",
+    "Rear Shock Absorber": "Yes",
+    "Frame Meterial": "Aluminum Alloy",
+    "Pack size": "1190*245*500mm",
+    "Unfold size": "1238*630*1295mm",
+    "Fold size": "1238*630*1227mm"
+  },
+  "price": 784,
+  "shopifyTitle": "JOYOR S8E City Commuter E-Motorcycle"
+}

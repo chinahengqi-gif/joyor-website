@@ -1,8 +1,36 @@
 ---
 import Base from '../../layouts/Base.astro'
+import { getTranslations, LANG } from '../../i18n/index.js'
 import { getScooters } from '../../lib/shopify.js'
 
-const scooters = await getScooters()
+const t = getTranslations(LANG)
+
+const allScooters = await getScooters()
+const scooters = allScooters.filter((s: any) => !s.title.toLowerCase().includes('used'))
+
+// Load local JSON for specs (for compare modal)
+const comparisonSpecKeys = ['Motor', 'Speed', 'Battery', 'Range', 'Net Weight', 'Load', 'Tire', 'Brake', 'Charging', 'Front Shock Absorber', 'Rear Shock Absorber', 'Fold size', 'Unfold size']
+const allJsonFiles = import.meta.glob('../../data/scooters/*.json', { eager: true })
+const allJsonMap = new Map<string, any>()
+for (const [path, mod] of Object.entries(allJsonFiles)) {
+  const d = (mod as any).default || mod
+  if (d.handle) allJsonMap.set(d.handle, d)
+}
+const allModelsData = scooters
+  .map((s: any) => {
+    const json = allJsonMap.get(s.handle)
+    const shortTitle = s.title.replace(/\s+(Electric\s+Scooter|Scooter|E-Motorcycle).*$/i, '').trim()
+    return {
+      handle: s.handle,
+      title: s.title,
+      shortTitle,
+      image: s.scooterpng || s.images?.[0]?.url || '',
+      price: s.price?.amount || 0,
+      specs: json?.specs || {},
+    }
+  })
+  .filter((m: any) => Object.keys(m.specs).length > 2)
+const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km-endurance', 'joyor-y8s-abe-electric-scooter', 'joyor-c10']
 
 // 从标题提取系列字母，按系列分组
 function getSeries(title: string) {
@@ -22,54 +50,64 @@ const matched = new Set(seriesOrder)
 const other = scooters.filter((sc: any) => !matched.has(getSeries(sc.title)))
 if (other.length) grouped.set('Other', other)
 const seriesMetadata: Record<string, { desc: string; img: string }> = {
-  S: { desc: "Powerhouse performance with off-road capabilities.", img: "/images/Sseries.jpg" },
-  T: { desc: "Reliable long-range efficiency for daily commuters.", img: "/images/Tseries.jpg" },
-  Y: { desc: "Sleek, stylish, and agile for modern urban life.", img: "/images/Yseries.jpg" },
-  C: { desc: "Compact, portable, and versatile for every journey.", img: "/images/Cseries.jpg" },
-  F: { desc: "Lightweight folding design for the mobile professional.", img: "/images/Fseries.jpg" },
-  Other: { desc: "Explore more unique models from the Joyor lineup.", img: "/images/Sseries.jpg" }
+  S: { desc: t.series_desc_s, img: "/images/Sseries.jpg" },
+  T: { desc: t.series_desc_t, img: "/images/Tseries.jpg" },
+  Y: { desc: t.series_desc_y, img: "/images/Yseries.jpg" },
+  C: { desc: t.series_desc_c, img: "/images/Cseries.jpg" },
+  F: { desc: t.series_desc_f, img: "/images/Fseries.jpg" },
+  Other: { desc: t.series_desc_other, img: "/images/Sseries.jpg" }
 }
 ---
 
-<Base title="E-Scooters" description="Explore the full Joyor electric scooter lineup." bgColor="#eeeff2">
+<Base title={t.e_scooters_title} description={t.e_scooters_meta_description} bgColor="#eeeff2">
   <div class="pt-28 pb-20">
 
-    <!-- Page Header -->
-    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-12 flex items-end justify-between gap-6">
-      <div>
-        <h1 class="text-4xl md:text-5xl font-medium tracking-tight font-['IBM_Plex_Sans',sans-serif]">E-Scooters</h1>
-      </div>
-      
-      <div id="filter-overlay" class="fixed inset-0 bg-black/10 z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <!-- Mobile Title (not sticky) -->
+    <div class="lg:hidden max-w-[1440px] mx-auto px-6 mb-4">
+      <h1 class="text-4xl font-medium tracking-tight font-['IBM_Plex_Sans',sans-serif]">{t.e_scooters_title}</h1>
+    </div>
 
-      <div class="relative inline-block text-left" id="filter-container">
+    <!-- Sticky Action Bar -->
+    <div id="filter-overlay" class="fixed inset-0 bg-black/10 z-[55] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div class="sticky top-12 lg:static z-30 mb-8 lg:mb-12" id="action-bar">
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-3 flex flex-wrap lg:flex-nowrap items-center gap-3">
+        <h1 class="hidden lg:block lg:w-auto text-4xl md:text-5xl font-medium tracking-tight font-['IBM_Plex_Sans',sans-serif] lg:mr-auto">{t.e_scooters_title}</h1>
+        <div class="w-full lg:w-auto grid grid-cols-2 lg:flex gap-3">
+        <button
+          id="compare-all-btn"
+          class="px-5 py-1.5 bg-transparent border border-gray-400 rounded-full transition-all hover:border-black font-medium text-sm text-[#1e1e1e] text-center"
+        >
+          {t.nav_compare}
+        </button>
+
+      <div class="relative" id="filter-container">
         <button
           id="filter-toggle"
-          class="flex items-center gap-2 px-5 py-1.5 bg-transparent border border-gray-400 rounded-full transition-all hover:border-black font-medium text-sm group"
+          class="w-full flex items-center justify-center gap-2 px-5 py-1.5 bg-transparent border border-gray-400 rounded-full transition-all hover:border-black font-medium text-sm group"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="group-hover:scale-110 transition-transform"><path d="M5 7C5 6.17157 5.67157 5.5 6.5 5.5C7.32843 5.5 8 6.17157 8 7C8 7.82843 7.32843 8.5 6.5 8.5C5.67157 8.5 5 7.82843 5 7ZM6.5 3.5C4.567 3.5 3 5.067 3 7C3 8.933 4.567 10.5 6.5 10.5C8.433 10.5 10 8.933 10 7C10 5.067 8.433 3.5 6.5 3.5ZM12 8H20V6H12V8ZM16 17C16 16.1716 16.6716 15.5 17.5 15.5C18.3284 15.5 19 16.1716 19 17C19 17.8284 18.3284 18.5 17.5 18.5C16.6716 18.5 16 17.8284 16 17ZM17.5 13.5C15.567 13.5 14 15.067 14 17C14 18.933 15.567 20.5 17.5 20.5C19.433 20.5 21 18.933 21 17C21 15.067 19.433 13.5 17.5 13.5ZM4 16V18H12V16H4Z"></path></svg>
-          <span class="text-[#1e1e1e]">Filter</span>
+          <span class="text-[#1e1e1e]">{t.filter}</span>
         </button>
 
         <!-- Filter Dropdown -->
-        <div 
-          id="filter-panel" 
-          class="absolute right-0 mt-4 w-[calc(100vw-3rem)] md:w-[360px] bg-white rounded-2xl shadow-2xl z-50 p-6 origin-top-right opacity-0 translate-y-2 pointer-events-none transition-all duration-300 ease-out"
+        <div
+          id="filter-panel"
+          class="fixed right-3 lg:right-auto w-[calc(100vw-1.5rem)] md:w-[360px] bg-white rounded-2xl shadow-2xl z-[60] p-6 origin-top-right opacity-0 translate-y-2 pointer-events-none transition-all duration-300 ease-out"
         >
           <div class="space-y-6">
             <!-- Series Filter -->
             <div>
-              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Series</p>
+              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{t.filter_series}</p>
               <div class="flex flex-wrap gap-2">
                 {seriesOrder.map(s => (
-                  <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="series" data-value={s}>{s} Series</button>
+                  <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="series" data-value={s}>{s} {t.series_suffix}</button>
                 ))}
               </div>
             </div>
 
             <!-- Range Filter -->
             <div>
-              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Range</p>
+              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{t.filter_range}</p>
               <div class="flex flex-wrap gap-2">
                 <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="range" data-value="short">&lt; 30km</button>
                 <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="range" data-value="mid">30-55km</button>
@@ -79,7 +117,7 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
 
             <!-- Power Filter -->
             <div>
-              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Power</p>
+              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{t.filter_power}</p>
               <div class="flex flex-wrap gap-2">
                 <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="power" data-value="low">250W</button>
                 <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="power" data-value="mid">350W-500W</button>
@@ -89,37 +127,49 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
 
             <!-- Speed Filter -->
             <div>
-              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Speed</p>
+              <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{t.filter_speed}</p>
               <div class="flex flex-wrap gap-2">
                 <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="speed" data-value="standard">25km/h</button>
                 <button class="filter-btn px-4 py-2 border border-black text-xs font-semibold text-gray-900 transition-all rounded-lg" data-type="speed" data-value="high">&gt; 25km/h</button>
               </div>
             </div>
 
-            <button id="clear-filters" class="w-full py-3 border border-black rounded-lg text-xs font-bold uppercase tracking-widest text-gray-900 transition-all">Clear All Filters</button>
+            <button id="clear-filters" class="w-full py-3 border border-black rounded-lg text-xs font-bold uppercase tracking-widest text-gray-900 transition-all">{t.clear_all_filters}</button>
           </div>
         </div>
+      </div>
+      </div><!-- buttons wrapper -->
       </div>
     </div>
 
     <!-- Series Sections -->
     {[...grouped.entries()].map(([series, items]) => (
-      <section class="series-section max-w-[1440px] mx-auto px-6 lg:px-10 mb-16 transition-all duration-500">
+      <section id={`${series.toLowerCase()}-series`} class="series-section max-w-[1440px] mx-auto px-6 lg:px-10 mb-16 transition-all duration-500 scroll-mt-24">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          <!-- Series Highlight Card (2/3 Row Span) -->
-          <article class="series-highlight-card relative rounded-2xl overflow-hidden min-h-[260px] lg:min-h-[500px] sm:col-span-2 lg:col-span-2 flex flex-col justify-start p-8 lg:p-14 border-2 border-transparent">
-            <img 
-              src={seriesMetadata[series]?.img || seriesMetadata.Other.img} 
-              alt={`Joyor ${series} Series`}
-              class="absolute inset-0 w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-br from-black/40 via-black/10 to-transparent"></div>
-            <div class="relative z-10 text-white">
-              <h2 class="text-3xl lg:text-4xl font-semibold mb-3 uppercase tracking-tight">
-                {series === 'Other' ? 'Other Models' : `Joyor ${series} Series`}
+          <!-- Series Highlight Card -->
+          <article class="series-highlight-card bg-white lg:bg-transparent rounded-2xl overflow-hidden sm:col-span-2 lg:col-span-2 flex flex-col">
+            <div class="relative min-h-[240px] lg:min-h-[500px] lg:flex-1">
+              <img
+                src={seriesMetadata[series]?.img || seriesMetadata.Other.img}
+                alt={`Joyor ${series} ${t.series_suffix}`}
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-br from-black/25 via-transparent to-transparent hidden lg:block"></div>
+              <div class="relative z-10 text-white hidden lg:block p-8 lg:p-14">
+                <h2 class="text-4xl font-semibold mb-3 uppercase tracking-tight">
+                  {series === 'Other' ? t.other_models : `Joyor ${series} ${t.series_suffix}`}
+                </h2>
+                <p class="text-white text-lg leading-relaxed max-w-md opacity-90">
+                  {seriesMetadata[series]?.desc || seriesMetadata.Other.desc}
+                </p>
+              </div>
+            </div>
+            <div class="lg:hidden px-5 py-4">
+              <h2 class="text-xl font-semibold mb-1.5 uppercase tracking-tight text-black">
+                {series === 'Other' ? t.other_models : `Joyor ${series} ${t.series_suffix}`}
               </h2>
-              <p class="text-white text-lg leading-relaxed max-w-md opacity-90">
+              <p class="text-sm leading-relaxed text-black">
                 {seriesMetadata[series]?.desc || seriesMetadata.Other.desc}
               </p>
             </div>
@@ -189,15 +239,15 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
               <div class="border-t border-gray-100 px-5 py-5">
                 <div class="grid grid-cols-3 gap-3 text-center">
                   <div>
-                    <p class="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-medium">Range</p>
+                    <p class="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-medium">{t.filter_range}</p>
                     <p class="mt-1 text-base font-semibold text-gray-900">{scooter.specs.range || '—'}</p>
                   </div>
                   <div class="border-x border-gray-100">
-                    <p class="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-medium">Power</p>
+                    <p class="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-medium">{t.filter_power}</p>
                     <p class="mt-1 text-base font-semibold text-gray-900">{scooter.specs.motor || '—'}</p>
                   </div>
                   <div>
-                    <p class="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-medium">Speed</p>
+                    <p class="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-medium">{t.filter_speed}</p>
                     <p class="mt-1 text-base font-semibold text-gray-900">{scooter.specs.speed || '—'}</p>
                   </div>
                 </div>
@@ -206,11 +256,11 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
               <div class="px-5 pb-5 grid grid-cols-2 gap-3">
                 <a href={`/e-scooters/${scooter.handle}/`}
                    class="block text-center py-2 bg-black text-white text-[13px] font-medium tracking-wide rounded-[4px] hover:bg-gray-800 transition-colors duration-200">
-                  Learn More
+                  {t.learn_more}
                 </a>
                 <a href={`/e-scooters/${scooter.handle}/#features`}
                    class="block text-center py-2 border border-black text-black text-[13px] font-medium tracking-wide rounded-[4px] hover:bg-black/5 transition-colors duration-200">
-                  Features
+                  {t.features}
                 </a>
               </div>
 
@@ -257,8 +307,32 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
         speed: []
       };
 
+      // Portal panel + overlay to body to escape sticky stacking context
+      if (filterPanel && filterPanel.parentElement !== document.body) {
+        document.body.appendChild(filterPanel);
+      }
+      if (filterOverlay && filterOverlay.parentElement !== document.body) {
+        document.body.appendChild(filterOverlay);
+      }
+
+      const positionPanel = () => {
+        if (!filterPanel || !filterToggle) return;
+        const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+        if (isDesktop) {
+          const rect = filterToggle.getBoundingClientRect();
+          filterPanel.style.top = `${rect.bottom + 16}px`;
+          filterPanel.style.right = `${window.innerWidth - rect.right}px`;
+          filterPanel.style.left = 'auto';
+        } else {
+          filterPanel.style.top = `${56 + 56}px`;
+          filterPanel.style.right = '12px';
+          filterPanel.style.left = 'auto';
+        }
+      };
+
       const togglePanel = (open: boolean) => {
         if (open) {
+          positionPanel();
           filterPanel?.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
           filterPanel?.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
           filterOverlay?.classList.add('opacity-100', 'pointer-events-auto');
@@ -400,9 +474,37 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
       });
     }
 
+    function setupStickyBar() {
+      const bar = document.getElementById('action-bar');
+      if (!bar) return;
+      const check = () => {
+        const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+        if (!isMobile) {
+          bar.style.backgroundColor = '';
+          bar.style.backdropFilter = '';
+          bar.style.boxShadow = '';
+          return;
+        }
+        const stuck = bar.getBoundingClientRect().top <= 49;
+        if (stuck) {
+          bar.style.backgroundColor = 'rgba(255,255,255,0.95)';
+          bar.style.backdropFilter = 'blur(20px)';
+          bar.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+        } else {
+          bar.style.backgroundColor = '';
+          bar.style.backdropFilter = '';
+          bar.style.boxShadow = '';
+        }
+      };
+      window.addEventListener('scroll', check, { passive: true });
+      window.addEventListener('resize', check);
+      check();
+    }
+
     function init() {
       setupFilters();
       setupCardNavigation();
+      setupStickyBar();
     }
 
     // Initial load
@@ -411,4 +513,128 @@ const seriesMetadata: Record<string, { desc: string; img: string }> = {
     // Re-run on View Transitions navigation
     document.addEventListener('astro:after-swap', init);
   </script>
+
+  <!-- ===== FULLSCREEN COMPARE MODAL ===== -->
+  <div id="compare-modal" class="fixed inset-0 z-[200] bg-white compare-modal-hidden" style="overflow-y: auto">
+    <div class="sticky top-0 bg-white/95 backdrop-blur-xl z-10 border-b border-black/5">
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+        <h2 class="text-lg font-medium text-black">{t.compare_models}</h2>
+        <button id="compare-modal-close" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors group" aria-label="Close">
+          <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-8 lg:py-12">
+      <div id="compare-modal-scroll" class="overflow-x-auto compare-scroll-hide">
+        <div id="compare-modal-inner">
+          <div id="compare-selectors"></div>
+          <div id="compare-modal-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ allModelsData, defaultCompareHandles, comparisonSpecKeys }}>
+    const modal = document.getElementById('compare-modal')
+    const openBtn = document.getElementById('compare-all-btn')
+    const closeBtn = document.getElementById('compare-modal-close')
+    const selectorsEl = document.getElementById('compare-selectors')
+    const contentEl = document.getElementById('compare-modal-content')
+    const innerEl = document.getElementById('compare-modal-inner')
+
+    let selectedHandles = [...defaultCompareHandles]
+
+    function getModel(h) {
+      return allModelsData.find(m => m.handle === h)
+    }
+
+    const cols = () => selectedHandles.map(() => '1fr').join(' ')
+
+    function renderSelectors() {
+      if (!selectorsEl) return
+      const models = selectedHandles.map(h => getModel(h))
+      selectorsEl.innerHTML = `
+        <div class="grid gap-4 lg:gap-6 mb-10 lg:mb-16" style="grid-template-columns: ${cols()}">
+          ${models.map((m, i) => `
+            <div class="text-center">
+              <div class="h-24 lg:h-36 flex items-end justify-center mb-3">
+                ${m?.image ? `<img src="${m.image}" alt="${m.shortTitle}" class="max-h-full max-w-full object-contain" />` : '<div class="w-20 h-20 bg-gray-100 rounded-lg"></div>'}
+              </div>
+              <select data-slot="${i}" class="compare-select w-full appearance-none bg-transparent border border-black rounded-lg pl-2 pr-7 py-2.5 text-xs lg:text-sm font-medium text-black text-center cursor-pointer hover:bg-gray-50 transition-colors focus:outline-none truncate"
+                style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 6px center;">
+                ${allModelsData.map(am => `<option value="${am.handle}" ${am.handle === selectedHandles[i] ? 'selected' : ''}>${am.shortTitle}</option>`).join('')}
+              </select>
+            </div>
+          `).join('')}
+        </div>
+      `
+      selectorsEl.querySelectorAll('.compare-select').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+          const t = e.target
+          const slot = parseInt(t.dataset.slot)
+          selectedHandles[slot] = t.value
+          renderSelectors()
+          renderTable()
+        })
+      })
+    }
+
+    function renderTable() {
+      if (!contentEl) return
+      const models = selectedHandles.map(h => getModel(h)).filter(Boolean)
+      const activeKeys = comparisonSpecKeys.filter(key => models.some(m => m.specs[key]))
+      const colW = Math.max(models.length * 160, 600)
+
+      if (innerEl) innerEl.style.minWidth = window.innerWidth >= 1024 ? '' : `${colW}px`
+      contentEl.innerHTML = activeKeys.map(key => `
+        <div class="border-t border-black/8 pt-4 pb-5">
+          <p class="text-[10px] font-medium tracking-[0.2em] uppercase text-black/35 pl-4 lg:pl-0 mb-2">${key}</p>
+          <div class="grid" style="grid-template-columns: ${cols()}">
+            ${models.map(m => `
+              <p class="text-sm lg:text-base text-black text-center px-4">${m.specs[key] || '—'}</p>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')
+    }
+
+    openBtn?.addEventListener('click', () => {
+      selectedHandles = [...defaultCompareHandles]
+      modal?.classList.remove('compare-modal-hidden')
+      document.body.style.overflow = 'hidden'
+      renderSelectors()
+      renderTable()
+    })
+
+    closeBtn?.addEventListener('click', () => {
+      modal?.classList.add('compare-modal-hidden')
+      document.body.style.overflow = ''
+    })
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal?.classList.contains('compare-modal-hidden')) {
+        modal?.classList.add('compare-modal-hidden')
+        document.body.style.overflow = ''
+      }
+    })
+  </script>
+
+  <style>
+    @reference "../../styles/global.css";
+    #compare-modal {
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .compare-modal-hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      pointer-events: none;
+    }
+    .compare-scroll-hide {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .compare-scroll-hide::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
 </Base>

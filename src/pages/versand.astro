@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro'
+import { getTranslations, LANG } from '../i18n/index.js'
+
+const t = getTranslations(LANG)
+---
+
+<Base title={t.versand_title} description={t.versand_meta_desc}>
+  <div class="max-w-3xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+    <h1 class="text-3xl lg:text-4xl font-medium tracking-tight mb-4">{t.versand_title}</h1>
+    <p class="text-sm text-black/50 mb-12">{t.common_last_updated}</p>
+
+    <div class="space-y-10 text-[15px] leading-relaxed text-black">
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_scooters}</h2>
+        <p set:html={t.versand_scooters_text} />
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_parts}</h2>
+        <p set:html={t.versand_parts_text} />
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_general}</h2>
+        <p set:html={t.versand_general_text} />
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_overview}</h2>
+        <div class="border border-black/10 rounded-lg overflow-hidden">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-[#f5f5f5]">
+                <th class="text-left px-5 py-3 font-medium text-black">{t.versand_table_type}</th>
+                <th class="text-left px-5 py-3 font-medium text-black">{t.versand_table_from}</th>
+                <th class="text-left px-5 py-3 font-medium text-black">{t.versand_table_time}</th>
+                <th class="text-left px-5 py-3 font-medium text-black">{t.versand_table_cost}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-black/10">
+              <tr>
+                <td class="px-5 py-3">{t.versand_row1_type}</td>
+                <td class="px-5 py-3">{t.versand_row1_from}</td>
+                <td class="px-5 py-3">{t.versand_row1_time}</td>
+                <td class="px-5 py-3 font-medium">{t.versand_free}</td>
+              </tr>
+              <tr>
+                <td class="px-5 py-3">{t.versand_row2_type}</td>
+                <td class="px-5 py-3">{t.versand_row2_from}</td>
+                <td class="px-5 py-3">{t.versand_row2_time}</td>
+                <td class="px-5 py-3 font-medium">{t.versand_free}</td>
+              </tr>
+              <tr>
+                <td class="px-5 py-3">{t.versand_row3_type}</td>
+                <td class="px-5 py-3">{t.versand_row3_from}</td>
+                <td class="px-5 py-3">{t.versand_row3_time}</td>
+                <td class="px-5 py-3 font-medium">{t.versand_free}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-sm text-black/50">{t.versand_disclaimer}</p>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_address_changes}</h2>
+        <p><strong>{t.versand_before_shipment}</strong> — {t.versand_before_text}</p>
+        <p class="mt-3"><strong>{t.versand_after_shipment}</strong> — {t.versand_after_text}</p>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_returns}</h2>
+        <div class="space-y-4">
+          <div class="flex gap-3">
+            <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-black mt-2"></span>
+            <p><strong>{t.versand_return_quality}</strong> — {t.versand_return_quality_text}</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-black mt-2"></span>
+            <p><strong>{t.versand_return_wrong}</strong> — {t.versand_return_wrong_text}</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-black mt-2"></span>
+            <p><strong>{t.versand_return_delayed}</strong> — {t.versand_return_delayed_text}</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-black mt-2"></span>
+            <p><strong>{t.versand_return_cancelled}</strong> — {t.versand_return_cancelled_text}</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-black mt-2"></span>
+            <p><strong>{t.versand_return_accessories}</strong> — {t.versand_return_accessories_text}</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xs uppercase tracking-[0.15em] text-black/50 font-medium mb-4">{t.versand_contact}</h2>
+        <p>{t.versand_contact_text}</p>
+        <div class="bg-[#f5f5f5] rounded-lg px-5 py-4 mt-4 flex flex-col sm:flex-row gap-4">
+          <a href="mailto:support@joyorprime.com" class="flex items-center gap-2 hover:text-black transition-colors">
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            support@joyorprime.com
+          </a>
+          <a href="https://wa.me/12029299733" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-black transition-colors">
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#25D366"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" stroke="#25D366" stroke-width="1.5" fill="none"/></svg>
+            +1 (202) 929 9733
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</Base>

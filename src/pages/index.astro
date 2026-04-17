@@ -1,8 +1,265 @@
 ---
 import Base from '../layouts/Base.astro'
 import Hero from '../components/Hero.astro'
+import Heritage from '../components/Heritage.astro'
+import { getTranslations, LANG } from '../i18n/index.js'
+import { getScootersByCollection, getCollectionProducts, getScooters } from '../lib/shopify.js'
+
+const t = getTranslations(LANG)
+
+const featuredRaw = await getScootersByCollection('featured-scooter')
+const featured = featuredRaw.map((s: any) => ({
+  handle: s.handle,
+  title: s.title.replace('JOYOR ', ''),
+  image: s.scooterpng || s.images?.[0]?.url || '',
+  price: s.price?.amount || 0,
+  specs: s.specs || {},
+  points: s.sellingPoints || [],
+}))
+
+const allScooters = await getScooters()
+const t10 = allScooters.find((s: any) => /JOYOR\s+T10(\b|\s)/i.test(s.title))
+const t10Specs = {
+  speed: t10?.specs?.speed || '75 km/h',
+  motor: t10?.specs?.motor || '1000W × 2',
+  range: t10?.specs?.range || '120 km',
+}
+const t10Handle = t10?.handle || ''
+
+const allParts = await getCollectionProducts()
+const featuredParts = allParts.slice(0, 10).map((p: any) => ({
+  handle: p.handle,
+  title: p.title,
+  image: p.images?.[0]?.url || '',
+  price: p.price?.amount || 0,
+  category: p.category || '',
+}))
 ---
 
-<Base title="Engineered for Urban Freedom" description="Joyor — the leading electric scooter brand." transparentHeader={true}>
+<Base fullTitle={t.home_meta_title} description={t.home_meta_description} transparentHeader={true}>
   <Hero />
+
+  <!-- Series Lineup -->
+  <section class="bg-black">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-28">
+      <div class="flex items-end justify-between mb-10 lg:mb-14 gap-6 flex-wrap">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.2em] text-white/60 mb-5">{t.home_lineup_eyebrow}</p>
+          <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-white max-w-2xl">
+            {t.home_lineup_title}
+          </h2>
+        </div>
+        <a href="/e-scooters/" class="text-sm font-medium text-white border-b border-white pb-1 hover:opacity-60 transition-opacity">
+          {t.home_explore_all_models} →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5">
+        {[
+          { letter: 'T', name: `T ${t.series_suffix}`, desc: t.series_desc_t, img: '/images/Tseries.jpg' },
+          { letter: 'S', name: `S ${t.series_suffix}`, desc: t.series_desc_s, img: '/images/Sseries.jpg' },
+          { letter: 'Y', name: `Y ${t.series_suffix}`, desc: t.series_desc_y, img: '/images/Yseries.jpg' },
+          { letter: 'C', name: `C ${t.series_suffix}`, desc: t.series_desc_c, img: '/images/Cseries.jpg' },
+          { letter: 'F', name: `F ${t.series_suffix}`, desc: t.series_desc_f, img: '/images/Fseries.jpg' },
+        ].map(s => (
+          <a href={`/e-scooters/#${s.letter.toLowerCase()}-series`} class="group relative block aspect-[3/4] rounded-xl overflow-hidden bg-white/5 ring-1 ring-white/10">
+            <img src={s.img} alt={s.name} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute inset-0 p-5 flex flex-col justify-end text-white">
+              <h3 class="text-xl lg:text-2xl font-semibold uppercase tracking-tight">{s.name}</h3>
+              <p class="text-xs lg:text-sm mt-2 opacity-90 leading-snug">{s.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- T10 Feature Banner -->
+  <section class="bg-black">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 pb-12 lg:pb-20">
+      <a href={t10Handle ? `/e-scooters/${t10Handle}/` : '/e-scooters/'} class="block relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[2/1] overflow-hidden group">
+        <img src="/feature.jpg" alt="JOYOR T10" class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[1.2s]" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+
+        <!-- Specs Overlay -->
+        <div class="absolute inset-x-0 bottom-0 px-6 lg:px-10 pb-8 lg:pb-12">
+          <div class="flex items-center justify-center lg:justify-start gap-6 lg:gap-12 text-white">
+            <div class="text-center lg:text-left">
+              <p class="text-[10px] lg:text-[11px] uppercase tracking-[0.2em] text-white/60">{t.top_speed}</p>
+              <p class="text-xl lg:text-3xl font-medium mt-1">{t10Specs.speed}</p>
+            </div>
+            <div class="w-px h-10 lg:h-14 bg-white/30"></div>
+            <div class="text-center lg:text-left">
+              <p class="text-[10px] lg:text-[11px] uppercase tracking-[0.2em] text-white/60">{t.filter_power}</p>
+              <p class="text-xl lg:text-3xl font-medium mt-1">{t10Specs.motor}</p>
+            </div>
+            <div class="w-px h-10 lg:h-14 bg-white/30"></div>
+            <div class="text-center lg:text-left">
+              <p class="text-[10px] lg:text-[11px] uppercase tracking-[0.2em] text-white/60">{t.max_range}</p>
+              <p class="text-xl lg:text-3xl font-medium mt-1">{t10Specs.range}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <div class="mt-5 lg:mt-6 flex items-center justify-between gap-4">
+        <p class="text-sm lg:text-base text-white">
+          <span class="font-semibold">JOYOR T10</span> <span class="text-white/50">·</span> {t.home_t10_caption}
+        </p>
+        <a href={t10Handle ? `/e-scooters/${t10Handle}/` : '/e-scooters/'} class="shrink-0 text-sm font-medium text-white border-b border-white pb-1 hover:opacity-60 transition-opacity">
+          {t.learn_more} →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Models -->
+  <section class="bg-[#f5f5f7]">
+    <div class="max-w-[1440px] mx-auto pt-20 lg:pt-28 pb-20 lg:pb-28">
+      <div class="flex items-end justify-between gap-6 flex-wrap mb-10 lg:mb-14 px-[max(1.5rem,calc(50%-150px))] sm:px-6 lg:px-10">
+        <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-black max-w-2xl">
+          {t.home_featured_models_title}
+        </h2>
+        <a href="/e-scooters/" class="text-sm font-medium text-black border-b border-black pb-1 hover:opacity-60 transition-opacity">
+          {t.home_view_all_models} →
+        </a>
+      </div>
+
+      <div
+        id="featured-scroller"
+        class="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-[max(1.5rem,calc(50%-150px))] sm:px-6 lg:px-10 scroll-px-[max(1.5rem,calc(50%-150px))] sm:scroll-px-6 lg:scroll-px-10 scroll-smooth no-scrollbar"
+      >
+        {featured.map(s => (
+          <article class="snap-start shrink-0 w-[300px] sm:w-[320px] lg:w-[340px] bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-transparent hover:border-black transition-all duration-300">
+            <div class="p-5 pb-2 flex justify-between items-baseline gap-4">
+              <h3 class="text-base font-medium leading-tight truncate text-black">{s.title}</h3>
+              <p class="text-black font-semibold text-sm shrink-0">€{s.price.toFixed(2)}</p>
+            </div>
+            {s.image && (
+              <div class="px-4 pt-2 pb-6 flex-1 flex items-center justify-center overflow-hidden">
+                <img src={s.image} alt={s.title} class="w-full h-56 object-contain transition-transform duration-500 hover:scale-[1.03]" loading="lazy" />
+              </div>
+            )}
+            <div class="border-t border-black/8 px-5 py-5">
+              <div class="grid grid-cols-3 gap-3 text-center">
+                <div>
+                  <p class="text-[10px] uppercase tracking-[0.12em] text-black/50 font-medium">{t.filter_range}</p>
+                  <p class="mt-1 text-base font-semibold text-black">{s.specs.range || '—'}</p>
+                </div>
+                <div class="border-x border-black/8">
+                  <p class="text-[10px] uppercase tracking-[0.12em] text-black/50 font-medium">{t.filter_power}</p>
+                  <p class="mt-1 text-base font-semibold text-black">{s.specs.motor || '—'}</p>
+                </div>
+                <div>
+                  <p class="text-[10px] uppercase tracking-[0.12em] text-black/50 font-medium">{t.filter_speed}</p>
+                  <p class="mt-1 text-base font-semibold text-black">{s.specs.speed || '—'}</p>
+                </div>
+              </div>
+            </div>
+            <div class="px-5 pb-5 grid grid-cols-2 gap-3">
+              <a href={`/e-scooters/${s.handle}/`} class="block text-center py-2 bg-black text-white text-[13px] font-medium tracking-wide rounded-[4px] hover:bg-gray-800 transition-colors">
+                {t.learn_more}
+              </a>
+              <a href={`/e-scooters/${s.handle}/#features`} class="block text-center py-2 border border-black text-black text-[13px] font-medium tracking-wide rounded-[4px] hover:bg-black/5 transition-colors">
+                {t.features}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Scroll Controls -->
+      <div class="hidden lg:flex justify-end gap-2 mt-6 px-6 lg:px-10">
+        <button id="featured-prev" class="w-11 h-11 rounded-full border border-black/20 flex items-center justify-center text-black hover:bg-black hover:text-white hover:border-black transition-colors" aria-label="Scroll left">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button id="featured-next" class="w-11 h-11 rounded-full border border-black/20 flex items-center justify-center text-black hover:bg-black hover:text-white hover:border-black transition-colors" aria-label="Scroll right">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+    </style>
+
+    <script>
+      function initFeaturedScroll() {
+        const scroller = document.getElementById('featured-scroller')
+        const prev = document.getElementById('featured-prev')
+        const next = document.getElementById('featured-next')
+        if (!scroller) return
+        const step = () => Math.round(scroller.clientWidth * 0.8)
+        prev?.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }))
+        next?.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }))
+      }
+      initFeaturedScroll()
+      document.addEventListener('astro:after-swap', initFeaturedScroll)
+    </script>
+  </section>
+
+  <!-- Heritage -->
+  <Heritage withBorders={false} />
+
+  <!-- Featured Parts -->
+  <section class="bg-[#f5f5f7]">
+    <div class="max-w-[1440px] mx-auto pt-20 lg:pt-28 pb-20 lg:pb-28">
+      <div class="flex items-end justify-between gap-6 flex-wrap mb-10 lg:mb-14 px-[max(1.5rem,calc(50%-150px))] sm:px-6 lg:px-10">
+        <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-black max-w-2xl">
+          {t.home_featured_parts_title}
+        </h2>
+        <a href="/parts/" class="text-sm font-medium text-black border-b border-black pb-1 hover:opacity-60 transition-opacity">
+          {t.home_browse_all_parts} →
+        </a>
+      </div>
+
+      <div
+        id="parts-scroller"
+        class="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-[max(1.5rem,calc(50%-150px))] sm:px-6 lg:px-10 scroll-px-[max(1.5rem,calc(50%-150px))] sm:scroll-px-6 lg:scroll-px-10 scroll-smooth no-scrollbar"
+      >
+        {featuredParts.map(p => (
+          <a href={`/parts/product/${p.handle}/`} class="snap-start shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-transparent hover:border-black transition-all duration-300 group">
+            <div class="aspect-square bg-[#f7f7f7] overflow-hidden">
+              {p.image && (
+                <img src={p.image} alt={p.title} class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              )}
+            </div>
+            <div class="p-4 flex-1 flex flex-col">
+              {p.category && (
+                <p class="text-[10px] uppercase tracking-[0.15em] text-black/50 font-medium mb-2">{p.category}</p>
+              )}
+              <h3 class="text-sm font-medium text-black line-clamp-2 min-h-[40px] leading-snug">{p.title}</h3>
+              <p class="mt-auto pt-3 text-base font-semibold text-black">€{p.price.toFixed(2)}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="hidden lg:flex justify-end gap-2 mt-6 px-6 lg:px-10">
+        <button id="parts-prev" class="w-11 h-11 rounded-full border border-black/20 flex items-center justify-center text-black hover:bg-black hover:text-white hover:border-black transition-colors" aria-label="Scroll left">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button id="parts-next" class="w-11 h-11 rounded-full border border-black/20 flex items-center justify-center text-black hover:bg-black hover:text-white hover:border-black transition-colors" aria-label="Scroll right">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function initPartsScroll() {
+        const scroller = document.getElementById('parts-scroller')
+        const prev = document.getElementById('parts-prev')
+        const next = document.getElementById('parts-next')
+        if (!scroller) return
+        const step = () => Math.round(scroller.clientWidth * 0.8)
+        prev?.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }))
+        next?.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }))
+      }
+      initPartsScroll()
+      document.addEventListener('astro:after-swap', initPartsScroll)
+    </script>
+  </section>
+
 </Base>

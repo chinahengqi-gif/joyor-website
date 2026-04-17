@@ -1,0 +1,99 @@
+{
+  "model": "JOYOR Y6-S",
+  "title": "JOYOR Y6-S City Commuter Electric Scooter",
+  "handle": "joyor-y6s",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/2_0004_Y-_.5721.png?v=1762425334&width=493",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/2_0004_Y-_.5721.png?v=1762425334&width=493",
+    "https://joyorprime.com/cdn/shop/files/trottinette-electrique-adulte-joyor-y10-noire.avif?v=1762425334&width=493",
+    "https://joyorprime.com/cdn/shop/files/2.webp?v=1762425334&width=493",
+    "https://joyorprime.com/cdn/shop/files/imgi_84_Electric_Scooter_Joyor_Y6-S_Display_1780x1_056ecfe6-ad54-4409-bc27-983e1e7bbc3e.png?v=1762425369&width=493",
+    "https://joyorprime.com/cdn/shop/files/6.webp?v=1762425369&width=493",
+    "https://joyorprime.com/cdn/shop/files/3.webp?v=1762425369&width=493"
+  ],
+  "videoId": "ft2__JT3ltY",
+  "extraVideos": [
+    "r94Sg6vU_Qw",
+    "1CmqFT1ZCkk"
+  ],
+  "sellingPoints": [
+    "48V 18Ah battery for up to 60 km range",
+    "500W motor with 20° climbing capability",
+    "Lightweight 24 kg aluminium frame"
+  ],
+  "lifestyleImages": [
+    "https://joyorprime.com/cdn/shop/files/imgi_185_Y10-DGT-Homologado-mobile.jpg?v=1763536168&width=1200",
+    "https://joyorprime.com/cdn/shop/files/imgi_177_Y10-DGT-100km-mobile.jpg?v=1763535562&width=1200",
+    "https://joyorprime.com/cdn/shop/files/electric_scooter_joyor_y8-s_abe_rear_brake_1066x_0c0fbf9c-70c6-43ef-9b79-41675bf186c3.webp?v=1763540531&width=1200",
+    "https://joyorprime.com/cdn/shop/files/imgi_167_Y10-DGT-Suspension_f9f5d2ed-5597-4b2a-95fc-143f88798e1a.jpg?v=1762428944&width=1200"
+  ],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250425164707.jpg?v=1745571770&width=700",
+      "title": "Rugged",
+      "content": "The sturdy frame is made of aviation aluminum, which has low density and high structural strength. It also has excellent thermal conductivity and corrosion resistance for increased durability."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102132245.jpg?v=1735795445&width=700",
+      "title": "Multi-function display instrument",
+      "content": "Visual instrument cluster, key unlock, convenient function buttons Enhance your driving experience with the visually appealing instrument cluster"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_49_Motor-Joyor-y6-s_1500x_79dcd0dc-a228-43f6-8f44-6459b28ec787.jpg?v=1763533996&width=700",
+      "title": "500W Rear Split Motor",
+      "content": "Working with the IC control system,\nthe maximum climbing is 20°,and the strong power allows you to experience driving at will Experience the freedom to drive with power and precision, thanks to the IC control system which enables climbing up to 20° effortlessly"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_51_Battery-Joyor-y6-s_1500x_8a556fb8-19f9-457c-9454-5f96e64077a5.jpg?v=1763534035&width=700",
+      "title": "Range 60km",
+      "content": "48V18AH high-capacity battery ensures freedom with a range of up to 60 kilometers Experience the convenience of traveling up to 60 kilometers with the 48V18AH high-capacity battery"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/imgi_50_luces-y8_1500x_11d4f400-20a3-42e2-b4fe-ed13c6f7876f.jpg?v=1763534187&width=700",
+      "title": "Shock Absorption",
+      "content": "Front double spring shock absorption\nrear hydraulic shock absorption Regularly inspect and maintain the shock absorbers to extend their lifespan"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102130035.jpg?v=1735794124&width=700",
+      "title": "3 seconds to fold quickly",
+      "content": "One-click folding makes travel more convenient.It can be placed in the car. With its convenient one-click folding mechanism, this product is ideal for those who need portable solutions for their travel needs."
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102133121.jpg?v=1735795991&width=550",
+      "caption": "Key switch:Prevent power consumption and voltage display"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102132945.jpg?v=1735795867&width=550",
+      "caption": "At night, the illumination area is further enhanced Integrated design of running lights and brake lights to protect safety in all directions"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102133044.jpg?v=1735795924&width=550",
+      "caption": "Front and rear disc brakes Efficient braking, timely response, fast response"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250102133242.jpg?v=1735796043&width=550",
+      "caption": "10 inch air tire:Strong grip and stronger shock absorption effect under complex road sections"
+    }
+  ],
+  "specs": {
+    "Motor": "500 W",
+    "Speed": "45km/h",
+    "Battery": "48V 18Ah",
+    "Charging": "9-10h",
+    "Range": "60km",
+    "Net Weight": "23.3kg",
+    "Load": "120kg",
+    "Tire": "10-inch front and rear inflatable",
+    "Brake": "front and rear disc brakes",
+    "Front Shock Absorber": "Yes",
+    "Rear Shock Absorber": "Yes",
+    "Frame Meterial": "aluminum alloy",
+    "Pack size": "1150*245*450mm",
+    "Unfold size": "1200*570*1190mm",
+    "Fold size": "1150*210*380mm"
+  },
+  "price": 469,
+  "shopifyTitle": "JOYOR Y6-S City Commuter Electric Scooter"
+}

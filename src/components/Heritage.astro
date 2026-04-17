@@ -1,0 +1,27 @@
+---
+import { getTranslations, LANG } from '../i18n/index.js'
+
+interface Props {
+  withBorders?: boolean
+}
+const t = getTranslations(LANG)
+const { withBorders = true } = Astro.props
+---
+
+<section class:list={['bg-white', withBorders && 'border-y border-black/8']}>
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-28 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#f5f5f7] ring-1 ring-black/5">
+      <img src="/images/joyorfactory.png" alt="Joyor manufacturing facility" class="absolute inset-0 w-full h-full object-cover" />
+    </div>
+    <div>
+      <p class="text-[11px] uppercase tracking-[0.2em] text-black mb-5">{t.heritage_eyebrow}</p>
+      <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-black mb-6">
+        {t.heritage_title}
+      </h2>
+      <div class="space-y-5 text-base lg:text-lg leading-relaxed text-black">
+        <p>{t.heritage_p1}</p>
+        <p>{t.heritage_p2}</p>
+      </div>
+    </div>
+  </div>
+</section>

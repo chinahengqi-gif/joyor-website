@@ -1,0 +1,84 @@
+{
+  "model": "JOYOR C10E(ABE)",
+  "title": "JOYOR C10E(ABE) City Commuter Scooter (Removable battery)",
+  "handle": "joyor-c10e",
+  "heroImage": "https://joyorprime.com/cdn/shop/files/c10e_3.jpg?v=1762330193&width=600",
+  "heroImages": [
+    "https://joyorprime.com/cdn/shop/files/c10e_3.jpg?v=1762330193&width=600",
+    "https://joyorprime.com/cdn/shop/files/Group_15_1.png?v=1762330193&width=600",
+    "https://joyorprime.com/cdn/shop/files/c10e_2.jpg?v=1762330250&width=600",
+    "https://joyorprime.com/cdn/shop/files/1_0004_untitled.85_31f157f6-f5d4-49d8-99ef-736cf2b3d0e3.webp?v=1762330250&width=600",
+    "https://joyorprime.com/cdn/shop/files/Group21.png?v=1762330250&width=600"
+  ],
+  "videoId": "O4P3rmF-ttQ",
+  "extraVideos": [],
+  "sellingPoints": [
+    "Complies with German road traffic regulations",
+    "The body is light and foldable, easy to carry when traveling",
+    "Removable battery, can be replaced at any time, no worries about battery life"
+  ],
+  "lifestyleImages": [
+    "https://joyorprime.com/cdn/shop/files/1_0004_untitled.85.webp?v=1735552920&width=1500"
+  ],
+  "details": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250305152026.png?v=1763539230&width=1500",
+      "title": "500W Powerful Motor",
+      "content": "The C10 E e-scooter is equipped with a 500W high-power brushless motor, which enables rapid acceleration and 20-degree climbing ability. Regardless of the terrain, its maximum speed can reach 20 km/h."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20250305145755.png?v=1763539253&width=1500",
+      "title": "removable battery",
+      "content": "The C10 E electric scooter is equipped with a 48V 10.4Ah removable rechargeable battery, which can achieve an ultra-long range of 30 to 40 kilometers under ideal conditions. At the same time, its maximum load capacity reaches 120 kg, ensuring a stable and reliable riding experience."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/1763539856.png?v=1763539884&width=1500",
+      "title": "Hydraulic spring shock absorber",
+      "content": "C10 E features hydraulic front suspension and 10\" pneumatic tires for smooth rides on rough roads."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/1536x1536_4d7c9a0a-bedc-491e-a883-04acaff3cbfb.jpg?v=1746005869&width=1500",
+      "title": "Foldable and portable",
+      "content": "The C10 E electric scooter has an unfolded size of 1190*590*1300mm and a folded size of 1160*620*550mm. It weighs 19.5kg and is easy to transport and store. It is an ideal choice for commuting to school, work or short trips."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/1_0004_untitled.85.webp?v=1735552920&width=710",
+      "title": "",
+      "content": "The scooter features a smart LCD showing speed, mode, battery, and lighting."
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241230171638.png?v=1735611306&width=710",
+      "title": "",
+      "content": "High-brightness headlights ensure safe driving in low-light conditions."
+    }
+  ],
+  "moreDetails": [
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241230171653.png?v=1735611798&width=710",
+      "caption": "High-efficiency disc brake system provides stable braking performance even at high speeds"
+    },
+    {
+      "image": "https://joyorprime.com/cdn/shop/files/20241230171450.png?v=1735612028&width=710",
+      "caption": "Provides dual charging options to provide users with a more flexible and convenient charging experience"
+    }
+  ],
+  "specs": {
+    "Motor": "500 W",
+    "Speed": "20km/h",
+    "Battery": "48V10.4Ah",
+    "Charging": "5-5.5h",
+    "Range": "30-40km",
+    "Net Weight": "19.5kg",
+    "Load": "120kg",
+    "Tire": "10 inch air tire",
+    "Brake": "Front and rear disc brakes",
+    "Front Shock Absorber": "Yes",
+    "Rear Shock Absorber": "No",
+    "Frame Meterial": "Magnesium alloy",
+    "Pack size": "1200*220*585mm",
+    "Unfold size": "1160*620*1220mm",
+    "Fold size": "1160*167*550mm"
+  },
+  "price": 399,
+  "shopifyTitle": "JOYOR C10E(ABE) City Commuter Scooter (Removable battery)"
+}

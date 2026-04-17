@@ -1,0 +1,15 @@
+---
+import { getTranslations, LANG } from '../i18n/index.js'
+import LegalDocument from '../components/LegalDocument.astro'
+import { legalContent } from '../lib/legal-content'
+
+const t = getTranslations(LANG)
+const content = legalContent.terms[LANG] || legalContent.terms.en
+---
+
+<LegalDocument
+  title={t.agb_title}
+  description={content.description}
+  updatedLabel={content.updatedLabel}
+  sections={content.sections}
+/>

@@ -1,0 +1,71 @@
+---
+import Base from '../../../layouts/Base.astro'
+import { getCollection } from 'astro:content'
+import { getTranslations, LANG } from '../../../i18n/index.js'
+
+const t = getTranslations(LANG)
+
+export async function getStaticPaths() {
+  const { getCollection } = await import('astro:content')
+  const { LANG } = await import('../../../i18n/index.js')
+  const posts = await getCollection('blog', ({ id, data }) => !data.draft && id.startsWith(`${LANG}/`))
+  const tags = [...new Set(posts.flatMap(p => p.data.tags))]
+  return tags.map(tag => ({
+    params: { tag },
+    props: { tag },
+  }))
+}
+
+const { tag } = Astro.props
+
+const posts = (await getCollection('blog', ({ id, data }) => !data.draft && id.startsWith(`${LANG}/`) && data.tags.includes(tag)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+
+const stripLang = (id: string) => id.replace(new RegExp(`^${LANG}/`), '')
+const fmtDate = (d: Date) => d.toLocaleDateString(LANG, { year: 'numeric', month: 'long', day: 'numeric' })
+---
+
+<Base title={`#${tag} — ${t.blog_title}`} description={`Articles tagged ${tag}`} bgColor="#eeeff2">
+  <div class="pt-28 pb-20">
+
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-4">
+      <nav class="text-xs uppercase tracking-widest text-black/40">
+        <a href="/blog/" class="hover:text-black transition-colors">{t.blog_title}</a>
+        <span class="mx-2">/</span>
+        <span class="text-black">{tag}</span>
+      </nav>
+    </div>
+
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10 mb-12 lg:mb-16">
+      <p class="text-xs uppercase tracking-[0.25em] text-black/50 mb-4">{t.blog_tag || 'Tag'}</p>
+      <h1 class="text-4xl md:text-6xl font-medium tracking-tight text-black font-['IBM_Plex_Sans',sans-serif]">#{tag}</h1>
+      <p class="mt-4 text-sm text-black/50">{posts.length} {posts.length === 1 ? 'article' : 'articles'}</p>
+    </section>
+
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10">
+      {posts.length === 0 ? (
+        <p class="text-black/60">{t.blog_no_posts}</p>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map(post => (
+            <a href={`/blog/${stripLang(post.id)}/`} class="group block bg-white rounded-2xl overflow-hidden transition-colors">
+              <div class="aspect-[4/3] bg-[#f5f5f7] overflow-hidden">
+                {post.data.cover ? (
+                  <img src={post.data.cover.src} alt={post.data.coverAlt || post.data.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center text-black/20 text-[10px] uppercase tracking-widest">{t.blog_image_placeholder}</div>
+                )}
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-medium tracking-tight text-black mb-3 leading-snug group-hover:underline underline-offset-4">{post.data.title}</h3>
+                <p class="text-sm text-black leading-relaxed mb-4 line-clamp-2">{post.data.description}</p>
+                <p class="text-xs text-black/50">{fmtDate(post.data.date)}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+
+  </div>
+</Base>

@@ -18,5 +18,9 @@ export function t(key, lang, replacements = {}) {
   return text
 }
 
-export const LANG = import.meta.env.LANG || 'en'
+// Normalize LANG to a supported 2-letter code. Shell vars like "C.UTF-8" or
+// "en_US.UTF-8" can leak in; strip to the base and whitelist.
+const SUPPORTED = ['en', 'de', 'fr', 'it']
+const rawLang = String(import.meta.env.LANG || process.env?.LANG || '').split(/[._-]/)[0].toLowerCase()
+export const LANG = SUPPORTED.includes(rawLang) ? rawLang : 'en'
 export const SITE_URL = import.meta.env.SITE_URL || 'https://joyorscooter.us'

@@ -1,13 +1,141 @@
 ---
 import Base from '../layouts/Base.astro'
+import Heritage from '../components/Heritage.astro'
 import { getTranslations, LANG } from '../i18n/index.js'
 
 const t = getTranslations(LANG)
+
+const stats = [
+  { value: '15+', label: t.about_stat_years },
+  { value: '200,000+', label: t.about_stat_riders },
+  { value: '35+', label: t.about_stat_countries },
+  { value: '5+', label: t.about_stat_warehouses },
+]
+
+const pillars = [
+  {
+    title: t.about_pillar_1_title,
+    body: t.about_pillar_1_body,
+  },
+  {
+    title: t.about_pillar_2_title,
+    body: t.about_pillar_2_body,
+  },
+  {
+    title: t.about_pillar_3_title,
+    body: t.about_pillar_3_body,
+  },
+]
+
+const series = [
+  { letter: 'T', name: `T ${t.series_suffix}`, desc: t.series_desc_t, img: '/images/Tseries.jpg' },
+  { letter: 'S', name: `S ${t.series_suffix}`, desc: t.series_desc_s, img: '/images/Sseries.jpg' },
+  { letter: 'Y', name: `Y ${t.series_suffix}`, desc: t.series_desc_y, img: '/images/Yseries.jpg' },
+  { letter: 'C', name: `C ${t.series_suffix}`, desc: t.series_desc_c, img: '/images/Cseries.jpg' },
+  { letter: 'F', name: `F ${t.series_suffix}`, desc: t.series_desc_f, img: '/images/Fseries.jpg' },
+]
 ---
 
-<Base title={t.about_title} description={t.about_text}>
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h1 class="text-3xl font-bold mb-6">{t.about_title}</h1>
-    <p class="text-lg text-gray-600 leading-relaxed">{t.about_text}</p>
-  </div>
+<Base title={t.about_meta_title} description={t.about_meta_description}>
+
+  <!-- Hero -->
+  <section class="bg-white border-b border-black/8">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 pt-32 pb-20 lg:pt-40 lg:pb-28">
+      <p class="text-[11px] uppercase tracking-[0.2em] text-black mb-6">{t.about_eyebrow}</p>
+      <h1 class="text-4xl md:text-5xl lg:text-7xl font-medium leading-[1.05] tracking-tight text-black max-w-4xl">
+        {t.about_hero_title}
+      </h1>
+      <p class="mt-8 text-lg lg:text-xl leading-relaxed text-black max-w-2xl">
+        {t.about_hero_body}
+      </p>
+    </div>
+  </section>
+
+  <!-- Heritage / Factory -->
+  <Heritage />
+
+  <!-- Stats + Pillars -->
+  <section class="bg-[#f5f5f7]">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-28">
+
+      <!-- Stats block -->
+      <h2 class="text-2xl lg:text-3xl font-medium text-black mb-10 lg:mb-14 max-w-3xl leading-snug">
+        {t.about_stats_title}
+      </h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-black/10 border border-black/10 rounded-2xl overflow-hidden">
+        {stats.map(s => (
+          <div class="bg-white p-8 lg:p-10 flex flex-col justify-between min-h-[180px]">
+            <p class="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-black break-words">{s.value}</p>
+            <p class="text-sm lg:text-base text-black mt-6 leading-snug">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Divider -->
+      <div class="h-px bg-black/10 my-20 lg:my-28"></div>
+
+      <!-- Pillars block -->
+      <p class="text-[11px] uppercase tracking-[0.2em] text-black mb-5">{t.about_pillars_eyebrow}</p>
+      <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-black mb-12 lg:mb-16 max-w-3xl">
+        {t.about_pillars_title}
+      </h2>
+      <div class="grid md:grid-cols-3 gap-px bg-black/10 border border-black/10 rounded-2xl overflow-hidden">
+        {pillars.map((p, i) => (
+          <div class="bg-white p-8 lg:p-10">
+            <p class="text-sm font-medium text-black mb-4">0{i + 1}</p>
+            <h3 class="text-xl lg:text-2xl font-medium text-black mb-4 leading-snug">{p.title}</h3>
+            <p class="text-base leading-relaxed text-black">{p.body}</p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="bg-white border-y border-black/8">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-24 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.2em] text-black mb-5">{t.about_contact_eyebrow}</p>
+        <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-black max-w-2xl">
+          {t.about_contact_title}
+        </h2>
+      </div>
+      <a href="mailto:support@joyorprime.com" class="inline-flex items-center gap-3 text-lg lg:text-2xl font-medium text-black border-b border-black pb-2 hover:opacity-60 transition-opacity self-start lg:self-auto">
+        support@joyorprime.com
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Series Banner -->
+  <section class="bg-black">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-20 lg:py-28">
+      <div class="flex items-end justify-between mb-10 lg:mb-14 gap-6 flex-wrap">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.2em] text-white/60 mb-5">{t.home_lineup_eyebrow}</p>
+          <h2 class="text-3xl lg:text-4xl font-medium leading-tight tracking-tight text-white max-w-2xl">
+            {t.home_lineup_title}
+          </h2>
+        </div>
+        <a href="/e-scooters/" class="text-sm font-medium text-white border-b border-white pb-1 hover:opacity-60 transition-opacity">
+          {t.home_explore_all_models} →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5">
+        {series.map(s => (
+          <a href={`/e-scooters/#${s.letter.toLowerCase()}-series`} class="group relative block aspect-[3/4] rounded-xl overflow-hidden bg-white/5 ring-1 ring-white/10">
+            <img src={s.img} alt={s.name} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute inset-0 p-5 flex flex-col justify-end text-white">
+              <h3 class="text-xl lg:text-2xl font-semibold uppercase tracking-tight">{s.name}</h3>
+              <p class="text-xs lg:text-sm mt-2 opacity-90 leading-snug">{s.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
 </Base>

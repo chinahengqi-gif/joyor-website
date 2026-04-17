@@ -1,0 +1,122 @@
+---
+import Base from '../../../layouts/Base.astro'
+import { getTranslations, LANG, t as translate } from '../../../i18n/index.js'
+import { getScooters } from '../../../lib/shopify.js'
+import { collections, getCollectionBySlug } from '../../../data/collections.js'
+const t = getTranslations(LANG)
+
+export async function getStaticPaths() {
+  return collections.map((c) => ({
+    params: { slug: c.slug },
+    props: { slug: c.slug },
+  }))
+}
+
+const { slug } = Astro.props
+const collection = getCollectionBySlug(slug)
+if (!collection) throw new Error(`Unknown collection: ${slug}`)
+const slugKey = slug.replace(/-/g, '_')
+const localTitle = t[`collection_${slugKey}_title`] || collection.title
+const localTagline = t[`collection_${slugKey}_tagline`] || collection.tagline
+const localDesc = t[`collection_${slugKey}_desc`] || collection.description
+
+const allScooters = await getScooters()
+const scooters = allScooters
+  .filter((s) => collection.filter(s))
+  .map((s) => ({
+    handle: s.handle,
+    title: s.title.replace(/^JOYOR\s+/i, '').replace(/\s+(Electric\s+Scooter|Scooter|E-Motorcycle).*$/i, '').trim(),
+    fullTitle: s.title,
+    image: s.scooterpng || s.images?.[0]?.url || '',
+    price: s.price?.amount || 0,
+    currency: s.price?.currency || 'EUR',
+    specs: s.specs || {},
+  }))
+
+const otherCollections = collections.filter((c) => c.slug !== slug && c.kind === collection.kind).slice(0, 4)
+---
+
+<Base title={localTitle} description={localDesc} bgColor="#eeeff2">
+  <!-- Hero -->
+  <section class="relative pt-12 lg:pt-14">
+    <div class="relative h-[60vh] min-h-[420px] lg:h-[70vh] overflow-hidden">
+      <img src={collection.image} alt={localTitle} class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30"></div>
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 text-white">
+        <p class="text-xs lg:text-sm uppercase tracking-[0.25em] text-white/70 mb-4">{collection.kind === 'series' ? t.collection_label_series : t.collection_label_collection}</p>
+        <h1 class="text-4xl lg:text-6xl font-medium tracking-tight mb-4">{localTitle}</h1>
+        <p class="text-base lg:text-lg max-w-2xl text-white/90">{localTagline}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Description -->
+  <section class="max-w-[1440px] mx-auto px-6 lg:px-10 py-16 lg:py-20">
+    <p class="max-w-3xl text-lg lg:text-xl leading-relaxed text-black">{localDesc}</p>
+  </section>
+
+  <!-- Products -->
+  <section class="max-w-[1440px] mx-auto px-6 lg:px-10 pb-20">
+    <div class="flex items-end justify-between mb-8">
+      <h2 class="text-2xl lg:text-3xl font-medium tracking-tight text-black">{translate('collection_all_models', LANG, { title: localTitle })}</h2>
+      <p class="text-sm text-black/50">{translate('common_models', LANG, { count: scooters.length })}</p>
+    </div>
+
+    {scooters.length === 0 ? (
+      <div class="py-20 text-center">
+        <p class="text-black/60">{t.collection_empty}</p>
+        <a href="/e-scooters/" class="inline-block mt-6 underline text-black">{t.collection_browse_all}</a>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {scooters.map((s) => (
+          <a href={`/e-scooters/${s.handle}/`} class="group block bg-white rounded-2xl overflow-hidden transition-colors">
+            <div class="aspect-[4/3] bg-[#f5f5f7] flex items-center justify-center p-6">
+              <img src={s.image} alt={s.title} class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+            </div>
+            <div class="p-6 flex items-end justify-between gap-4">
+              <div>
+                <h3 class="text-lg font-medium text-black">{s.title}</h3>
+                {s.specs?.range && <p class="text-xs text-black/50 mt-1">{s.specs.range} range · {s.specs.speed || ''}</p>}
+              </div>
+              <svg class="w-6 h-6 text-black flex-shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <!-- Other collections -->
+  {otherCollections.length > 0 && (
+    <section class="max-w-[1440px] mx-auto px-6 lg:px-10 pb-20">
+      <h2 class="text-2xl lg:text-3xl font-medium tracking-tight text-black mb-8">
+        {collection.kind === 'series' ? t.collection_other_series : t.collection_more}
+      </h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {otherCollections.map((c) => (
+          <a href={`/e-scooters/collection/${c.slug}/`} class="group relative aspect-[4/5] rounded-2xl overflow-hidden">
+            <img src={c.image} alt={t[`collection_${c.slug.replace(/-/g, '_')}_title`] || c.title} class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <div class="absolute bottom-5 left-5 right-5 text-white">
+              <h3 class="text-xl font-semibold mb-1">{t[`collection_${c.slug.replace(/-/g, '_')}_title`] || c.title}</h3>
+              <p class="text-xs text-white/70">{t[`collection_${c.slug.replace(/-/g, '_')}_tagline`] || c.tagline}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Bottom CTA -->
+  <section class="bg-black text-white py-16 lg:py-24">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-10 text-center">
+      <h2 class="text-3xl lg:text-5xl font-medium tracking-tight mb-4">{t.collection_bottom_title}</h2>
+      <p class="text-white/70 mb-8 max-w-xl mx-auto">{t.collection_bottom_text}</p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="/e-scooters/" class="px-6 py-3 bg-white text-black rounded-full text-sm font-medium hover:bg-white/90 transition-colors">{t.nav_all_scooters}</a>
+        <a href="/e-scooters/#compare" class="px-6 py-3 border border-white/40 text-white rounded-full text-sm font-medium hover:bg-white/10 transition-colors">{t.compare_models}</a>
+      </div>
+    </div>
+  </section>
+</Base>
