@@ -196,13 +196,13 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
   function setupModelPage() {
     setupModelStickyBar();
     const dropdowns = document.querySelectorAll('.filter-dropdown');
-    const dropdownPanels = new Map<HTMLElement, HTMLElement>();
-    const positionPanels = new Map<HTMLElement, HTMLElement>();
+    const dropdownPanels = new Map();
+    const positionPanels = new Map();
 
     dropdowns.forEach(d => {
-      const dEl = d as HTMLElement;
-      const panel = d.querySelector('.dropdown-panel') as HTMLElement | null;
-      const btn = d.querySelector('button') as HTMLElement | null;
+      const dEl = d;
+      const panel = d.querySelector('.dropdown-panel');
+      const btn = d.querySelector('button');
       if (panel && btn) {
         dropdownPanels.set(dEl, panel);
         positionPanels.set(panel, btn);
@@ -212,7 +212,7 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
       }
     });
 
-    const positionPanel = (panel: HTMLElement) => {
+    const positionPanel = (panel) => {
       const btn = positionPanels.get(panel);
       if (!btn) return;
       const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
@@ -233,9 +233,9 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
     const noResults = document.getElementById('no-results');
     const grid = document.getElementById('products-grid');
 
-    let activeFilters: Record<string, string> = { category: '' };
+    let activeFilters = { category: '' };
 
-    const toggleDropdown = (dropdown: HTMLElement) => {
+    const toggleDropdown = (dropdown) => {
       const realPanel = dropdownPanels.get(dropdown);
       if (!realPanel) return;
       const isVisible = realPanel.classList.contains('opacity-100');
@@ -255,7 +255,7 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
       items.forEach(item => {
         const cat = item.getAttribute('data-category');
         const matchCat = !activeFilters.category || cat === activeFilters.category;
-        (item as HTMLElement).style.display = matchCat ? 'block' : 'none';
+        item.style.display = matchCat ? 'block' : 'none';
         if (matchCat) visibleCount++;
       });
       if (countDisplay) {
@@ -270,11 +270,11 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
     };
 
     dropdowns.forEach(dropdown => {
-      const dropdownEl = dropdown as HTMLElement;
+      const dropdownEl = dropdown;
       const btn = dropdown.querySelector('button');
       const label = dropdown.querySelector('.filter-label');
       const panel = dropdownPanels.get(dropdownEl);
-      const options = panel?.querySelectorAll('.filter-option') || [] as any;
+      const options = panel?.querySelectorAll('.filter-option') || [];
       const clearPanelBtn = panel?.querySelector('.filter-clear-btn');
       const type = dropdown.getAttribute('data-type');
 
@@ -287,7 +287,7 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
         opt.addEventListener('click', (e) => {
           e.stopPropagation();
           const value = opt.getAttribute('data-value') || '';
-          const text = (opt as HTMLElement).textContent || '';
+          const text = opt.textContent || '';
           if (type) activeFilters[type] = value;
           if (label) label.textContent = text;
           options.forEach(o => o.classList.remove('active'));
@@ -311,7 +311,7 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
     });
 
     document.addEventListener('click', (e) => {
-      const target = e.target as Node;
+      const target = e.target;
       for (const p of dropdownPanels.values()) {
         if (p.contains(target)) return;
       }
@@ -322,12 +322,22 @@ const otherModels = allModels.filter(m => m !== modelName).slice(0, 8)
     });
 
     grid?.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest('.add-to-cart-btn');
+      const btn = e.target.closest('.add-to-cart-btn');
       if (btn) {
+        const targetBtn = btn;
+        const dataset = targetBtn.dataset;
+        window.dispatchEvent(new CustomEvent('cart:add', {
+          detail: {
+            handle: dataset.handle,
+            title: dataset.title,
+            price: parseFloat(dataset.price || '0'),
+            image: dataset.image,
+          }
+        }));
         window.dispatchEvent(new CustomEvent('cart:open'));
-        const originalText = btn.innerHTML;
-        btn.innerHTML = `<span class="text-[9px]">${partsAdded}</span>`;
-        setTimeout(() => { btn.innerHTML = originalText; }, 1500);
+        const originalText = targetBtn.innerHTML;
+        targetBtn.innerHTML = `<span class="text-[9px]">${partsAdded}</span>`;
+        setTimeout(() => { targetBtn.innerHTML = originalText; }, 1500);
       }
     });
   }

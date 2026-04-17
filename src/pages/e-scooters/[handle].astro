@@ -688,7 +688,7 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
 
   <script define:vars={{ addedLabel: t.parts_added }}>
     // Scooter add to cart
-    const addToCartBtn = document.getElementById('scooter-add-to-cart') as HTMLButtonElement | null
+    const addToCartBtn = document.getElementById('scooter-add-to-cart')
     addToCartBtn?.addEventListener('click', () => {
       if (addToCartBtn.disabled) return
       const d = addToCartBtn.dataset
@@ -789,11 +789,11 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
     }, { passive: true })
 
     // Prevent page scroll when scrolling inside cards at boundaries
-    function preventOverscroll(el: Element | null) {
+    function preventOverscroll(el) {
       if (!el) return
       el.addEventListener('wheel', (e) => {
-        const ev = e as WheelEvent
-        const target = el as HTMLElement
+        const ev = e
+        const target = el
         const atTop = target.scrollTop <= 0
         const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 1
         if ((atTop && ev.deltaY < 0) || (atBottom && ev.deltaY > 0)) {
@@ -802,13 +802,13 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
       }, { passive: false })
 
       el.addEventListener('touchstart', (e) => {
-        (el as any)._touchY = (e as TouchEvent).touches[0].clientY
+        el._touchY = e.touches[0].clientY
       }, { passive: true })
       el.addEventListener('touchmove', (e) => {
-        const ev = e as TouchEvent
-        const target = el as HTMLElement
-        const dy = (el as any)._touchY - ev.touches[0].clientY;
-        (el as any)._touchY = ev.touches[0].clientY
+        const ev = e
+        const target = el
+        const dy = el._touchY - ev.touches[0].clientY;
+        el._touchY = ev.touches[0].clientY
         const atTop = target.scrollTop <= 0
         const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 1
         if ((atTop && dy < 0) || (atBottom && dy > 0)) {
@@ -927,7 +927,7 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
       }
 
       function updateCarousel() {
-        const slide = detailSlides[0] as HTMLElement
+        const slide = detailSlides[0]
         const gap = 20
         const offset = detailPage * (slide.offsetWidth + gap)
         detailTrack.style.transform = `translateX(-${offset}px)`
@@ -964,10 +964,10 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
       let touchCurrentX = 0
       let isDragging = false
       let baseOffset = 0
-      let directionLocked: 'horizontal' | 'vertical' | null = null
+      let directionLocked = null
 
       function getBaseOffset() {
-        const slide = detailSlides[0] as HTMLElement
+        const slide = detailSlides[0]
         return detailPage * (slide.offsetWidth + 20)
       }
 

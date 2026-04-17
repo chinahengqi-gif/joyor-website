@@ -158,12 +158,12 @@ const models = await getModels(products)
     const dropdowns = document.querySelectorAll('.filter-dropdown');
 
     // Map dropdown trigger -> portaled panel
-    const dropdownPanels = new Map<HTMLElement, HTMLElement>();
-    const positionPanels = new Map<HTMLElement, HTMLElement>();
+    const dropdownPanels = new Map();
+    const positionPanels = new Map();
     dropdowns.forEach(d => {
-      const dEl = d as HTMLElement;
-      const panel = d.querySelector('.dropdown-panel') as HTMLElement | null;
-      const btn = d.querySelector('button') as HTMLElement | null;
+      const dEl = d;
+      const panel = d.querySelector('.dropdown-panel');
+      const btn = d.querySelector('button');
       if (panel && btn) {
         dropdownPanels.set(dEl, panel);
         positionPanels.set(panel, btn);
@@ -173,7 +173,7 @@ const models = await getModels(products)
       }
     });
 
-    const positionPanel = (panel: HTMLElement) => {
+    const positionPanel = (panel) => {
       const btn = positionPanels.get(panel);
       if (!btn) return;
       const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
@@ -194,12 +194,12 @@ const models = await getModels(products)
     const grid = document.getElementById('products-grid');
     const clearBtn = document.getElementById('clear-filters');
 
-    let activeFilters: Record<string, string> = {
+    let activeFilters = {
       category: '',
       model: ''
     };
 
-    const toggleDropdown = (dropdown: HTMLElement) => {
+    const toggleDropdown = (dropdown) => {
       const realPanel = dropdownPanels.get(dropdown);
       if (!realPanel) return;
       const isVisible = realPanel.classList.contains('opacity-100');
@@ -227,7 +227,7 @@ const models = await getModels(products)
         const matchMod = !activeFilters.model || mods.includes(activeFilters.model);
         
         const isVisible = matchCat && matchMod;
-        (item as HTMLElement).style.display = isVisible ? 'block' : 'none';
+        item.style.display = isVisible ? 'block' : 'none';
         if (isVisible) visibleCount++;
       });
 
@@ -248,7 +248,7 @@ const models = await getModels(products)
       }
     };
 
-    const updateClearBtnState = (dropdown: HTMLElement, isActive: boolean) => {
+    const updateClearBtnState = (dropdown, isActive) => {
       const panel = dropdownPanels.get(dropdown);
       const clearBtn = panel?.querySelector('.filter-clear-btn');
       if (clearBtn) {
@@ -257,11 +257,11 @@ const models = await getModels(products)
     };
 
     dropdowns.forEach(dropdown => {
-      const dropdownEl = dropdown as HTMLElement;
+      const dropdownEl = dropdown;
       const btn = dropdown.querySelector('button');
       const label = dropdown.querySelector('.filter-label');
       const panel = dropdownPanels.get(dropdownEl);
-      const options = panel?.querySelectorAll('.filter-option') || [] as any;
+      const options = panel?.querySelectorAll('.filter-option') || [];
       const clearPanelBtn = panel?.querySelector('.filter-clear-btn');
       const type = dropdown.getAttribute('data-type');
 
@@ -274,7 +274,7 @@ const models = await getModels(products)
         opt.addEventListener('click', (e) => {
           e.stopPropagation();
           const value = opt.getAttribute('data-value') || '';
-          const text = (opt as HTMLElement).textContent || '';
+          const text = opt.textContent || '';
           
           if (type) {
             activeFilters[type] = value;
@@ -317,7 +317,7 @@ const models = await getModels(products)
 
     // Close on click outside
     document.addEventListener('click', (e) => {
-      const target = e.target as Node;
+      const target = e.target;
       // Don't close if click is inside any panel
       for (const p of dropdownPanels.values()) {
         if (p.contains(target)) return;
@@ -330,13 +330,23 @@ const models = await getModels(products)
 
     // Handle Add to Cart delegation
     grid?.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest('.add-to-cart-btn');
+      const btn = e.target.closest('.add-to-cart-btn');
       if (btn) {
+        const targetBtn = btn;
+        const dataset = targetBtn.dataset;
+        window.dispatchEvent(new CustomEvent('cart:add', {
+          detail: {
+            handle: dataset.handle,
+            title: dataset.title,
+            price: parseFloat(dataset.price || '0'),
+            image: dataset.image,
+          }
+        }));
         window.dispatchEvent(new CustomEvent('cart:open'));
-        const originalText = btn.innerHTML;
-        btn.innerHTML = `<span class="text-[9px]">${partsAdded}</span>`;
+        const originalText = targetBtn.innerHTML;
+        targetBtn.innerHTML = `<span class="text-[9px]">${partsAdded}</span>`;
         setTimeout(() => {
-          btn.innerHTML = originalText;
+          targetBtn.innerHTML = originalText;
         }, 1500);
       }
     });
