@@ -188,7 +188,7 @@ const models = await getModels(products)
         panel.style.right = '12px';
       }
     };
-    const items = document.querySelectorAll('.product-item');
+    const items = document.querySelectorAll('.product-card-wrapper');
     const countDisplay = document.getElementById('count-display');
     const noResults = document.getElementById('no-results');
     const grid = document.getElementById('products-grid');
@@ -221,7 +221,7 @@ const models = await getModels(products)
       let visibleCount = 0;
       items.forEach(item => {
         const cat = item.getAttribute('data-category');
-        const mods = item.getAttribute('data-models')?.split(',') || [];
+        const mods = JSON.parse(item.getAttribute('data-model') || '[]');
         
         const matchCat = !activeFilters.category || cat === activeFilters.category;
         const matchMod = !activeFilters.model || mods.includes(activeFilters.model);
