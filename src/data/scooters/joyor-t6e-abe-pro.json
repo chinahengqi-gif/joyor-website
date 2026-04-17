@@ -24,39 +24,99 @@
     {
       "image": "https://joyorprime.com/cdn/shop/files/555555_3da07cc1-6f3d-4dcf-8491-1dc096b595f3.jpg?v=1758526935&width=1500",
       "title": "Strong & Smart Rear Motor",
+      "title_i18n": {
+        "de": "Starker und intelligenter Hinterradmotor",
+        "fr": "Moteur arrière puissant et intelligent",
+        "it": "Motore posteriore potente e intelligente"
+      },
+      "content_i18n": {
+        "de": "Der Motor arbeitet effizient mit 500 W und liefert bei Bedarf Spitzenleistung bis 1600 W. Zuverlässige Steckverbindungen und Steigfähigkeit bis 25 % machen ihn bereit für Alltag und Abenteuer.",
+        "fr": "Le moteur fonctionne efficacement à 500 W et peut atteindre 1600 W en pointe si nécessaire. Des connexions fiables et une capacité de montée jusqu’à 25 % le rendent prêt pour le quotidien comme pour l’aventure.",
+        "it": "Il motore lavora in modo efficiente a 500 W e può arrivare fino a 1600 W di picco quando serve. Connessioni affidabili e capacità di salita fino al 25% lo rendono adatto sia all’uso quotidiano sia all’avventura."
+      },
       "content": "Cruises at 500W, boosts to 1600W when you need it.Uses reliable banana plug connectors.Handles slopes up to 25% — no sweat.Perfect for daily rides and weekend adventures."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/hjfgj.jpg?v=1758527155&width=1500",
       "title": "Big Battery, Easy Rides — Up to 90 km!",
+      "title_i18n": {
+        "de": "Großer Akku, entspannte Fahrten bis 90 km",
+        "fr": "Grande batterie, trajets faciles jusqu’à 90 km",
+        "it": "Batteria capiente, viaggi facili fino a 90 km"
+      },
+      "content_i18n": {
+        "de": "Der 48V-26Ah-Akku liefert bis zu 90 km Reichweite pro Ladung. Damit sind längere Pendelstrecken und ausgedehnte Fahrten ohne Reichweitenstress möglich.",
+        "fr": "La batterie 48V 26 Ah offre jusqu’à 90 km d’autonomie par charge. De quoi gérer trajets plus longs et balades étendues sans stress d’autonomie.",
+        "it": "La batteria da 48V 26 Ah offre fino a 90 km di autonomia per carica. Perfetta per tragitti più lunghi e uscite estese senza ansia da autonomia."
+      },
       "content": "No more range anxiety! The 48V 28Ah smart battery gives you plenty of juice for daily trips or weekend fun — up to 90 km on a single charge. Plus, it’s got the muscle to handle hills without breaking a sweat. Just hop on and go."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/6879.jpg?v=1758527376&width=1500",
       "title": "Conquer Any Terrain — Pro-Grade Off-Road Suspension",
+      "title_i18n": {
+        "de": "Jedes Terrain meistern mit Profi-Offroad-Federung",
+        "fr": "Maîtrisez tous les terrains avec une suspension off-road haut de gamme",
+        "it": "Affronta ogni terreno con sospensioni off-road di livello professionale"
+      },
+      "content_i18n": {
+        "de": "Hydraulische Dämpfer, geschmiedete Aluminium-Schwinge und langhubige Federung vorne und hinten sorgen für hohen Komfort und präzise Kontrolle auf Straße und Trail.",
+        "fr": "Les amortisseurs hydrauliques, le bras oscillant en aluminium forgé et le long débattement avant et arrière garantissent confort élevé et contrôle précis sur route comme sur piste.",
+        "it": "Ammortizzatori idraulici, forcellone in alluminio forgiato e lunga escursione anteriore e posteriore assicurano comfort elevato e controllo preciso su strada e sterrato."
+      },
       "content": "Engineered for adventure: race-inspired hydraulic dampers deliver plush comfort whether you’re cruising streets or tackling trails. The forged aluminum swingarm and reinforced rear fender won’t crack under pressure. With ultra-long suspension travel and dual damping systems front & rear, bumps vanish beneath you — leaving you in total control, mile after mile."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/hrheryhre.jpg?v=1758527510&width=1500",
       "title": "Brake with Confidence — Anytime, Anywhere",
+      "title_i18n": {
+        "de": "Sicher bremsen jederzeit und überall",
+        "fr": "Freinez en confiance partout et à tout moment",
+        "it": "Frena con sicurezza ovunque e in ogni momento"
+      },
+      "content_i18n": {
+        "de": "Doppelte mechanische Scheibenbremsen liefern direkte, stabile Bremsleistung bei jedem Wetter und in jedem Gelände. Kontrolle und Sicherheit bleiben jederzeit erhalten.",
+        "fr": "Les doubles freins à disque mécaniques offrent un freinage direct et stable par tous les temps et sur tous les terrains. Contrôle et sécurité restent constants.",
+        "it": "I doppi freni a disco meccanici offrono una frenata diretta e stabile con ogni meteo e su ogni terreno. Controllo e sicurezza restano sempre elevati."
+      },
       "content": "Instant、Stable、Uncompromising. Dual mechanical disc brakes deliver razor-sharp stopping power — rain or shine, uphill or downhill. Paired with a forged swingarm that’s as strong as it is stylish, safety meets sophistication. Because control shouldn’t be optional — it should be engineered."
     }
   ],
   "moreDetails": [
     {
       "image": "https://joyorprime.com/cdn/shop/files/lt.jpg?v=1758527623&width=1500",
+      "caption_i18n": {
+        "de": "10-Zoll-Offroad-Luftreifen absorbieren Unebenheiten und bieten starken Grip auf Asphalt und losem Untergrund.",
+        "fr": "Les pneus off-road gonflables de 10 pouces absorbent les irrégularités et assurent une forte adhérence sur route comme sur terrain meuble.",
+        "it": "I pneumatici off-road ad aria da 10 pollici assorbono le asperità e offrono grande aderenza su asfalto e fondi sconnessi."
+      },
       "caption": "Meet the 10” off-road air tires — engineered to eat up bumps, not feel them. No tools? No problem,swap tires in seconds. The aggressive all-terrain tread grips like glue whether you’re carving city sidewalks or trailblazing dirt paths. Wider、Smoother、Unstoppable. That’s the T6E PRO advantage."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/jtfgjnfgtj.jpg?v=1758528052&width=1500",
+      "caption_i18n": {
+        "de": "130 mm Bodenfreiheit und der schnelle Faltmechanismus erleichtern Bordsteine, Speedbumps und den täglichen Transport spürbar.",
+        "fr": "Avec 130 mm de garde au sol et un mécanisme de pliage rapide, bordures, ralentisseurs et transport quotidien deviennent nettement plus simples.",
+        "it": "Con 130 mm di luce da terra e un meccanismo di chiusura rapido, cordoli, dossi e trasporto quotidiano risultano molto più semplici."
+      },
       "caption": "With 130mm of ground clearance、curbs、speed bumps and rough pavement are no match. Glide over them like they’re not even there. Then click — fold it up in seconds. Our upgraded mechanism makes carrying、storing and commuting smoother than ever. Adventure-ready，city-smart."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/rbrfehag.png?v=1758528469&width=710",
+      "caption_i18n": {
+        "de": "",
+        "fr": "",
+        "it": ""
+      },
       "caption": ""
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/aeqwr.png?v=1758528422&width=710",
+      "caption_i18n": {
+        "de": "",
+        "fr": "",
+        "it": ""
+      },
       "caption": ""
     }
   ],

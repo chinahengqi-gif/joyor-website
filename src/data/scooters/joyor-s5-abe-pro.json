@@ -31,49 +31,129 @@
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_65_Electric_Scooter_Joyor_S5_ABE_Joyor_S5_Joyor_S5-PRO_City_Street_1780x_82617fb8-6513-4b04-972a-5cd16b62b270.jpg?v=1763518659&width=1500",
       "title": "Simple and exquisite",
+      "title_i18n": {
+        "de": "Schlicht und hochwertig",
+        "fr": "Simple et raffiné",
+        "it": "Semplice e raffinato"
+      },
+      "content_i18n": {
+        "de": "Der S5-ABE-PRO besteht aus robustem Aluminium mit hervorragender Wärmeableitung und Korrosionsbeständigkeit. Das klare Design wird durch Komponenten und Zubehör mit einheitlicher geometrischer Formsprache ergänzt und legt den Fokus auf Nutzerfreundlichkeit und Fahrkomfort.",
+        "fr": "Le S5-ABE-PRO est fabriqué en aluminium robuste, offrant une excellente dissipation thermique et une forte résistance à la corrosion. Son design épuré est complété par des composants et accessoires cohérents, pensés pour l’usage et le confort au quotidien.",
+        "it": "L’S5-ABE-PRO è realizzato in robusto alluminio, con eccellente dissipazione del calore e resistenza alla corrosione. Il design pulito è completato da componenti e accessori coerenti, pensati per praticità e comfort di guida."
+      },
       "content": "The S5 is made of solid aluminum material, which has excellent thermal conductivity and corrosion resistance, and is durable. The appearance design is simple and exquisite, and the components and accessories adopt the same geometric design language, putting usability and user experience first."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_167_S5-ABE-Display-2_1431d03a-5bde-4648-9d0e-0e43b113b46c.jpg?v=1763519923&width=1500",
       "title": "Easy to operate",
+      "title_i18n": {
+        "de": "Einfach zu bedienen",
+        "fr": "Facile à utiliser",
+        "it": "Facile da usare"
+      },
+      "content_i18n": {
+        "de": "Das hochauflösende LCD zeigt Fahrdaten in Echtzeit. Der ergonomische Einteiller-Lenker mit elektrischer Hupe, fein dosierbarem Daumengas und Multifunktionstasten macht den Wechsel zwischen verschiedenen Fahrmodi einfach und sicher.",
+        "fr": "L’écran LCD haute définition affiche les informations de conduite en temps réel. Le guidon monobloc ergonomique avec klaxon électrique, accélérateur précis au doigt et clavier multifonction permet de changer facilement de mode de conduite en toute sécurité.",
+        "it": "Il display LCD ad alta definizione mostra in tempo reale le informazioni di guida. Il manubrio monoblocco ergonomico con clacson elettrico, acceleratore preciso al dito e tastiera multifunzione rende semplice e sicuro il passaggio tra le varie modalità di guida."
+      },
       "content": "High-definition LCD display, real-time display of riding information. Ergonomically designed one-piece handlebar, equipped with electric horn. Accurate deceleration with finger pressure throttle, multi-function keyboard to easily switch between different riding modes. Front, rear and turn signal control switches ensure riding safety."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_162_S5-ABE-New-Motor.jpg?v=1763520102&width=1500",
       "title": "500W Powerful Motor",
+      "title_i18n": {
+        "de": "500-W-Motor",
+        "fr": "Moteur puissant 500 W",
+        "it": "Motore potente da 500 W"
+      },
+      "content_i18n": {
+        "de": "Der S5-ABE-PRO ist mit einem bürstenlosen 500-W-Motor ausgestattet und bietet schnelle Beschleunigung sowie Steigfähigkeit bis 20 Grad. Auf unterschiedlichstem Untergrund erreicht er bis zu 20 km/h.",
+        "fr": "Le S5-ABE-PRO est équipé d’un moteur brushless de 500 W offrant une accélération rapide et une capacité de montée jusqu’à 20 degrés. Il atteint jusqu’à 20 km/h sur différents terrains.",
+        "it": "L’S5-ABE-PRO è equipaggiato con un motore brushless da 500 W che garantisce accelerazione rapida e capacità di salita fino a 20 gradi. Su diversi terreni può raggiungere i 20 km/h."
+      },
       "content": "The S5 e-scooter features a 500W brushless motor for swift acceleration and 20-degree hill climbing, reaching max speeds of 20 km/h on diverse terrains."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_165_S5-ABE-Range.png?v=1763532606&width=700",
       "title": "48V 26 AH Battery",
+      "title_i18n": {
+        "de": "48V-26Ah-Akku",
+        "fr": "Batterie 48V 26 Ah",
+        "it": "Batteria 48V 26 Ah"
+      },
+      "content_i18n": {
+        "de": "Der leistungsstarke 48V-26Ah-Akku ermöglicht unter passenden Bedingungen eine Reichweite von 70 bis 90 km bei einer maximalen Zuladung von 120 kg. So genießen Sie auch längere Fahrten mit mehr Freiheit.",
+        "fr": "La batterie rechargeable haute capacité 48V 26 Ah permet une autonomie de 70 à 90 km selon les conditions, avec une charge maximale de 120 kg. Vous profitez ainsi d’une plus grande liberté sur les trajets plus longs.",
+        "it": "La batteria ricaricabile ad alta capacità da 48V 26 Ah offre un’autonomia da 70 a 90 km in determinate condizioni, con un carico massimo di 120 kg. Così puoi goderti gli spostamenti più lunghi con maggiore libertà."
+      },
       "content": "High-capacity 48V 26 AH rechargeable battery provides a long range of 70-90 km under certain conditions with a maximum load of 120kg. You can enjoy the freedom of long-distance riding."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_165_S5-ABE-Brakes.jpg?v=1763520691&width=700",
       "title": "Patented Rubber Suspension",
+      "title_i18n": {
+        "de": "Patentierte Gummifederung",
+        "fr": "Suspension en caoutchouc brevetée",
+        "it": "Sospensione in gomma brevettata"
+      },
+      "content_i18n": {
+        "de": "Die S-Serie verfügt über eine patentierte Gummifederung, komfortable Dämpfung und präzise mechanische Bremsen für mehr Sicherheit. Dazu kommen rutschfeste Trittflächen und 10-Zoll-Luftreifen für ruhiges, stoßgedämpftes Fahren auf unebenen Straßen.",
+        "fr": "La série S dispose d’une suspension en caoutchouc brevetée, d’un amortissement confortable et de freins mécaniques précis pour plus de sécurité. Les surfaces antidérapantes et les pneus gonflables de 10 pouces assurent une conduite fluide sur route irrégulière.",
+        "it": "La serie S è dotata di sospensione in gomma brevettata, ammortizzazione confortevole e freni meccanici precisi per una maggiore sicurezza. Le pedane antiscivolo e i pneumatici ad aria da 10 pollici garantiscono una guida fluida anche su strade sconnesse."
+      },
       "content": "The S series boasts patented rubber suspension, superior shock absorbers for comfort, and precise mechanical brakes for safety, with anti-slip pedals for high-speed and off-road security.The scooter is equipped with 10-inch pneumatic tires to ensure a smooth, shock-absorbing ride on bumpy roads."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_168_S5-ABE-Design.jpg?v=1763520993&width=700",
       "title": "Foldable and portable",
+      "title_i18n": {
+        "de": "Faltbar und tragbar",
+        "fr": "Pliable et portable",
+        "it": "Pieghevole e portatile"
+      },
+      "content_i18n": {
+        "de": "Der S5-ABE-PRO hat eine ausgeklappte Größe von 1215 × 610 × 1230 mm und eine gefaltete Größe von 1120 × 610 × 525 mm. Mit 22,1 kg ist er leicht zu transportieren und ideal für Schule, Arbeit und kurze Wege.",
+        "fr": "Le S5-ABE-PRO mesure 1215 × 610 × 1230 mm déplié et 1120 × 610 × 525 mm plié. Avec ses 22,1 kg, il est facile à transporter et idéal pour l’école, le travail ou les courts trajets.",
+        "it": "L’S5-ABE-PRO misura 1215 × 610 × 1230 mm aperto e 1120 × 610 × 525 mm da chiuso. Con i suoi 22,1 kg è facile da trasportare ed è ideale per scuola, lavoro e spostamenti brevi."
+      },
       "content": "The S5 electric scooter has an unfolded size of 1215 * 610 * 1230mm and a folded size of 1120 * 610 * 525mm. It weighs 22.1kg and is easy to transport and store. It is an ideal choice for commuting to school, work or short trips."
     }
   ],
   "moreDetails": [
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241223152915.jpg?v=1734939620&width=550",
+      "caption_i18n": {
+        "de": "Der Scooter verfügt über ein intelligentes LCD mit Informationen zu Geschwindigkeit, Modus, Akku und Beleuchtung.",
+        "fr": "Le scooter dispose d’un écran LCD intelligent affichant la vitesse, le mode, la batterie et l’éclairage.",
+        "it": "Il monopattino dispone di un display LCD intelligente che mostra velocità, modalità, batteria e illuminazione."
+      },
       "caption": "The scooter features a smart LCD showing speed, mode, battery, and lighting."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241223153255.jpg?v=1734939620&width=550",
+      "caption_i18n": {
+        "de": "Die 360-Grad-Beleuchtung verbessert die Sichtbarkeit für sicheres Fahren bei wenig Licht.",
+        "fr": "L’éclairage à 360 degrés améliore la visibilité pour une conduite sûre en faible luminosité.",
+        "it": "L’illuminazione a 360 gradi migliora la visibilità per una guida sicura in condizioni di scarsa luce."
+      },
       "caption": "360-degree lighting enhances visibility for safe driving in low light."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241228173603.jpg?v=1735378702&width=550",
+      "caption_i18n": {
+        "de": "Scheibenbremsen vorne und hinten sorgen auch bei hohen Geschwindigkeiten für stabile Bremsleistung.",
+        "fr": "Les freins à disque avant et arrière assurent un freinage stable même à haute vitesse.",
+        "it": "I freni a disco anteriori e posteriori garantiscono una frenata stabile anche alle alte velocità."
+      },
       "caption": "Front and rear disc brakes provide stable braking performance even at high speeds"
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241228174534.jpg?v=1735379211&width=550",
+      "caption_i18n": {
+        "de": "Die elektrische Hupe hilft, Fußgänger und andere Fahrzeuge im dichten Stadtverkehr frühzeitig zu warnen.",
+        "fr": "Le klaxon électrique permet d’alerter facilement piétons et autres véhicules dans les rues fréquentées.",
+        "it": "Il clacson elettrico consente di avvisare facilmente pedoni e altri veicoli nelle strade trafficate."
+      },
       "caption": "Equipped with an electric horn, it is convenient to alert pedestrians and other vehicles on crowded streets."
     }
   ],
