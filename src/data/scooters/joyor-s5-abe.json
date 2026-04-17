@@ -32,49 +32,129 @@
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_65_Electric_Scooter_Joyor_S5_ABE_Joyor_S5_Joyor_S5-PRO_City_Street_1780x_82617fb8-6513-4b04-972a-5cd16b62b270.jpg?v=1763518659&width=1500",
       "title": "Simple and exquisite",
+      "title_i18n": {
+        "de": "Schlicht und hochwertig",
+        "fr": "Simple et raffiné",
+        "it": "Semplice e raffinato"
+      },
+      "content_i18n": {
+        "de": "Dank des robusten Aluminiums bietet der S5 ABE hervorragende Wärmeableitung und Korrosionsbeständigkeit für eine lange Lebensdauer. Das schlanke Design wird durch Komponenten und Zubehör mit einer einheitlichen geometrischen Formsprache ergänzt und legt den Fokus auf Benutzerfreundlichkeit und Fahrerlebnis.",
+        "fr": "Grâce à sa structure en aluminium solide, le S5 ABE offre une excellente dissipation thermique et une forte résistance à la corrosion pour une grande durabilité. Son design épuré est complété par des composants et accessoires au langage géométrique cohérent, pensés pour l’usage au quotidien.",
+        "it": "Grazie alla solida struttura in alluminio, l’S5 ABE offre un’eccellente dissipazione del calore e resistenza alla corrosione per una lunga durata. Il design pulito è completato da componenti e accessori con un linguaggio geometrico coerente, pensato per usabilità ed esperienza di guida."
+      },
       "content": "Utilizing solid aluminum, the S5 ABE showcases outstanding thermal conductivity and corrosion resistance, ensuring longevity. Its sleek appearance design is paired with components and accessories that adhere to a unified geometric design language, emphasizing usability and user experience."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_167_S5-ABE-Display-2_1431d03a-5bde-4648-9d0e-0e43b113b46c.jpg?v=1763519923&width=1500",
       "title": "Easy to operate",
+      "title_i18n": {
+        "de": "Einfach zu bedienen",
+        "fr": "Facile à utiliser",
+        "it": "Facile da usare"
+      },
+      "content_i18n": {
+        "de": "Das hochauflösende LCD zeigt Fahrdaten in Echtzeit. Der ergonomische Einteiller-Lenker mit elektrischer Hupe, fein dosierbarem Daumengas und Multifunktionstasten macht den Wechsel zwischen verschiedenen Fahrmodi einfach und sicher.",
+        "fr": "L’écran LCD haute définition affiche les informations de conduite en temps réel. Le guidon monobloc ergonomique avec klaxon électrique, accélérateur précis au doigt et clavier multifonction permet de changer facilement de mode de conduite en toute sécurité.",
+        "it": "Il display LCD ad alta definizione mostra in tempo reale le informazioni di guida. Il manubrio monoblocco ergonomico con clacson elettrico, acceleratore preciso al dito e tastiera multifunzione rende semplice e sicuro il passaggio tra le varie modalità di guida."
+      },
       "content": "High-definition LCD display, real-time display of riding information. Ergonomically designed one-piece handlebar, equipped with electric horn. Accurate deceleration with finger pressure throttle, multi-function keyboard to easily switch between different riding modes. Front, rear and turn signal control switches ensure riding safety."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_162_S5-ABE-New-Motor.jpg?v=1763520102&width=1500",
       "title": "500W Powerful Motor",
+      "title_i18n": {
+        "de": "500-W-Motor",
+        "fr": "Moteur puissant 500 W",
+        "it": "Motore potente da 500 W"
+      },
+      "content_i18n": {
+        "de": "Der S5 ABE ist mit einem bürstenlosen 500-W-Motor ausgestattet und bietet schnelle Beschleunigung sowie Steigfähigkeit bis 20 Grad. Auf unterschiedlichstem Untergrund erreicht er bis zu 20 km/h.",
+        "fr": "Le S5 ABE est équipé d’un moteur brushless de 500 W offrant une accélération rapide et une capacité de montée jusqu’à 20 degrés. Il atteint jusqu’à 20 km/h sur différents terrains.",
+        "it": "L’S5 ABE è equipaggiato con un motore brushless da 500 W che garantisce accelerazione rapida e capacità di salita fino a 20 gradi. Su diversi terreni può raggiungere i 20 km/h."
+      },
       "content": "The S5 ABE e-scooter features a 500W brushless motor for swift acceleration and 20-degree hill climbing, reaching max speeds of 20 km/h on diverse terrains."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/5_6704e35d-a368-4d8e-ab3c-86ec30a3c4e1.jpg?v=1763520190&width=700",
       "title": "Long battery life",
+      "title_i18n": {
+        "de": "Lange Akkulaufzeit",
+        "fr": "Grande autonomie",
+        "it": "Lunga autonomia"
+      },
+      "content_i18n": {
+        "de": "Der leistungsstarke 48V-13Ah-Akku ermöglicht unter passenden Bedingungen eine Reichweite von 30 bis 45 km bei einer maximalen Zuladung von 150 kg. So genießen Sie auch längere Fahrten mit mehr Freiheit.",
+        "fr": "La batterie rechargeable haute capacité 48V 13Ah permet une autonomie de 30 à 45 km selon les conditions, avec une charge maximale de 150 kg. Vous profitez ainsi d’une plus grande liberté sur les trajets plus longs.",
+        "it": "La batteria ricaricabile ad alta capacità da 48V 13Ah offre un’autonomia da 30 a 45 km in determinate condizioni, con un carico massimo di 150 kg. Così puoi goderti gli spostamenti più lunghi con maggiore libertà."
+      },
       "content": "High-capacity 48V 13 AH rechargeable battery provides a long range of 30-45 km under certain conditions with a maximum load of 150kg. You can enjoy the freedom of long-distance riding"
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_165_S5-ABE-Brakes.jpg?v=1763520691&width=700",
       "title": "High-response disc brake system",
+      "title_i18n": {
+        "de": "Reaktionsschnelles Scheibenbremssystem",
+        "fr": "Système de frein à disque haute réactivité",
+        "it": "Sistema frenante a disco ad alta risposta"
+      },
+      "content_i18n": {
+        "de": "Das Scheibenbremssystem vorne und hinten mit hoher Übertragungseffizienz sorgt für schnelleres, leichteres und gleichmäßigeres Bremsen.",
+        "fr": "Le système de frein à disque avant et arrière à haut rendement assure un freinage plus rapide, plus fluide et moins exigeant.",
+        "it": "Il sistema frenante a disco anteriore e posteriore ad alta efficienza assicura una frenata più pronta, più fluida e meno faticosa."
+      },
       "content": "A front and rear dual disc brake system with ultra-high transmission efficiency ensures your braking is more timely,\nless strenuous, and smoother."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_168_S5-ABE-Design.jpg?v=1763520993&width=700",
       "title": "Foldable and portable",
+      "title_i18n": {
+        "de": "Faltbar und tragbar",
+        "fr": "Pliable et portable",
+        "it": "Pieghevole e portatile"
+      },
+      "content_i18n": {
+        "de": "Der S5 ABE hat eine ausgeklappte Größe von 1215 × 610 × 1230 mm und eine gefaltete Größe von 1120 × 610 × 525 mm. Mit 22,7 kg ist er leicht zu transportieren und ideal für Schule, Arbeit und kurze Wege.",
+        "fr": "Le S5 ABE mesure 1215 × 610 × 1230 mm déplié et 1120 × 610 × 525 mm plié. Avec ses 22,7 kg, il est facile à transporter et idéal pour l’école, le travail ou les courts trajets.",
+        "it": "L’S5 ABE misura 1215 × 610 × 1230 mm aperto e 1120 × 610 × 525 mm da chiuso. Con i suoi 22,7 kg è facile da trasportare ed è ideale per scuola, lavoro e spostamenti brevi."
+      },
       "content": "The S5 ABE e-scooter has an unfolded size of 1215*610*1230mm and a folded size of 1120*610*525mm. It weighs 22.7kg and is easy to transport and store. It is an ideal choice for commuting to school, work or short trips."
     }
   ],
   "moreDetails": [
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241223152915.jpg?v=1734939620&width=550",
+      "caption_i18n": {
+        "de": "Der Scooter besitzt ein LCD-Display mit Informationen zu Geschwindigkeit, Modus, Akku und Beleuchtung.",
+        "fr": "Le scooter dispose d’un écran LCD affichant la vitesse, le mode, la batterie et l’éclairage.",
+        "it": "Il monopattino dispone di uno schermo LCD che mostra velocità, modalità, batteria e illuminazione."
+      },
       "caption": "The scooter includes an LCD screen that displays details on speed, mode, battery, and lighting."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241223153255.jpg?v=1734939620&width=550",
+      "caption_i18n": {
+        "de": "Die 360-Grad-Beleuchtung verbessert die Sichtbarkeit für sicheres Fahren bei wenig Licht.",
+        "fr": "L’éclairage à 360 degrés améliore la visibilité pour une conduite sûre en faible luminosité.",
+        "it": "L’illuminazione a 360 gradi migliora la visibilità per una guida sicura in condizioni di scarsa luce."
+      },
       "caption": "360-degree lighting improves visibility for safe driving in low light."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241228173603.jpg?v=1735378702&width=550",
+      "caption_i18n": {
+        "de": "Scheibenbremsen vorne und hinten sorgen auch bei hohen Geschwindigkeiten für konstante Bremsleistung.",
+        "fr": "Les freins à disque avant et arrière assurent une efficacité de freinage constante à haute vitesse.",
+        "it": "I freni a disco anteriori e posteriori garantiscono un’efficienza di frenata costante anche alle alte velocità."
+      },
       "caption": "Front and rear disc brakes ensure consistent braking efficiency at high speeds"
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20250102144317.jpg?v=1735800277&width=550",
+      "caption_i18n": {
+        "de": "Der Lenkeraufbau ist ergonomisch gestaltet und verbessert Komfort und Haltung bei längeren Fahrten.",
+        "fr": "La potence est pensée de façon ergonomique pour améliorer le confort et la posture sur les trajets plus longs.",
+        "it": "L’attacco manubrio è progettato in modo ergonomico per migliorare comfort e postura durante i tragitti più lunghi."
+      },
       "caption": "The Lift Riser is designed to provide ergonomic benefits for users working at a desk for extended periods."
     }
   ],
