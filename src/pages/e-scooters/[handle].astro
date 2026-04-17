@@ -92,8 +92,25 @@ try {
 } catch {}
 const albumImages = localData?.heroImages || scooter.images?.map((img: any) => img.url) || []
 const youtubeVideoId = localData?.videoId || ''
-const details = (localData?.details || []).filter((d: any) => d.image && (d.title || d.content))
-const moreDetails = (localData?.moreDetails || []).filter((d: any) => d.image && d.caption)
+function localizeField(value: any, i18nMap: any) {
+  if (i18nMap?.[LANG]) return i18nMap[LANG]
+  return value || ''
+}
+
+const details = (localData?.details || [])
+  .map((d: any) => ({
+    ...d,
+    title: localizeField(d.title, d.title_i18n),
+    content: localizeField(d.content, d.content_i18n),
+  }))
+  .filter((d: any) => d.image && (d.title || d.content))
+
+const moreDetails = (localData?.moreDetails || [])
+  .map((d: any) => ({
+    ...d,
+    caption: localizeField(d.caption, d.caption_i18n),
+  }))
+  .filter((d: any) => d.image && d.caption)
 const specs = localData?.specs || {}
 const specsEntries = Object.entries(specs)
 
@@ -208,7 +225,8 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
            data-handle={handle}
            data-title={scooter.title}
            data-price={price}
-           data-image={heroImg}>
+           data-image={heroImg}
+           data-variant-id={scooter.variantId || ''}>
           {t.add_to_cart}
         </button>
         <button id="product-album-btn"
@@ -704,6 +722,7 @@ const defaultCompareHandles = ['joyor-s10s-z', 'joyor-t10-1000w-dual-motors-75km
             title: d.title,
             price: parseFloat(d.price || '0'),
             image: d.image,
+            variantId: d.variantId,
           }
         }))
 

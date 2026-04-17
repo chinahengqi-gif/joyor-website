@@ -24,41 +24,101 @@
     {
       "image": "https://joyorprime.com/cdn/shop/files/20250305152026.png?v=1763539230&width=1500",
       "title": "500W Powerful Motor",
+      "title_i18n": {
+        "de": "500-W-Motor",
+        "fr": "Moteur puissant 500 W",
+        "it": "Motore potente da 500 W"
+      },
+      "content_i18n": {
+        "de": "Der C10 E ist mit einem bürstenlosen 500-W-Hochleistungsmotor ausgestattet, der schnelle Beschleunigung und Steigfähigkeit bis 20 Grad ermöglicht. Unabhängig vom Untergrund erreicht er eine Höchstgeschwindigkeit von 20 km/h.",
+        "fr": "Le C10 E est équipé d’un moteur brushless haute puissance de 500 W, offrant une accélération rapide et une capacité de montée jusqu’à 20 degrés. Quel que soit le terrain, sa vitesse maximale peut atteindre 20 km/h.",
+        "it": "Il C10 E è dotato di un motore brushless ad alta potenza da 500 W che garantisce un’accelerazione rapida e una capacità di salita fino a 20 gradi. Qualunque sia il terreno, la sua velocità massima può raggiungere i 20 km/h."
+      },
       "content": "The C10 E e-scooter is equipped with a 500W high-power brushless motor, which enables rapid acceleration and 20-degree climbing ability. Regardless of the terrain, its maximum speed can reach 20 km/h."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20250305145755.png?v=1763539253&width=1500",
       "title": "removable battery",
+      "title_i18n": {
+        "de": "Herausnehmbarer Akku",
+        "fr": "Batterie amovible",
+        "it": "Batteria rimovibile"
+      },
+      "content_i18n": {
+        "de": "Der C10 E ist mit einem herausnehmbaren 48V-10,4Ah-Akku ausgestattet, der unter idealen Bedingungen eine Reichweite von 30 bis 40 Kilometern ermöglicht. Gleichzeitig trägt er bis zu 120 kg und sorgt so für ein stabiles und zuverlässiges Fahrerlebnis.",
+        "fr": "Le C10 E est équipé d’une batterie rechargeable amovible de 48 V 10,4 Ah, capable d’offrir une autonomie de 30 à 40 kilomètres dans des conditions idéales. Sa charge maximale atteint 120 kg pour une conduite stable et fiable.",
+        "it": "Il C10 E è dotato di una batteria ricaricabile rimovibile da 48V 10,4Ah, capace di offrire da 30 a 40 chilometri di autonomia in condizioni ideali. Inoltre supporta fino a 120 kg, garantendo una guida stabile e affidabile."
+      },
       "content": "The C10 E electric scooter is equipped with a 48V 10.4Ah removable rechargeable battery, which can achieve an ultra-long range of 30 to 40 kilometers under ideal conditions. At the same time, its maximum load capacity reaches 120 kg, ensuring a stable and reliable riding experience."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/1763539856.png?v=1763539884&width=1500",
       "title": "Hydraulic spring shock absorber",
+      "title_i18n": {
+        "de": "Hydraulische Federdämpfung",
+        "fr": "Amortisseur à ressort hydraulique",
+        "it": "Ammortizzatore a molla idraulico"
+      },
+      "content_i18n": {
+        "de": "Der C10 E verfügt über eine hydraulische Vorderradfederung und 10-Zoll-Luftreifen für ruhige Fahrten auf unebenen Straßen.",
+        "fr": "Le C10 E dispose d’une suspension avant hydraulique et de pneus gonflables de 10 pouces pour une conduite fluide sur route irrégulière.",
+        "it": "Il C10 E è dotato di sospensione anteriore idraulica e pneumatici ad aria da 10 pollici per una guida fluida anche su strade sconnesse."
+      },
       "content": "C10 E features hydraulic front suspension and 10\" pneumatic tires for smooth rides on rough roads."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/1536x1536_4d7c9a0a-bedc-491e-a883-04acaff3cbfb.jpg?v=1746005869&width=1500",
       "title": "Foldable and portable",
+      "title_i18n": {
+        "de": "Faltbar und tragbar",
+        "fr": "Pliable et portable",
+        "it": "Pieghevole e portatile"
+      },
+      "content_i18n": {
+        "de": "Der C10 E hat eine ausgeklappte Größe von 1190 × 590 × 1300 mm und eine gefaltete Größe von 1160 × 620 × 550 mm. Mit 19,5 kg ist er leicht zu transportieren und zu verstauen und ideal für Schule, Arbeit und kurze Wege.",
+        "fr": "Le C10 E mesure 1190 × 590 × 1300 mm déplié et 1160 × 620 × 550 mm plié. Avec ses 19,5 kg, il se transporte et se range facilement, idéal pour les trajets vers l’école, le travail ou les courts déplacements.",
+        "it": "Il C10 E misura 1190 × 590 × 1300 mm aperto e 1160 × 620 × 550 mm da chiuso. Con i suoi 19,5 kg è facile da trasportare e riporre, ideale per scuola, lavoro e spostamenti brevi."
+      },
       "content": "The C10 E electric scooter has an unfolded size of 1190*590*1300mm and a folded size of 1160*620*550mm. It weighs 19.5kg and is easy to transport and store. It is an ideal choice for commuting to school, work or short trips."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/1_0004_untitled.85.webp?v=1735552920&width=710",
       "title": "",
+      "content_i18n": {
+        "de": "Der Scooter verfügt über ein intelligentes LCD-Display für Geschwindigkeit, Modus, Akku und Beleuchtung.",
+        "fr": "Le scooter dispose d’un écran LCD intelligent affichant la vitesse, le mode, la batterie et l’éclairage.",
+        "it": "Il monopattino è dotato di uno schermo LCD intelligente che mostra velocità, modalità, batteria e illuminazione."
+      },
       "content": "The scooter features a smart LCD showing speed, mode, battery, and lighting."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241230171638.png?v=1735611306&width=710",
       "title": "",
+      "content_i18n": {
+        "de": "Helle Scheinwerfer sorgen für sicheres Fahren bei schlechten Lichtverhältnissen.",
+        "fr": "Les phares haute luminosité garantissent une conduite sûre dans des conditions de faible éclairage.",
+        "it": "I fari ad alta luminosità garantiscono una guida sicura in condizioni di scarsa illuminazione."
+      },
       "content": "High-brightness headlights ensure safe driving in low-light conditions."
     }
   ],
   "moreDetails": [
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241230171653.png?v=1735611798&width=710",
+      "caption_i18n": {
+        "de": "Das hocheffiziente Scheibenbremssystem sorgt auch bei hohen Geschwindigkeiten für stabile Bremsleistung.",
+        "fr": "Le système de frein à disque haute efficacité garantit un freinage stable même à grande vitesse.",
+        "it": "Il sistema frenante a disco ad alta efficienza garantisce una frenata stabile anche alle alte velocità."
+      },
       "caption": "High-efficiency disc brake system provides stable braking performance even at high speeds"
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241230171450.png?v=1735612028&width=710",
+      "caption_i18n": {
+        "de": "Zwei Ladeoptionen bieten mehr Flexibilität und Komfort im Alltag.",
+        "fr": "Deux options de charge offrent une expérience plus flexible et plus pratique au quotidien.",
+        "it": "Le doppie opzioni di ricarica offrono un’esperienza più flessibile e pratica per l’uso quotidiano."
+      },
       "caption": "Provides dual charging options to provide users with a more flexible and convenient charging experience"
     }
   ],

@@ -30,49 +30,129 @@
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241231110806.jpg?v=1735615263&width=1500",
       "title": "Ultra-light magnesium alloy frame",
+      "title_i18n": {
+        "de": "Ultraleichter Rahmen aus Magnesiumlegierung",
+        "fr": "Cadre ultraléger en alliage de magnésium",
+        "it": "Telaio ultraleggero in lega di magnesio"
+      },
+      "content_i18n": {
+        "de": "Der C10 verwendet einen ultraleichten, integrierten Druckgussrahmen aus Magnesiumlegierung, der geringes Gewicht und hohe Haltbarkeit verbindet. Das äußere Design ist schlicht und präzise, und Teile sowie Zubehör folgen derselben geometrischen Designsprache.",
+        "fr": "Le C10 utilise un cadre ultraléger en alliage de magnésium moulé sous pression d’une seule pièce, offrant légèreté et durabilité. Son design extérieur est épuré et précis, et ses pièces comme ses accessoires reprennent le même langage géométrique.",
+        "it": "Il C10 utilizza un telaio ultraleggero integrato in lega di magnesio pressofusa, che unisce leggerezza e durata. Il design esterno è pulito e raffinato, e componenti e accessori seguono lo stesso linguaggio geometrico."
+      },
       "content": "The C10 electric scooter uses an integrated die-cast magnesium alloy ultra-light frame, which provides excellent lightness and durability. The exterior design is simple and exquisite, and the parts and accessories use the same geometric design language."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/DSC00565.jpg?v=1741081861&width=1500",
       "title": "Full Control",
+      "title_i18n": {
+        "de": "Volle Kontrolle",
+        "fr": "Contrôle total",
+        "it": "Controllo totale"
+      },
+      "content_i18n": {
+        "de": "Behalten Sie mit dem multifunktionalen LCD-Display und dem intuitiven Bedienfeld des Joyor C10 jederzeit die Kontrolle. Verwalten Sie Einstellungen, aktivieren Sie Blinker, nutzen Sie die Hupe und wechseln Sie mit einem Tastendruck die Modi.",
+        "fr": "Gardez le contrôle grâce à l’écran LCD multifonction et au panneau de commande intuitif du Joyor C10. Réglez facilement les paramètres, activez les clignotants, utilisez le klaxon et changez de mode d’une simple pression.",
+        "it": "Mantieni il controllo con il display LCD multifunzione e il pannello comandi intuitivo del Joyor C10. Gestisci le impostazioni, attiva gli indicatori, usa il clacson e cambia modalità con un semplice tocco."
+      },
       "content": "Take full control with the Joyor C10’s multifunctional LCD display and intuitive button panel. Easily manage settings, activate turn signals, use the high-decibel horn, and switch between modes, all with a simple press for a safer and more convenient ride."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_200_joyor-c10-electric-scooter-motor.jpg?v=1763538197&width=1500",
       "title": "500W Powerful Motor",
+      "title_i18n": {
+        "de": "500-W-Motor",
+        "fr": "Moteur puissant 500 W",
+        "it": "Motore potente da 500 W"
+      },
+      "content_i18n": {
+        "de": "Gleiten Sie mühelos durch die Stadt mit dem 500-W-Motor des Joyor C10. Er bietet sanfte Beschleunigung, zuverlässige Leistung und genau die richtige Power für den täglichen Arbeitsweg.",
+        "fr": "Déplacez-vous facilement en ville grâce au moteur de 500 W du Joyor C10. Il offre une accélération fluide, des performances fiables et la puissance idéale pour vos trajets quotidiens.",
+        "it": "Muoviti in città con facilità grazie al motore da 500 W del Joyor C10. Offre accelerazione fluida, prestazioni affidabili e la giusta potenza per i tragitti quotidiani."
+      },
       "content": "Glide through the city with ease with the Joyor C10’s 500W motor. Perfect for urban terrains, it delivers smooth acceleration, reliable performance, and the right power for your daily commute. Conquer the streets effortlessly while enjoying a comfortable ride."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/C10__04.jpg?v=1741155373&width=1500",
       "title": "removable battery",
+      "title_i18n": {
+        "de": "Herausnehmbarer Akku",
+        "fr": "Batterie amovible",
+        "it": "Batteria rimovibile"
+      },
+      "content_i18n": {
+        "de": "Genießen Sie bis zu 35 km Reichweite mit dem herausnehmbaren Lithium-Akku des Joyor C10. Laden Sie flexibel überall und profitieren Sie von einer langlebigen, umweltfreundlichen Lösung für tägliche Fahrten in der Stadt.",
+        "fr": "Profitez jusqu’à 35 km d’autonomie avec la batterie lithium amovible du Joyor C10. Rechargez-la où vous voulez et profitez d’une solution durable et pratique pour vos déplacements urbains.",
+        "it": "Goditi fino a 35 km di autonomia con la batteria al litio rimovibile del Joyor C10. Ricaricala ovunque e approfitta di una soluzione pratica, durevole ed ecologica per la mobilità quotidiana."
+      },
       "content": "Lithium battery Enjoy up to 35 km of range with the Joyor C10's removable lithium battery. Charge anywhere and experience the convenience of a long-lasting, eco-friendly solution for your daily city commute."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20250305152315.jpg?v=1741159458&width=1500",
       "title": "Double wishbone suspension system",
+      "title_i18n": {
+        "de": "Doppelquerlenker-Federung",
+        "fr": "Suspension à double triangulation",
+        "it": "Sospensione a doppio braccio oscillante"
+      },
+      "content_i18n": {
+        "de": "Doppelquerlenker-Federung vorne und hinten für überlegene Stabilität und Stoßdämpfung.",
+        "fr": "Suspension à double triangulation à l’avant et à l’arrière pour une stabilité et une absorption des chocs supérieures.",
+        "it": "Sospensione a doppio braccio oscillante anteriore e posteriore per maggiore stabilità e migliore assorbimento degli urti."
+      },
       "content": "Front and rear double wishbone suspension for superior stability and shock absorption."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/imgi_203_joyor-c10-electric-scooter-design.jpg?v=1763538552&width=1500",
       "title": "Foldable and portable",
+      "title_i18n": {
+        "de": "Faltbar und tragbar",
+        "fr": "Pliable et portable",
+        "it": "Pieghevole e portatile"
+      },
+      "content_i18n": {
+        "de": "Der Joyor C10 verfügt über einen einteiligen Druckgussrahmen aus Magnesiumlegierung, der außergewöhnliche Leichtigkeit und Haltbarkeit bietet. Der geschwungene Lenkschaft verbessert die Ergonomie, und der Ein-Knopf-Faltmechanismus macht Transport und Aufbewahrung besonders einfach.",
+        "fr": "Le Joyor C10 dispose d’un cadre monobloc en alliage de magnésium moulé sous pression, alliant légèreté et robustesse. Son guidon à courbe ergonomique améliore le confort, tandis que le pliage à un bouton simplifie le transport et le rangement.",
+        "it": "Il Joyor C10 è dotato di un telaio monoblocco in lega di magnesio pressofusa che offre leggerezza e robustezza eccezionali. Il piantone curvo migliora l’ergonomia, mentre il sistema di chiusura con un solo pulsante rende trasporto e stoccaggio molto più semplici."
+      },
       "content": "The Joyor C10 features a one-piece die-cast magnesium alloy frame, offering exceptional lightness and durability. Its curved swan neck riser ensures ergonomic comfort for a smooth ride, while the one-button folding design makes storage and transport effortless."
     }
   ],
   "moreDetails": [
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241231112544.jpg?v=1735615779&width=710",
+      "caption_i18n": {
+        "de": "Dank moderner NFC-Technologie reicht es, den NFC-Schlüssel an den Scooter zu halten, um ihn mit einem Klick zu entsperren. So wird das Fahren schneller und komfortabler.",
+        "fr": "Grâce à la technologie NFC avancée, il suffit d’approcher la clé NFC du scooter pour le déverrouiller en un clic, pour un usage plus rapide et plus pratique.",
+        "it": "Grazie alla tecnologia NFC avanzata, basta avvicinare la chiave NFC al monopattino per sbloccarlo con un solo tocco, rendendo l’uso più rapido e pratico."
+      },
       "caption": "With advanced NFC near-field communication technology, you only need to get the NFC key close to the scooter to unlock it in one click, saying goodbye to the traditional tedious unlocking method and making travel more convenient."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241231112623.jpg?v=1735615793&width=710",
+      "caption_i18n": {
+        "de": "Fahren Sie sicher durch die Stadt mit den integrierten Blinkern des Joyor C10. Sie verbessern Sichtbarkeit und Kommunikation für mehr Sicherheit im Verkehr.",
+        "fr": "Circulez en ville en toute confiance grâce aux clignotants intégrés du Joyor C10. Ils améliorent la visibilité et la communication pour une conduite plus sûre.",
+        "it": "Muoviti in città con più sicurezza grazie agli indicatori di direzione integrati del Joyor C10. Migliorano visibilità e comunicazione per una guida più sicura."
+      },
       "caption": "Navigate city streets with confidence using the Joyor C10’s integrated turning lights. These bright indicators enhance visibility and communication, ensuring safer rides for you and those around you."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241231112705.jpg?v=1735615793&width=710",
+      "caption_i18n": {
+        "de": "Der Joyor C10 kombiniert 10-Zoll-Reifen mit doppelter Vorderradfederung für stabilen und komfortablen Fahrkomfort auf städtischen Straßen.",
+        "fr": "Le Joyor C10 associe des pneus de 10 pouces à une double suspension avant pour une conduite stable et confortable sur les routes urbaines.",
+        "it": "Il Joyor C10 abbina pneumatici da 10 pollici e doppia sospensione anteriore per offrire una guida stabile e confortevole sulle strade cittadine."
+      },
       "caption": "The Joyor C10 features 10\" tyres and dual front suspension, delivering a stable and comfortable ride across city streets. Enjoy smooth handling and enhanced comfort, even on uneven terrain."
     },
     {
       "image": "https://joyorprime.com/cdn/shop/files/20241231132530.jpg?v=1735622816&width=710",
+      "caption_i18n": {
+        "de": "Der Joyor C10 ist mit einem zuverlässigen Doppel-Scheibenbremssystem vorne und hinten ausgestattet und bietet reaktionsschnelles Bremsen für mehr Kontrolle und Sicherheit.",
+        "fr": "Le Joyor C10 est équipé d’un système fiable de double frein à disque avant et arrière, offrant un freinage réactif pour plus de contrôle et de sécurité.",
+        "it": "Il Joyor C10 è dotato di un affidabile sistema a doppio freno a disco anteriore e posteriore, per una frenata pronta e maggiore controllo e sicurezza."
+      },
       "caption": "The Joyor C10 is equipped with a reliable dual disc brake system, featuring both front and rear disc brakes for enhanced stopping power. Enjoy smooth, responsive braking for greater control and safety on every ride."
     }
   ],

@@ -7,6 +7,7 @@ interface Props {
     title: string
     category: string
     compatible: string[]
+    variantId?: string
     price: { amount: number, currency: string }
     images: { url: string, alt: string }[]
     buyUrl: string
@@ -68,6 +69,7 @@ const priceDisplay = product.price.amount.toFixed(2)
         data-title={product.title}
         data-price={product.price.amount}
         data-image={image?.url}
+        data-variant-id={product.variantId || ''}
       >
         <span>{t.add_to_cart}</span>
       </button>

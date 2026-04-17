@@ -1,6 +1,7 @@
 import dns from 'node:dns'
 import fs from 'node:fs'
 import path from 'node:path'
+import { LANG } from '../i18n/index.js'
 
 if (dns.setDefaultResultOrder) {
   dns.setDefaultResultOrder('ipv4first')
@@ -35,6 +36,7 @@ const SHOP_NAME = SHOP.replace('.myshopify.com', '')
 const CLIENT_ID = import.meta.env.SHOPIFY_CLIENT_ID
 const CLIENT_SECRET = import.meta.env.SHOPIFY_CLIENT_SECRET
 const COLLECTION_HANDLE = import.meta.env.SHOPIFY_COLLECTION || 'joyor-e-scooter-parts'
+const SHOPIFY_LOCALE = LANG
 
 let cachedToken = null
 let tokenExpiresAt = 0
@@ -92,6 +94,65 @@ async function adminFetch(query, variables = {}) {
   return res.json()
 }
 
+function stripHtml(html = '') {
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function getCacheKey(base) {
+  return SHOPIFY_LOCALE === 'en' ? base : `${base}-${SHOPIFY_LOCALE}`
+}
+
+function getTranslationValue(translations = [], key) {
+  return translations.find((entry) => entry.key === key)?.value || ''
+}
+
+function toLegacyId(id = '') {
+  return String(id).split('/').pop() || ''
+}
+
+async function getProductTranslations(resourceIds) {
+  if (SHOPIFY_LOCALE === 'en' || !resourceIds.length) return new Map()
+
+  const ids = [...new Set(resourceIds.filter(Boolean))]
+  const out = new Map()
+
+  for (let i = 0; i < ids.length; i += 50) {
+    const batch = ids.slice(i, i + 50)
+    const query = `query ProductTranslations($resourceIds: [ID!]!) {
+      translatableResourcesByIds(first: 50, resourceIds: $resourceIds) {
+        nodes {
+          resourceId
+          translations(locale: "${SHOPIFY_LOCALE}") {
+            key
+            value
+          }
+        }
+      }
+    }`
+    try {
+      const response = await adminFetch(query, { resourceIds: batch })
+      const nodes = response?.data?.translatableResourcesByIds?.nodes || []
+      nodes.forEach((resource) => {
+        if (resource?.resourceId) {
+          out.set(resource.resourceId, resource.translations || [])
+        }
+      })
+    } catch (error) {
+      console.warn(`[Shopify] Failed to fetch product translations for locale "${SHOPIFY_LOCALE}". Falling back to source language.`, error)
+      return new Map()
+    }
+  }
+
+  return out
+}
+
 // 构建期间缓存产品数据，避免每个页面重复拉取
 let cachedProducts = null
 
@@ -103,7 +164,7 @@ export async function getCollectionProducts() {
   if (cachedProducts) return cachedProducts
 
   // 优先读本地文件缓存
-  const diskCache = readCache('products')
+  const diskCache = readCache(getCacheKey('products'))
   if (diskCache) {
     console.log('[Shopify] Using cached products data (local file)')
     cachedProducts = diskCache
@@ -150,6 +211,7 @@ export async function getCollectionProducts() {
               variants(first: 10) {
                 edges {
                   node {
+                    id
                     title
                     price
                     availableForSale
@@ -180,9 +242,12 @@ export async function getCollectionProducts() {
     hasNextPage = connection.pageInfo.hasNextPage
   }
 
-  cachedProducts = products
-  writeCache('products', products)
-  return products
+  const translations = await getProductTranslations(products.map((p) => p.id))
+  const localizedProducts = products.map((product) => localizeProduct(product, translations.get(product.id) || []))
+
+  cachedProducts = localizedProducts
+  writeCache(getCacheKey('products'), localizedProducts)
+  return localizedProducts
 }
 
 /**
@@ -210,6 +275,7 @@ function normalizeProduct(node) {
     compatible,
     tags: node.tags,
     vendor: node.vendor || '',
+    variantId: toLegacyId(node.variants?.edges?.find(({ node: v }) => v.availableForSale)?.node?.id || node.variants?.edges?.[0]?.node?.id || ''),
     price: {
       amount: parseFloat(node.priceRange.minVariantPrice.amount) / 100,
       currency: node.priceRange.minVariantPrice.currencyCode,
@@ -228,6 +294,24 @@ function normalizeProduct(node) {
   }
 }
 
+function localizeProduct(product, translations = []) {
+  if (!translations.length) return product
+
+  const title = getTranslationValue(translations, 'title') || product.title
+  const descriptionHtml = getTranslationValue(translations, 'body_html') || product.descriptionHtml || ''
+  const description = descriptionHtml ? stripHtml(descriptionHtml) : product.description
+  const productType = getTranslationValue(translations, 'product_type') || product.productType
+
+  return {
+    ...product,
+    title,
+    description,
+    descriptionHtml: descriptionHtml || product.descriptionHtml,
+    productType,
+    category: product.category === product.productType ? productType : product.category,
+  }
+}
+
 // === Scooter Collection ===
 
 let cachedScooters = null
@@ -239,7 +323,7 @@ const collectionCache = new Map()
 export async function getScootersByCollection(handle) {
   if (collectionCache.has(handle)) return collectionCache.get(handle)
 
-  const cacheKey = `scooters-${handle}`
+  const cacheKey = getCacheKey(`scooters-${handle}`)
   const diskCache = readCache(cacheKey)
   if (diskCache) {
     console.log(`[Shopify] Using cached data for collection "${handle}"`)
@@ -258,6 +342,14 @@ export async function getScootersByCollection(handle) {
             title
             description
             priceRange { minVariantPrice { amount currencyCode } }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  availableForSale
+                }
+              }
+            }
             images(first: 3) { edges { node { url altText } } }
             supply: metafield(namespace: "custom", key: "supply") { value }
             batterylife: metafield(namespace: "custom", key: "batterylife") { value }
@@ -280,6 +372,7 @@ export async function getScootersByCollection(handle) {
     handle: node.handle,
     title: node.title,
     description: node.description,
+    variantId: toLegacyId(node.variants?.edges?.find(({ node: v }) => v.availableForSale)?.node?.id || node.variants?.edges?.[0]?.node?.id || ''),
     price: {
       amount: parseFloat(node.priceRange.minVariantPrice.amount) / 100,
       currency: node.priceRange.minVariantPrice.currencyCode,
@@ -296,9 +389,29 @@ export async function getScootersByCollection(handle) {
     buyUrl: `https://joyorprime.com/products/${node.handle}`,
   }))
 
-  writeCache(cacheKey, result)
-  collectionCache.set(handle, result)
-  return result
+  const translations = await getProductTranslations(result.map((item) => item.id))
+  const localizedResult = result.map((item) => {
+    const translated = localizeProduct(item, translations.get(item.id) || [])
+    const resourceTranslations = translations.get(item.id) || []
+    return {
+      ...translated,
+      sellingPoints: [
+        getTranslationValue(resourceTranslations, 'metafields.custom._1'),
+        getTranslationValue(resourceTranslations, 'metafields.custom._2'),
+        getTranslationValue(resourceTranslations, 'metafields.custom._3'),
+      ].filter(Boolean).length > 0
+        ? [
+            getTranslationValue(resourceTranslations, 'metafields.custom._1'),
+            getTranslationValue(resourceTranslations, 'metafields.custom._2'),
+            getTranslationValue(resourceTranslations, 'metafields.custom._3'),
+          ].filter(Boolean)
+        : item.sellingPoints,
+    }
+  })
+
+  writeCache(cacheKey, localizedResult)
+  collectionCache.set(handle, localizedResult)
+  return localizedResult
 }
 
 /**
@@ -307,7 +420,7 @@ export async function getScootersByCollection(handle) {
 export async function getScooters() {
   if (cachedScooters) return cachedScooters
 
-  const diskCache = readCache('scooters')
+  const diskCache = readCache(getCacheKey('scooters'))
   if (diskCache) {
     console.log('[Shopify] Using cached scooters data (local file)')
     cachedScooters = diskCache
@@ -326,6 +439,14 @@ export async function getScooters() {
             description
             priceRange {
               minVariantPrice { amount currencyCode }
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  availableForSale
+                }
+              }
             }
             images(first: 3) {
               edges { node { url altText } }
@@ -348,11 +469,12 @@ export async function getScooters() {
   const { data } = await adminFetch(query)
   const edges = data.collectionByHandle?.products?.edges || []
 
-  cachedScooters = edges.map(({ node }) => ({
+  const scooters = edges.map(({ node }) => ({
     id: node.id,
     handle: node.handle,
     title: node.title,
     description: node.description,
+    variantId: toLegacyId(node.variants?.edges?.find(({ node: v }) => v.availableForSale)?.node?.id || node.variants?.edges?.[0]?.node?.id || ''),
     price: {
       amount: parseFloat(node.priceRange.minVariantPrice.amount) / 100,
       currency: node.priceRange.minVariantPrice.currencyCode,
@@ -378,7 +500,27 @@ export async function getScooters() {
     buyUrl: `https://joyorprime.com/products/${node.handle}`,
   }))
 
-  writeCache('scooters', cachedScooters)
+  const translations = await getProductTranslations(scooters.map((item) => item.id))
+  cachedScooters = scooters.map((item) => {
+    const translated = localizeProduct(item, translations.get(item.id) || [])
+    const resourceTranslations = translations.get(item.id) || []
+    return {
+      ...translated,
+      sellingPoints: [
+        getTranslationValue(resourceTranslations, 'metafields.custom._1'),
+        getTranslationValue(resourceTranslations, 'metafields.custom._2'),
+        getTranslationValue(resourceTranslations, 'metafields.custom._3'),
+      ].filter(Boolean).length > 0
+        ? [
+            getTranslationValue(resourceTranslations, 'metafields.custom._1'),
+            getTranslationValue(resourceTranslations, 'metafields.custom._2'),
+            getTranslationValue(resourceTranslations, 'metafields.custom._3'),
+          ].filter(Boolean)
+        : item.sellingPoints,
+    }
+  })
+
+  writeCache(getCacheKey('scooters'), cachedScooters)
   return cachedScooters
 }
 

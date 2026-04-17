@@ -55,7 +55,7 @@ const cartRedirectNotice = t.cart_redirect_notice.replace('{store}', '<span clas
         <span id="cart-subtotal" class="text-xl font-medium">€0.00</span>
       </div>
       <div class="flex gap-3">
-        <a href="https://joyorprime.com/cart" target="_blank" rel="noopener"
+        <a id="cart-view-btn" href="https://joyorprime.com/cart" target="_blank" rel="noopener"
            class="flex-1 py-3 border border-gray-900 text-gray-900 text-center rounded-lg text-sm font-medium tracking-wide hover:bg-gray-50 transition-all active:scale-[0.98]">
           {t.cart_view}
         </a>
@@ -101,8 +101,17 @@ const cartRedirectNotice = t.cart_redirect_notice.replace('{store}', '<span clas
     const subtotalEl = document.getElementById('cart-subtotal');
     const countBadge = document.getElementById('cart-count-badge');
     const headerCartCount = document.getElementById('header-cart-count');
+    const viewBtn = document.getElementById('cart-view-btn');
+    const checkoutBtn = document.getElementById('cart-checkout-btn');
     const singular = panel?.dataset.itemSingular || 'Item';
     const plural = panel?.dataset.itemPlural || 'Items';
+
+    function buildShopifyCartUrl(cart) {
+      const lines = cart
+        .filter(item => item.variantId)
+        .map(item => `${item.variantId}:${item.quantity}`);
+      return lines.length ? `https://joyorprime.com/cart/${lines.join(',')}` : 'https://joyorprime.com/cart';
+    }
 
     function openCart() {
       root?.classList.remove('pointer-events-none');
@@ -125,9 +134,12 @@ const cartRedirectNotice = t.cart_redirect_notice.replace('{store}', '<span clas
       const cart = getCart();
       const count = cart.reduce((s, i) => s + i.quantity, 0);
       const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+      const checkoutUrl = buildShopifyCartUrl(cart);
 
       // Badge
       if (countBadge) countBadge.textContent = `${count} ${count === 1 ? singular : plural}`;
+      if (viewBtn) viewBtn.href = checkoutUrl;
+      if (checkoutBtn) checkoutBtn.href = checkoutUrl;
 
       // Header cart count
       if (headerCartCount) {
@@ -225,11 +237,11 @@ const cartRedirectNotice = t.cart_redirect_notice.replace('{store}', '<span clas
 
     // Global add-to-cart handler
     window.addEventListener('cart:add', ((e: CustomEvent) => {
-      const { handle, title, price, image } = e.detail;
+      const { handle, title, price, image, variantId } = e.detail;
       const cart = getCart();
       const existing = cart.find(i => i.handle === handle);
       if (existing) existing.quantity++;
-      else cart.push({ handle, title, price, image, quantity: 1 });
+      else cart.push({ handle, title, price, image, variantId, quantity: 1 });
       saveCart(cart);
       openCart();
     }) as EventListener);

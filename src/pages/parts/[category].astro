@@ -342,6 +342,7 @@ const otherCategories = allCategories
             title: dataset.title,
             price: parseFloat(dataset.price || '0'),
             image: dataset.image,
+            variantId: dataset.variantId,
           }
         }));
         window.dispatchEvent(new CustomEvent('cart:open'));

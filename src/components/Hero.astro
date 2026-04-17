@@ -10,15 +10,16 @@ interface Props {
   overlayOpacity?: number
 }
 
+const t = getTranslations(LANG)
+
 const {
-  title = 'Engineered for\nUrban Freedom.',
-  subtitle = 'Joyor — the leading electric scooter brand. Premium build quality, exceptional range, designed for modern city life.',
+  title = t.hero_home_title,
+  subtitle = t.hero_home_subtitle,
   media = 'video',
   videoSrc = '/banner.mp4',
   imageSrc = '/banner.webp',
   overlayOpacity = 0.4,
 } = Astro.props
-const t = getTranslations(LANG)
 ---
 
 <section class="relative w-full h-screen overflow-hidden">
